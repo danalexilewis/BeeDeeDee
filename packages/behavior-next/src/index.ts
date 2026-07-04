@@ -1,0 +1,2 @@
+// Behavior Next Package
+export {};
