@@ -18,7 +18,7 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Create the monorepo structure with three packages and basic configuration.
 
 **Subtasks**:
-- [ ] Initialize monorepo with pnpm/npm workspaces
+- [x] Initialize monorepo with pnpm/npm workspaces
 - [ ] Create `@eddy/behavior-core` package with TypeScript configuration
 - [ ] Create `@eddy/behavior-next` package with Next.js 14 + App Router
 - [ ] Create `@eddy/behavior-cli` package with Commander.js

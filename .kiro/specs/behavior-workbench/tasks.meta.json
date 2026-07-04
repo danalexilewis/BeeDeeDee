@@ -1,0 +1,883 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "Initialize monorepo with pnpm/npm workspaces": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524196
+      },
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165547247
+      },
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783167083834
+      }
+    ],
+    "Create `@eddy/behavior-core` package with TypeScript configuration": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524291
+      }
+    ],
+    "Create `@eddy/behavior-next` package with Next.js 14 + App Router": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524340
+      }
+    ],
+    "Create `@eddy/behavior-cli` package with Commander.js": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524378
+      }
+    ],
+    "Set up shared TypeScript configuration and build scripts": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524412
+      }
+    ],
+    "Configure ESLint, Prettier, and Husky for code quality": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524447
+      }
+    ],
+    "Define `BehaviorIndex` interface with project metadata": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524490
+      }
+    ],
+    "Define `Feature`, `Scenario`, `Step` interfaces for Gherkin": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524527
+      }
+    ],
+    "Define `Diagram`, `TestLink`, `EditorLink` interfaces": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524588
+      }
+    ],
+    "Define `TestStatus`, `CoverageMetrics` types": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524628
+      }
+    ],
+    "Create validation types for Gherkin parsing results": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524661
+      }
+    ],
+    "Define MCP server interfaces for agent integration": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524694
+      }
+    ],
+    "Install and configure @cucumber/gherkin dependency": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524727
+      }
+    ],
+    "Implement `parseGherkinFile()` function with error handling": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524761
+      }
+    ],
+    "Create `GherkinParser` class with file system scanning": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524795
+      }
+    ],
+    "Implement scenario extraction with unique ID generation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524827
+      }
+    ],
+    "Add syntax validation and error reporting": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524861
+      }
+    ],
+    "Write unit tests for parsing edge cases": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524894
+      }
+    ],
+    "Install mermaid.js dependency": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524934
+      }
+    ],
+    "Implement `parseMermaidFile()` function": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165524976
+      }
+    ],
+    "Create diagram metadata extraction (title, type, complexity)": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525033
+      }
+    ],
+    "Implement basic syntax validation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525073
+      }
+    ],
+    "Add diagram-to-scenario relevance scoring": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525108
+      }
+    ],
+    "Write unit tests for diagram parsing": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525146
+      }
+    ],
+    "Implement test file scanning for Playwright, Jest, Vitest": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525178
+      }
+    ],
+    "Create test parser for different test frameworks": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525211
+      }
+    ],
+    "Implement heuristic matching between tests and scenarios": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525244
+      }
+    ],
+    "Add manual mapping support via .json files": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525278
+      }
+    ],
+    "Create `TestIndex` class for managing test relationships": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525312
+      }
+    ],
+    "Write unit tests for test-scenario matching": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525344
+      }
+    ],
+    "Implement Playwright JSON report ingestion": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525378
+      }
+    ],
+    "Add Jest/Vitest result ingestion": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525411
+      }
+    ],
+    "Create `TestResult` interface for unified results": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525445
+      }
+    ],
+    "Implement status aggregation for scenarios": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525480
+      }
+    ],
+    "Add flaky test detection logic": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525511
+      }
+    ],
+    "Write unit tests for result ingestion": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525560
+      }
+    ],
+    "Implement scenario coverage calculation (tested/untested)": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525594
+      }
+    ],
+    "Add feature-level coverage aggregation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525630
+      }
+    ],
+    "Create coverage visualization data structures": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525662
+      }
+    ],
+    "Implement coverage trend tracking": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525694
+      }
+    ],
+    "Add coverage reporting utilities": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525727
+      }
+    ],
+    "Write unit tests for coverage calculations": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525760
+      }
+    ],
+    "Initialize Next.js 14 project with TypeScript": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525797
+      }
+    ],
+    "Configure App Router with layout structure": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525830
+      }
+    ],
+    "Set up Tailwind CSS for styling": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525861
+      }
+    ],
+    "Add shadcn/ui component library": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525896
+      }
+    ],
+    "Configure React Query for data fetching": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525930
+      }
+    ],
+    "Set up Zustand for state management": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165525967
+      }
+    ],
+    "Create `CatalogView` component with feature cards": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526012
+      }
+    ],
+    "Implement feature status visualization (pass/fail/untested)": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526045
+      }
+    ],
+    "Add search and filter functionality": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526091
+      }
+    ],
+    "Implement virtual scrolling for large feature lists": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526130
+      }
+    ],
+    "Create feature card component with key metrics": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526192
+      }
+    ],
+    "Add loading states and error handling": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526228
+      }
+    ],
+    "Write component tests for CatalogView": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526261
+      }
+    ],
+    "Create responsive three-panel layout component": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526296
+      }
+    ],
+    "Implement left panel: feature details and scenarios list": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526340
+      }
+    ],
+    "Implement middle panel: scenario steps and details": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526379
+      }
+    ],
+    "Implement right panel: linked diagrams and tests": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526412
+      }
+    ],
+    "Add panel resizing functionality": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526446
+      }
+    ],
+    "Implement scenario selection and navigation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526478
+      }
+    ],
+    "Create diagram rendering with mermaid.js": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526517
+      }
+    ],
+    "Write component tests for three-panel layout": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526559
+      }
+    ],
+    "Implement `EditorLinkService` class": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526595
+      }
+    ],
+    "Add support for vscode:// deep links": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526630
+      }
+    ],
+    "Add support for cursor:// deep links": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526665
+      }
+    ],
+    "Add support for kiro:// deep links": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526707
+      }
+    ],
+    "Implement fallback logic for missing editors": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526745
+      }
+    ],
+    "Create UI components for editor links": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526777
+      }
+    ],
+    "Write unit tests for link generation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526811
+      }
+    ],
+    "Implement file existence checking": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526845
+      }
+    ],
+    "Add line number extraction for scenarios": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526876
+      }
+    ],
+    "Create file path resolution utilities": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526909
+      }
+    ],
+    "Implement safe file system operations": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526945
+      }
+    ],
+    "Add error handling for missing files": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165526978
+      }
+    ],
+    "Write unit tests for file system operations": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527011
+      }
+    ],
+    "Install @modelcontextprotocol/sdk": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527045
+      }
+    ],
+    "Implement `BehaviorMCPServer` class": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527078
+      }
+    ],
+    "Add tools: getBehaviorContext, validateGherkin, suggestTests": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527114
+      }
+    ],
+    "Implement resource: behavior://scenarios/{id}": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527156
+      }
+    ],
+    "Add prompt templates for agent interactions": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527194
+      }
+    ],
+    "Implement security controls for write operations": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527234
+      }
+    ],
+    "Write integration tests for MCP server": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527295
+      }
+    ],
+    "Implement `generateAgentContext()` function": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527328
+      }
+    ],
+    "Create structured context data format": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527361
+      }
+    ],
+    "Include related scenarios and patterns": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527395
+      }
+    ],
+    "Add test history and coverage information": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527429
+      }
+    ],
+    "Implement context summarization for token limits": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527463
+      }
+    ],
+    "Write unit tests for context generation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527497
+      }
+    ],
+    "Implement `GherkinLinter` class": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527535
+      }
+    ],
+    "Add style checks: step pattern consistency, tag conventions": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527577
+      }
+    ],
+    "Implement best practice validations": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527626
+      }
+    ],
+    "Add duplicate scenario detection": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527661
+      }
+    ],
+    "Create auto-fix suggestions for common issues": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527701
+      }
+    ],
+    "Write unit tests for linting rules": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527747
+      }
+    ],
+    "Create quality metrics calculation utilities": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527789
+      }
+    ],
+    "Implement metrics aggregation at project level": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527828
+      }
+    ],
+    "Add quality trends tracking": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527861
+      }
+    ],
+    "Create UI components for metrics display": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527893
+      }
+    ],
+    "Implement quality score visualization": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527928
+      }
+    ],
+    "Write component tests for metrics display": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165527974
+      }
+    ],
+    "Implement `behavior index` command for spec indexing": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528009
+      }
+    ],
+    "Implement `behavior ingest-tests` for test result ingestion": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528044
+      }
+    ],
+    "Implement `behavior lint` for spec quality checking": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528078
+      }
+    ],
+    "Implement `behavior serve` for starting dev server": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528110
+      }
+    ],
+    "Add interactive prompts for configuration": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528143
+      }
+    ],
+    "Write integration tests for CLI commands": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528176
+      }
+    ],
+    "Implement `.behaviorrc` configuration file format": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528214
+      }
+    ],
+    "Add configuration validation": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528251
+      }
+    ],
+    "Implement configuration migration utilities": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528333
+      }
+    ],
+    "Create configuration wizard for first-time setup": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528367
+      }
+    ],
+    "Write unit tests for configuration management": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528411
+      }
+    ],
+    "Implement incremental indexing for changed files": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528458
+      }
+    ],
+    "Add file system watching with debouncing": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528493
+      }
+    ],
+    "Optimize memory usage with streaming parsing": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528527
+      }
+    ],
+    "Implement caching layer for frequently accessed data": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528561
+      }
+    ],
+    "Add performance metrics and monitoring": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528596
+      }
+    ],
+    "Write performance tests for large datasets": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528646
+      }
+    ],
+    "Implement WebSocket server for real-time updates": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528690
+      }
+    ],
+    "Add file system watcher integration": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528727
+      }
+    ],
+    "Implement change detection and notification": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528762
+      }
+    ],
+    "Add UI components for real-time status": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528806
+      }
+    ],
+    "Implement optimistic updates for better UX": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528843
+      }
+    ],
+    "Write integration tests for real-time features": [
+      {
+        "executionId": "61c445bb-6f55-4848-b6eb-cfe4658c6688",
+        "chatSessionId": "sess_37c2fad1-10b1-4e6d-9838-7de62b910fa4",
+        "timestamp": 1783165528878
+      }
+    ]
+  }
+}
