@@ -22,7 +22,6 @@ graph TB
         Playwright[Playwright Test Reports]
         VSCode[VS Code Deep Links]
         Cursor[Cursor Deep Links]
-        Kiro[Kiro Deep Links]
     end
     
     subgraph "Spec Sources"
@@ -48,7 +47,6 @@ graph TB
     Mappings --> Core
     Next --> VSCode
     Next --> Cursor
-    Next --> Kiro
 ```
 
 ## Sequence Diagrams
@@ -257,7 +255,7 @@ interface EditorConfig {
   openCommand: string;
 }
 
-type EditorType = 'vscode' | 'cursor' | 'kiro' | 'intellij';
+type EditorType = 'vscode' | 'cursor' | 'intellij';
 
 interface EditorLink {
   type: EditorType;
@@ -616,7 +614,7 @@ const workbench = new BehaviorWorkbench({
     components: 'tests/components'
   },
   editorConfig: {
-    supportedEditors: ['vscode', 'cursor', 'kiro'],
+    supportedEditors: ['vscode', 'cursor', 'intellij'],
     openCommand: 'code'  // VS Code command
   }
 });
@@ -702,7 +700,7 @@ links.forEach(link => {
 
 // VS Code: vscode://file/path/to/feature.feature:15
 // Cursor: cursor://open?file=path/to/feature.feature&line=15
-// Kiro: kiro://specs/features/user-auth.feature#scenario-3
+// IntelliJ: idea://open?file=path/to/feature.feature&line=15
 ```
 
 ## Correctness Properties

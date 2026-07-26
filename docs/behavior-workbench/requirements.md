@@ -78,7 +78,7 @@ The Behavior Workbench is a local development tool that provides a unified inter
 
 #### Acceptance Criteria
 
-1. FOR EACH scenario, feature, and test link, THE Editor_Link_Service SHALL generate deep links for all configured editors (VS Code, Cursor, Kiro, IntelliJ)
+1. FOR EACH scenario, feature, and test link, THE Editor_Link_Service SHALL generate deep links for all configured editors (VS Code, Cursor, IntelliJ)
 2. WHEN a user clicks an editor deep link, THE Behavior_Workbench SHALL open the correct file at the correct line number in the user's preferred editor
 3. WHERE an editor is not installed, THE Editor_Link_Service SHALL provide fallback options including opening in default editor or showing installation instructions
 4. THE Editor_Link_Service SHALL validate that generated deep links point to existing files and valid line numbers
