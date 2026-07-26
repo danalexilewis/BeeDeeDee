@@ -269,7 +269,6 @@ This document outlines the implementation tasks for building the Behavior Workbe
 - [~] Implement `EditorLinkService` class
 - [~] Add support for vscode:// deep links
 - [~] Add support for cursor:// deep links
-- [~] Add support for kiro:// deep links
 - [~] Implement fallback logic for missing editors
 - [~] Create UI components for editor links
 - [~] Write unit tests for link generation

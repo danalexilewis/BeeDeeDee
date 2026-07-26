@@ -1,5 +1,5 @@
 // Type definitions for Behavior Workbench
-// Based on design document: /Users/dan/repos/BeeDeeDee/.kiro/specs/behavior-workbench/design.md
+// Based on design document: docs/behavior-workbench/design.md
 
 // =============================================================================
 // Project Metadata Types
@@ -234,7 +234,7 @@ export interface EditorConfig {
   openCommand: string;
 }
 
-export type EditorType = 'vscode' | 'cursor' | 'kiro' | 'intellij';
+export type EditorType = 'vscode' | 'cursor' | 'intellij';
 
 export interface EditorLink {
   type: EditorType;
