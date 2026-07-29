@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "references": [{ "path": "../behavior-contracts" }],
+  "references": [{ "path": "../behavior-contracts" }, { "path": "../behavior-core" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.prop.test.ts"]
 }

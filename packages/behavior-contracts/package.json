@@ -1,7 +1,7 @@
 {
-  "name": "@eddy/behavior-core",
+  "name": "@eddy/behavior-contracts",
   "version": "0.1.0",
-  "description": "Domain and application logic for the Behavior Workbench",
+  "description": "Zod schemas and ts-rest contract shared across the Behavior Workbench",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,11 +19,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@cucumber/gherkin": "^42.0.0",
-    "@cucumber/messages": "^34.2.0",
-    "@eddy/behavior-contracts": "workspace:*",
-    "fast-glob": "^3.3.3",
-    "neverthrow": "^8.2.0",
+    "@ts-rest/core": "3.52.1",
     "zod": "^3.25.76"
   }
 }

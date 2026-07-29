@@ -1,12 +1,15 @@
 {
-  "name": "@eddy/behavior-cli",
+  "name": "@eddy/behavior-server",
   "version": "0.1.0",
-  "description": "CLI for the Behavior Workbench",
+  "description": "Fastify API server for the Behavior Workbench",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "bin": {
-    "behavior": "./dist/cli.js"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "files": [
     "dist"
@@ -18,8 +21,11 @@
   "dependencies": {
     "@eddy/behavior-contracts": "workspace:*",
     "@eddy/behavior-core": "workspace:*",
-    "@eddy/behavior-server": "workspace:*",
-    "commander": "^12.1.0",
+    "@fastify/static": "^10.1.2",
+    "@ts-rest/core": "3.52.1",
+    "@ts-rest/fastify": "3.52.1",
+    "chokidar": "^4.0.3",
+    "fastify": "^5.10.0",
     "neverthrow": "^8.2.0",
     "zod": "^3.25.76"
   }

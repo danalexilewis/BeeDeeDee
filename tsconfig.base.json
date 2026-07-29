@@ -3,39 +3,20 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "lib": [
-      "ES2022"
-    ],
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "lib": ["ES2023"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022",
-    "baseUrl": ".",
-    "paths": {
-      "@eddy/behavior-core": [
-        "./packages/behavior-core/src/index.ts"
-      ],
-      "@eddy/behavior-next": [
-        "./packages/behavior-next/src/index.ts"
-      ],
-      "@eddy/behavior-cli": [
-        "./packages/behavior-cli/src/index.ts"
-      ]
-    }
-  },
-  "include": [
-    "packages/**/src/**.ts",
-    "packages/**/src/**.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": false,
+    "target": "ES2023"
+  }
 }

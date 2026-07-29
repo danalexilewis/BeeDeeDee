@@ -1,7 +1,8 @@
 {
-  "name": "@eddy/behavior-core",
+  "name": "@eddy/test-support",
   "version": "0.1.0",
-  "description": "Domain and application logic for the Behavior Workbench",
+  "description": "Temp-project builders, fixture factories, and fast-check arbitraries",
+  "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,19 +12,12 @@
       "import": "./dist/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsc --build",
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@cucumber/gherkin": "^42.0.0",
-    "@cucumber/messages": "^34.2.0",
     "@eddy/behavior-contracts": "workspace:*",
-    "fast-glob": "^3.3.3",
-    "neverthrow": "^8.2.0",
-    "zod": "^3.25.76"
+    "fast-check": "^4.9.0"
   }
 }
