@@ -186,6 +186,8 @@ stack looks the way it does.
 
 ## Development
 
+Requires Node `>=22` and `pnpm@10.33.3` (see Quick start / Corepack above).
+
 ```bash
 pnpm install
 pnpm build          # tsc project references, then the SPA
