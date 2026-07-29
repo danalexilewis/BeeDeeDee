@@ -25,6 +25,11 @@ function sourceEntry(packageName: string): string {
  */
 const workspaceAliases = {
   '@eddy/behavior-contracts': sourceEntry('behavior-contracts'),
+  // The more specific subpath must precede the bare package name, or the bare
+  // alias would swallow it.
+  '@eddy/behavior-core/testing': fileURLToPath(
+    new URL('./packages/behavior-core/src/testing/index.ts', import.meta.url)
+  ),
   '@eddy/behavior-core': sourceEntry('behavior-core'),
   '@eddy/behavior-server': sourceEntry('behavior-server'),
   '@eddy/behavior-cli': sourceEntry('behavior-cli'),

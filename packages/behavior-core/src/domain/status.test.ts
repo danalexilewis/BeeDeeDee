@@ -114,7 +114,7 @@ describe('latestRun', () => {
 
 describe('aggregateScenarioStatus', () => {
   it('carries the scenario id through', () => {
-    expect(aggregateScenarioStatus('login/happy', []).scenarioId).toBe('login/happy');
+    expect(aggregateScenarioStatus('login.happy', []).scenarioId).toBe('login.happy');
   });
 
   it('orders results oldest first', () => {

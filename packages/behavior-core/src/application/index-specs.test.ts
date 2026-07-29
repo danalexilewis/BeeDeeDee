@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createRecordingLogger } from '../adapters/logger.js';
 import { createFixedClock } from '../adapters/system-clock.js';
-import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/fakes.js';
+import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/index.js';
 import { indexBehaviorSpecs, type IndexDeps } from './index-specs.js';
 
 function deps(files: Record<string, string>, options = {}): IndexDeps {
@@ -36,13 +36,13 @@ describe('indexBehaviorSpecs', () => {
 
   it('links a matching test to its scenario', async () => {
     const index = (await indexOf(createTestFiles()))._unsafeUnwrap();
-    expect(index.testLinks.get('login/successful-login')).toHaveLength(1);
+    expect(index.testLinks.get('login.successful-login')).toHaveLength(1);
     expect(index.scenarioByTestId.size).toBe(1);
   });
 
   it('links a relevant diagram to a scenario', async () => {
     const index = (await indexOf(createTestFiles()))._unsafeUnwrap();
-    const scenario = index.scenarios.get('login/successful-login');
+    const scenario = index.scenarios.get('login.successful-login');
     expect(scenario?.diagramLinks.map(link => link.diagramId)).toContain('login');
   });
 

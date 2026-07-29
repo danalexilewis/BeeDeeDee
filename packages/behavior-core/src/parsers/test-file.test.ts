@@ -18,9 +18,9 @@ describe('detectFramework', () => {
 
 describe('tagsInTitle', () => {
   it('extracts Gherkin-style tags', () => {
-    expect(tagsInTitle('logs in @smoke @scenario:login/happy')).toEqual([
+    expect(tagsInTitle('logs in @smoke @scenario:login.happy')).toEqual([
       '@smoke',
-      '@scenario:login/happy',
+      '@scenario:login.happy',
     ]);
   });
 

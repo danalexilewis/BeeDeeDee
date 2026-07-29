@@ -3,7 +3,7 @@ import { createConsoleLogger, createRecordingLogger, createSilentLogger } from '
 import { createMemoryIndexStore, createMemoryIndexStoreWith } from './memory-index-store.js';
 import { createFixedClock, createSystemClock } from './system-clock.js';
 import { emptyIndex } from '../application/behavior-index.js';
-import { createTestProject } from '../testing/fakes.js';
+import { createTestProject } from '../testing/index.js';
 
 const AT = '2026-01-01T00:00:00.000Z';
 

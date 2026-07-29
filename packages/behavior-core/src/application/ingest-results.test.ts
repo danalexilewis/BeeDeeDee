@@ -5,7 +5,7 @@ import { createMemoryIndexStore } from '../adapters/memory-index-store.js';
 import { createFixedClock } from '../adapters/system-clock.js';
 import type { ClockPort } from '../ports/clock.js';
 import type { IndexStorePort } from '../ports/index-store.js';
-import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/fakes.js';
+import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/index.js';
 import { indexBehaviorSpecs } from './index-specs.js';
 import { ingestTestResults } from './ingest-results.js';
 import { getScenario } from './queries.js';
@@ -13,7 +13,7 @@ import { getScenario } from './queries.js';
 let indexStore: IndexStorePort;
 let clock: ClockPort;
 
-const SCENARIO = 'login/successful-login';
+const SCENARIO = 'login.successful-login';
 const TEST_FILE = 'tests/e2e/login.spec.ts';
 const TEST_ID = `${TEST_FILE}:3`;
 

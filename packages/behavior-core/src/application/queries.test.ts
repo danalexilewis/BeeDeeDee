@@ -3,7 +3,7 @@ import { createRecordingLogger } from '../adapters/logger.js';
 import { createMemoryIndexStore } from '../adapters/memory-index-store.js';
 import { createFixedClock } from '../adapters/system-clock.js';
 import type { IndexStorePort } from '../ports/index-store.js';
-import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/fakes.js';
+import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/index.js';
 import { indexBehaviorSpecs } from './index-specs.js';
 import {
   getCatalog,
@@ -113,7 +113,7 @@ describe('getFeature', () => {
 
 describe('getScenario', () => {
   it('returns a scenario with its feature context', () => {
-    const scenario = getScenario({ indexStore }, 'login/successful-login')._unsafeUnwrap();
+    const scenario = getScenario({ indexStore }, 'login.successful-login')._unsafeUnwrap();
     expect(scenario.name).toBe('Successful login');
     expect(scenario.featureId).toBe('login');
     expect(scenario.featurePath).toBe('specs/features/login.feature');
@@ -125,7 +125,7 @@ describe('getScenario', () => {
   });
 
   it('reports not-run status before any results arrive', () => {
-    const scenario = getScenario({ indexStore }, 'login/successful-login')._unsafeUnwrap();
+    const scenario = getScenario({ indexStore }, 'login.successful-login')._unsafeUnwrap();
     expect(scenario.status.overall).toBe('not-run');
     expect(scenario.status.lastRun).toBeNull();
   });
@@ -146,8 +146,8 @@ describe('getDiagram', () => {
 
 describe('getTestStatus', () => {
   it('returns aggregated status for a known scenario', () => {
-    const status = getTestStatus({ indexStore }, 'login/successful-login')._unsafeUnwrap();
-    expect(status.scenarioId).toBe('login/successful-login');
+    const status = getTestStatus({ indexStore }, 'login.successful-login')._unsafeUnwrap();
+    expect(status.scenarioId).toBe('login.successful-login');
     expect(status.overall).toBe('not-run');
   });
 

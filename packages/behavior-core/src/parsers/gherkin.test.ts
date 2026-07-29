@@ -34,7 +34,7 @@ describe('parseGherkinContent', () => {
     expect(doc.scenarios).toHaveLength(1);
 
     const scenario = doc.scenarios[0]!;
-    expect(scenario.id).toBe('login/successful-login');
+    expect(scenario.id).toBe('login.successful-login');
     expect(scenario.line).toBe(5);
     expect(scenario.steps.map(s => s.text)).toEqual([
       'a registered user',
@@ -47,7 +47,7 @@ describe('parseGherkinContent', () => {
 
   it('scopes step ids to their scenario', () => {
     const doc = parse(SIMPLE)._unsafeUnwrap();
-    expect(doc.scenarios[0]!.steps[0]!.id).toBe('login/successful-login#step-1');
+    expect(doc.scenarios[0]!.steps[0]!.id).toBe('login.successful-login#step-1');
   });
 
   it('preserves the original source', () => {
@@ -140,7 +140,7 @@ describe('parseGherkinContent', () => {
 
     expect(doc.rules).toHaveLength(1);
     expect(doc.rules[0]!.name).toBe('Only admins may delete');
-    expect(doc.rules[0]!.scenarioIds).toEqual(['login/admin-deletes', 'login/user-cannot-delete']);
+    expect(doc.rules[0]!.scenarioIds).toEqual(['login.admin-deletes', 'login.user-cannot-delete']);
     expect(doc.scenarios.every(s => s.ruleName === 'Only admins may delete')).toBe(true);
   });
 
@@ -152,13 +152,13 @@ describe('parseGherkinContent', () => {
     Given y
 `)._unsafeUnwrap();
 
-    expect(doc.scenarios.map(s => s.id)).toEqual(['login/retry', 'login/retry-2']);
+    expect(doc.scenarios.map(s => s.id)).toEqual(['login.retry', 'login.retry-2']);
   });
 
   it('derives a nested feature id from the path', () => {
     const doc = parse(SIMPLE, 'specs/features/auth/login.feature')._unsafeUnwrap();
-    expect(doc.featureId).toBe('auth/login');
-    expect(doc.scenarios[0]!.id).toBe('auth/login/successful-login');
+    expect(doc.featureId).toBe('auth.login');
+    expect(doc.scenarios[0]!.id).toBe('auth.login.successful-login');
   });
 
   it('handles a feature with no scenarios', () => {

@@ -25,7 +25,7 @@ function aStep(overrides: Partial<Record<string, unknown>> = {}) {
 
 function aTestStatus() {
   return {
-    scenarioId: 'login/happy-path',
+    scenarioId: 'login.happy-path',
     overall: 'pass' as const,
     results: [
       {
@@ -46,7 +46,7 @@ function aTestStatus() {
 
 function aScenarioDetail() {
   return {
-    id: 'login/happy-path',
+    id: 'login.happy-path',
     name: 'Successful login',
     description: '',
     steps: [aStep()],
@@ -161,7 +161,7 @@ describe('diagramLinkSchema', () => {
 describe('testStatusSchema', () => {
   it('allows a null lastRun for a scenario that never ran', () => {
     const result = testStatusSchema.safeParse({
-      scenarioId: 'login/happy-path',
+      scenarioId: 'login.happy-path',
       overall: 'not-run',
       results: [],
       lastRun: null,
@@ -265,15 +265,28 @@ describe('featureFilterSchema', () => {
     expect(featureFilterSchema.parse({})).toEqual({});
   });
 
-  it('normalises a single tag into an array', () => {
+  it('splits a single tag into a one-element list', () => {
     expect(featureFilterSchema.parse({ tags: 'auth' }).tags).toEqual(['auth']);
   });
 
-  it('keeps repeated tags as an array', () => {
-    expect(featureFilterSchema.parse({ tags: ['auth', 'billing'] }).tags).toEqual([
+  it('splits a comma-separated tag list', () => {
+    expect(featureFilterSchema.parse({ tags: 'auth,billing' }).tags).toEqual(['auth', 'billing']);
+  });
+
+  it('trims whitespace around tags', () => {
+    expect(featureFilterSchema.parse({ tags: ' auth , billing ' }).tags).toEqual([
       'auth',
       'billing',
     ]);
+  });
+
+  it('treats an empty or comma-only value as no filter', () => {
+    expect(featureFilterSchema.parse({ tags: '' }).tags).toBeUndefined();
+    expect(featureFilterSchema.parse({ tags: ',,' }).tags).toBeUndefined();
+  });
+
+  it('rejects an array, since the wire format is a single string', () => {
+    expect(featureFilterSchema.safeParse({ tags: ['auth'] }).success).toBe(false);
   });
 
   it('coerces numeric coverage bounds from query strings', () => {

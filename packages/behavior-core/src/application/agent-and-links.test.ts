@@ -4,7 +4,7 @@ import { createMemoryIndexStore } from '../adapters/memory-index-store.js';
 import { createFixedClock } from '../adapters/system-clock.js';
 import type { FileSystemPort } from '../ports/file-system.js';
 import type { IndexStorePort } from '../ports/index-store.js';
-import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/fakes.js';
+import { createFakeFileSystem, createTestFiles, createTestProject } from '../testing/index.js';
 import { generateAgentContext } from './agent-context.js';
 import { generateEditorLinks } from './editor-links.js';
 import { indexBehaviorSpecs } from './index-specs.js';
@@ -14,7 +14,7 @@ import { conventionsFrom, lintSpecs, validateGherkin } from './lint-and-validate
 let indexStore: IndexStorePort;
 let fileSystem: FileSystemPort;
 
-const SCENARIO = 'login/successful-login';
+const SCENARIO = 'login.successful-login';
 
 beforeEach(async () => {
   indexStore = createMemoryIndexStore();
@@ -36,7 +36,7 @@ describe('generateAgentContext', () => {
 
   it('ranks same-feature scenarios ahead of others', () => {
     const context = generateAgentContext({ indexStore }, SCENARIO)._unsafeUnwrap();
-    expect(context.relatedScenarios[0]!.id).toBe('login/locked-account');
+    expect(context.relatedScenarios[0]!.id).toBe('login.locked-account');
   });
 
   it('includes a code reference to the Gherkin and to each linked test', () => {
@@ -48,7 +48,7 @@ describe('generateAgentContext', () => {
   it('suggests writing a test for an untested scenario', () => {
     const context = generateAgentContext(
       { indexStore },
-      'billing/invoice-generated'
+      'billing.invoice-generated'
     )._unsafeUnwrap();
     expect(context.suggestedActions.some(a => a.type === 'generate-test')).toBe(true);
   });

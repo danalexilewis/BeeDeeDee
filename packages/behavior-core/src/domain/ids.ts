@@ -3,6 +3,17 @@
  * and titles so that re-indexing an unchanged project yields an identical index.
  */
 
+/**
+ * Separates the levels of a hierarchical id, e.g. `auth.login.happy-path`.
+ *
+ * A dot rather than a slash, because ids travel as URL path segments in the API,
+ * the SPA's routes, and MCP resource URIs. A slash would need encoding at every
+ * one of those boundaries and would silently 404 wherever it was forgotten.
+ * `slugify` collapses every non-alphanumeric character to a hyphen, so a dot can
+ * only ever be a separator we introduced.
+ */
+export const ID_SEPARATOR = '.';
+
 /** Normalises text into a URL and filename safe slug. */
 export function slugify(text: string): string {
   return text
@@ -30,7 +41,7 @@ function stripRoot(filePath: string, root: string): string {
 
 /**
  * Derives a feature id from its file path, relative to the features root.
- * `specs/features/auth/login.feature` under `specs/features` becomes `auth/login`.
+ * `specs/features/auth/login.feature` under `specs/features` becomes `auth.login`.
  */
 export function featureIdFromPath(featuresRoot: string, filePath: string): string {
   const relative = stripRoot(filePath, featuresRoot).replace(/\.feature$/i, '');
@@ -43,7 +54,7 @@ export function featureIdFromPath(featuresRoot: string, filePath: string): strin
     .filter(function isNotEmpty(segment) {
       return segment.length > 0;
     })
-    .join('/');
+    .join(ID_SEPARATOR);
 }
 
 /** Derives a diagram id from its file path, relative to the diagrams root. */
@@ -58,18 +69,18 @@ export function diagramIdFromPath(diagramsRoot: string, filePath: string): strin
     .filter(function isNotEmpty(segment) {
       return segment.length > 0;
     })
-    .join('/');
+    .join(ID_SEPARATOR);
 }
 
 /**
- * Builds a scenario id as `featureId/scenario-slug`. Scenarios with duplicate
+ * Builds a scenario id as `featureId.scenario-slug`. Scenarios with duplicate
  * names within a feature are disambiguated by their one-based ordinal, so ids
  * stay stable as long as scenario order does.
  */
 export function scenarioIdFrom(featureId: string, scenarioName: string, ordinal: number): string {
   const slug = slugify(scenarioName);
   const base = slug.length > 0 ? slug : `scenario-${ordinal}`;
-  return `${featureId}/${base}`;
+  return `${featureId}${ID_SEPARATOR}${base}`;
 }
 
 /**

@@ -9,7 +9,7 @@ import {
 
 function scenario(overrides: Partial<MatchableScenario> = {}): MatchableScenario {
   return {
-    id: 'login/successful-login',
+    id: 'login.successful-login',
     name: 'Successful login',
     featureTitle: 'User authentication',
     tags: ['@smoke'],
@@ -31,7 +31,7 @@ function test(overrides: Partial<MatchableTest> = {}): MatchableTest {
 
 describe('explicitScenarioId', () => {
   it('reads an id from a scenario tag', () => {
-    expect(explicitScenarioId(test({ tags: ['@scenario:login/happy'] }))).toBe('login/happy');
+    expect(explicitScenarioId(test({ tags: ['@scenario:login.happy'] }))).toBe('login.happy');
   });
 
   it('ignores unrelated tags', () => {
@@ -43,7 +43,7 @@ describe('explicitScenarioId', () => {
   });
 
   it('tolerates a missing @ prefix', () => {
-    expect(explicitScenarioId(test({ tags: ['scenario:login/happy'] }))).toBe('login/happy');
+    expect(explicitScenarioId(test({ tags: ['scenario:login.happy'] }))).toBe('login.happy');
   });
 });
 
@@ -51,7 +51,7 @@ describe('scoreMatch', () => {
   it('gives full confidence to an explicit tag', () => {
     const match = scoreMatch(
       scenario(),
-      test({ name: 'totally different', tags: ['@scenario:login/successful-login'] })
+      test({ name: 'totally different', tags: ['@scenario:login.successful-login'] })
     );
     expect(match).toEqual({ confidence: 1, reason: 'explicit-tag' });
   });
@@ -92,7 +92,7 @@ describe('scoreMatch', () => {
 describe('matchTestsToScenarios', () => {
   it('links a matching test to its scenario', () => {
     const result = matchTestsToScenarios([scenario()], [test()]);
-    expect(result.linksByScenario.get('login/successful-login')).toHaveLength(1);
+    expect(result.linksByScenario.get('login.successful-login')).toHaveLength(1);
     expect(result.unmatchedTestIds).toEqual([]);
   });
 
@@ -104,8 +104,8 @@ describe('matchTestsToScenarios', () => {
 
   it('assigns each test to only its best scenario', () => {
     const scenarios = [
-      scenario({ id: 'login/a', name: 'Successful login' }),
-      scenario({ id: 'login/b', name: 'Successful login attempt from mobile' }),
+      scenario({ id: 'login.a', name: 'Successful login' }),
+      scenario({ id: 'login.b', name: 'Successful login attempt from mobile' }),
     ];
     const result = matchTestsToScenarios(scenarios, [test({ name: 'Successful login' })]);
 
@@ -113,7 +113,7 @@ describe('matchTestsToScenarios', () => {
       return count + links.length;
     }, 0);
     expect(totalLinks).toBe(1);
-    expect(result.linksByScenario.get('login/a')).toHaveLength(1);
+    expect(result.linksByScenario.get('login.a')).toHaveLength(1);
   });
 
   it('links several tests to one scenario', () => {
@@ -124,13 +124,13 @@ describe('matchTestsToScenarios', () => {
         test({ testId: 'b:2', line: 2, name: 'Successful login again' }),
       ]
     );
-    expect(result.linksByScenario.get('login/successful-login')).toHaveLength(2);
+    expect(result.linksByScenario.get('login.successful-login')).toHaveLength(2);
   });
 
   it('builds a reverse lookup from test id to scenario', () => {
     const result = matchTestsToScenarios([scenario()], [test()]);
     expect(result.scenarioByTestId.get('tests/e2e/login.spec.ts:12')).toBe(
-      'login/successful-login'
+      'login.successful-login'
     );
   });
 
@@ -143,7 +143,7 @@ describe('matchTestsToScenarios', () => {
 
   it('marks new links as not-run until results arrive', () => {
     const result = matchTestsToScenarios([scenario()], [test()]);
-    expect(result.linksByScenario.get('login/successful-login')?.[0]?.status).toBe('not-run');
+    expect(result.linksByScenario.get('login.successful-login')?.[0]?.status).toBe('not-run');
   });
 
   it('produces the same links regardless of test order', () => {
@@ -153,8 +153,8 @@ describe('matchTestsToScenarios', () => {
     ];
     const forward = matchTestsToScenarios([scenario()], tests);
     const reverse = matchTestsToScenarios([scenario()], [...tests].reverse());
-    expect(reverse.linksByScenario.get('login/successful-login')).toEqual(
-      forward.linksByScenario.get('login/successful-login')
+    expect(reverse.linksByScenario.get('login.successful-login')).toEqual(
+      forward.linksByScenario.get('login.successful-login')
     );
   });
 

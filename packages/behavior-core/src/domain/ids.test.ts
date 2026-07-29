@@ -32,15 +32,15 @@ describe('featureIdFromPath', () => {
     expect(featureIdFromPath('specs/features', 'specs/features/login.feature')).toBe('login');
   });
 
-  it('preserves nesting as path segments', () => {
+  it('joins nested directories with the id separator, not a slash', () => {
     expect(featureIdFromPath('specs/features', 'specs/features/auth/login.feature')).toBe(
-      'auth/login'
+      'auth.login'
     );
   });
 
   it('normalises Windows separators', () => {
     expect(featureIdFromPath('specs\\features', 'specs\\features\\auth\\login.feature')).toBe(
-      'auth/login'
+      'auth.login'
     );
   });
 
@@ -54,7 +54,7 @@ describe('featureIdFromPath', () => {
 
   it('slugifies segments that are not already slugs', () => {
     expect(featureIdFromPath('specs/features', 'specs/features/User Auth/Log In.feature')).toBe(
-      'user-auth/log-in'
+      'user-auth.log-in'
     );
   });
 
@@ -63,7 +63,7 @@ describe('featureIdFromPath', () => {
   });
 
   it('falls back to the whole path when the root does not match', () => {
-    expect(featureIdFromPath('specs/features', 'elsewhere/login.feature')).toBe('elsewhere/login');
+    expect(featureIdFromPath('specs/features', 'elsewhere/login.feature')).toBe('elsewhere.login');
   });
 });
 
@@ -71,7 +71,7 @@ describe('diagramIdFromPath', () => {
   it.each([
     ['specs/diagrams/auth.mmd', 'auth'],
     ['specs/diagrams/auth.mermaid', 'auth'],
-    ['specs/diagrams/flows/auth.puml', 'flows/auth'],
+    ['specs/diagrams/flows/auth.puml', 'flows.auth'],
     ['specs/diagrams/auth.drawio', 'auth'],
   ])('derives an id from %o', (path, expected) => {
     expect(diagramIdFromPath('specs/diagrams', path)).toBe(expected);
@@ -80,27 +80,27 @@ describe('diagramIdFromPath', () => {
 
 describe('scenarioIdFrom', () => {
   it('joins the feature id and the scenario slug', () => {
-    expect(scenarioIdFrom('login', 'Successful login', 1)).toBe('login/successful-login');
+    expect(scenarioIdFrom('login', 'Successful login', 1)).toBe('login.successful-login');
   });
 
   it('falls back to the ordinal when the name yields no slug', () => {
-    expect(scenarioIdFrom('login', '???', 3)).toBe('login/scenario-3');
+    expect(scenarioIdFrom('login', '???', 3)).toBe('login.scenario-3');
   });
 });
 
 describe('assignScenarioIds', () => {
   it('leaves distinct names untouched', () => {
     expect(assignScenarioIds('login', ['Happy path', 'Locked account'])).toEqual([
-      'login/happy-path',
-      'login/locked-account',
+      'login.happy-path',
+      'login.locked-account',
     ]);
   });
 
   it('disambiguates duplicate names by ordinal suffix', () => {
     expect(assignScenarioIds('login', ['Retry', 'Retry', 'Retry'])).toEqual([
-      'login/retry',
-      'login/retry-2',
-      'login/retry-3',
+      'login.retry',
+      'login.retry-2',
+      'login.retry-3',
     ]);
   });
 
@@ -111,6 +111,29 @@ describe('assignScenarioIds', () => {
 
   it('returns an empty array for a feature with no scenarios', () => {
     expect(assignScenarioIds('login', [])).toEqual([]);
+  });
+});
+
+describe('ids are safe to use as URL path segments', () => {
+  const samples = [
+    featureIdFromPath('specs/features', 'specs/features/auth/deep/nested/login.feature'),
+    featureIdFromPath('specs/features', 'specs/features/User Auth/Log In.feature'),
+    diagramIdFromPath('specs/diagrams', 'specs/diagrams/flows/auth.mmd'),
+    ...assignScenarioIds('auth.login', [
+      'Successful login',
+      'Successful login',
+      'Payment (declined)',
+    ]),
+  ];
+
+  it.each(samples)('leaves %o unchanged by URI encoding', id => {
+    // Ids travel as path segments in the API, the SPA routes, and MCP resource
+    // URIs. Anything needing encoding would 404 wherever encoding was forgotten.
+    expect(encodeURIComponent(id)).toBe(id);
+  });
+
+  it.each(samples)('keeps %o free of slashes', id => {
+    expect(id).not.toContain('/');
   });
 });
 
@@ -126,6 +149,6 @@ describe('testIdFrom', () => {
 
 describe('stepIdFrom', () => {
   it('numbers steps from one', () => {
-    expect(stepIdFrom('login/happy-path', 0)).toBe('login/happy-path#step-1');
+    expect(stepIdFrom('login.happy-path', 0)).toBe('login.happy-path#step-1');
   });
 });
