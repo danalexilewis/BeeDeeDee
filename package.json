@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,yml}\"",
-    "e2e": "playwright test",
+    "e2e": "playwright test -c e2e/playwright.config.ts",
     "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo coverage"
   },
   "devDependencies": {

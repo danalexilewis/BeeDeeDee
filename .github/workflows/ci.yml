@@ -46,8 +46,6 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    # The suite lands in Phase 9; skip cleanly until specs exist.
-    if: ${{ hashFiles('e2e/**/*.spec.ts') != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,6 +62,7 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
+      # The suite serves the built SPA from the built CLI, so both must exist.
       - name: Build
         run: pnpm build
 

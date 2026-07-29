@@ -1,0 +1,10 @@
+---
+title: Invoicing lifecycle
+---
+flowchart LR
+  subscription[Active subscription] --> billing[Billing date]
+  billing --> invoice[Invoice generated]
+  invoice --> email[Email to subscriber]
+  invoice --> payment{Payment succeeds}
+  payment -->|no| retry[Retry window]
+  retry --> payment

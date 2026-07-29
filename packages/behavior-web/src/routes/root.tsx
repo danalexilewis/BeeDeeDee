@@ -20,8 +20,13 @@ function useWorkbenchEvents(): { connected: boolean; problem: string | undefined
 
   useEffect(
     function subscribe() {
-      const unsubscribe = subscribeToWorkbenchEvents(
-        function onEvent(event) {
+      return subscribeToWorkbenchEvents({
+        onOpen() {
+          setConnected(true);
+          setProblem(undefined);
+        },
+
+        onEvent(event) {
           setConnected(true);
           setProblem(undefined);
 
@@ -43,13 +48,12 @@ function useWorkbenchEvents(): { connected: boolean; problem: string | undefined
 
           setProblem(event.error.message);
         },
-        function onError(reason) {
+
+        onError(reason) {
           setConnected(false);
           setProblem(reason);
-        }
-      );
-
-      return unsubscribe;
+        },
+      });
     },
     [queryClient]
   );
