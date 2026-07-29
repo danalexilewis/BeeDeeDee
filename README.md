@@ -201,6 +201,10 @@ pnpm e2e            # Playwright against the built SPA served by the built CLI
 
 `pnpm e2e` needs Chromium: `pnpm exec playwright install chromium`.
 
+Spec authoring skill (explicit `@eng-bee-dee-dee`): lives in
+[`.cursor/skills/eng-bee-dee-dee`](.cursor/skills/eng-bee-dee-dee); install globally with
+`bash .cursor/skills/eng-bee-dee-dee/scripts/install-global.sh`.
+
 ### Testing layers
 
 - **Unit** — colocated `*.test.ts`. Domain functions are pure, so these need no mocking.
