@@ -1,0 +1,236 @@
+import type { IndexProblem, ProjectMetadata } from '@eddy/behavior-contracts';
+import { ResultAsync, type Result } from 'neverthrow';
+import { linkDiagramsToScenario, type RelevanceDiagram } from '../domain/relevance.js';
+import { matchTestsToScenarios, type MatchableScenario } from '../domain/matching.js';
+import { partitionResults, toErrorBody, type BehaviorError } from '../errors.js';
+import {
+  parseAllGherkin,
+  parseAllMermaid,
+  parseAllTestFiles,
+  type SourceFile,
+} from '../parsers/batch.js';
+import type { ClockPort } from '../ports/clock.js';
+import type { FileSystemPort } from '../ports/file-system.js';
+import type { LoggerPort } from '../ports/logger.js';
+import {
+  emptyIndex,
+  type BehaviorIndex,
+  type IndexedFeature,
+  type IndexedScenario,
+} from './behavior-index.js';
+
+const FEATURE_EXTENSIONS = ['.feature'] as const;
+const DIAGRAM_EXTENSIONS = ['.mmd', '.mermaid'] as const;
+const TEST_EXTENSIONS = ['.spec.ts', '.spec.tsx', '.test.ts', '.test.tsx', '.spec.js', '.test.js'];
+
+export type IndexDeps = {
+  fileSystem: FileSystemPort;
+  clock: ClockPort;
+  logger: LoggerPort;
+};
+
+export type IndexSpecsInput = {
+  project: ProjectMetadata;
+};
+
+/** Reads every path, keeping the files that could be read. */
+function readAll(
+  fileSystem: FileSystemPort,
+  paths: readonly string[]
+): ResultAsync<{ values: SourceFile[]; errors: BehaviorError[] }, BehaviorError> {
+  return ResultAsync.fromSafePromise(
+    Promise.all(
+      paths.map(async function readOne(path): Promise<Result<SourceFile, BehaviorError>> {
+        const result = await fileSystem.readFile(path);
+        return result.map(function toFile(content) {
+          return { path, content };
+        });
+      })
+    )
+  ).map(partitionResults);
+}
+
+/** Lists files across several directories, tolerating absent ones. */
+function listAcross(
+  fileSystem: FileSystemPort,
+  directories: readonly string[],
+  extensions: readonly string[]
+): ResultAsync<string[], BehaviorError> {
+  return ResultAsync.combine(
+    directories.map(function listOne(directory) {
+      return fileSystem.listFiles(directory, extensions);
+    })
+  ).map(function flatten(groups) {
+    return [...new Set(groups.flat())].sort();
+  });
+}
+
+/** Converts a batch of errors into the index's problem list. */
+function toProblems(errors: readonly BehaviorError[]): IndexProblem[] {
+  return errors.map(function toProblem(error): IndexProblem {
+    const body = toErrorBody(error);
+    const path = typeof body.details?.['path'] === 'string' ? body.details['path'] : 'unknown';
+    return { path, error: body };
+  });
+}
+
+/**
+ * Scans the project and builds the behavior index.
+ *
+ * Never fails on a single bad file: parse failures land in `problems` with their
+ * line numbers while everything else is indexed, which is what Requirement 1.5
+ * asks for. The whole scan only fails if a spec directory cannot be listed at
+ * all, since that means the project configuration is wrong.
+ */
+export function indexBehaviorSpecs(
+  deps: IndexDeps,
+  input: IndexSpecsInput
+): ResultAsync<BehaviorIndex, BehaviorError> {
+  const { fileSystem, clock, logger } = deps;
+  const { project } = input;
+  const startedAt = clock.monotonicMs();
+
+  const testDirectories = [
+    project.testPaths.e2e,
+    project.testPaths.components,
+    ...(project.testPaths.unit === undefined ? [] : [project.testPaths.unit]),
+  ];
+
+  return ResultAsync.combine([
+    fileSystem.listFiles(project.specPaths.features, FEATURE_EXTENSIONS),
+    fileSystem.listFiles(project.specPaths.diagrams, DIAGRAM_EXTENSIONS),
+    listAcross(fileSystem, testDirectories, TEST_EXTENSIONS),
+  ])
+    .andThen(function readEverything([featurePaths, diagramPaths, testPaths]) {
+      return ResultAsync.combine([
+        readAll(fileSystem, featurePaths),
+        readAll(fileSystem, diagramPaths),
+        readAll(fileSystem, testPaths),
+      ]).map(function withCounts(batches) {
+        return { batches, testFileCount: testPaths.length };
+      });
+    })
+    .map(function build({ batches, testFileCount }) {
+      const [featureFiles, diagramFiles, testFiles] = batches;
+
+      const features = parseAllGherkin(featureFiles.values, project.specPaths.features);
+      const diagrams = parseAllMermaid(diagramFiles.values, project.specPaths.diagrams);
+      const tests = parseAllTestFiles(testFiles.values);
+
+      const index = emptyIndex(project, clock.nowIso());
+      index.testFileCount = testFileCount;
+      index.problems = toProblems([
+        ...featureFiles.errors,
+        ...diagramFiles.errors,
+        ...testFiles.errors,
+        ...features.errors,
+        ...diagrams.errors,
+        ...tests.errors,
+      ]);
+
+      for (const diagram of diagrams.values) {
+        index.diagrams.set(diagram.id, diagram);
+      }
+
+      const relevanceDiagrams: RelevanceDiagram[] = diagrams.values.map(
+        function toRelevance(diagram) {
+          return {
+            id: diagram.id,
+            type: diagram.type,
+            path: diagram.path,
+            title: diagram.title,
+            content: diagram.content,
+          };
+        }
+      );
+
+      const matchableScenarios: MatchableScenario[] = [];
+
+      for (const document of features.values) {
+        const indexedFeature: IndexedFeature = {
+          id: document.featureId,
+          title: document.title,
+          description: document.description,
+          path: document.path,
+          tags: document.tags,
+          line: document.line,
+          rules: document.rules,
+          scenarioIds: document.scenarios.map(function toId(scenario) {
+            return scenario.id;
+          }),
+          diagramLinks: [],
+          source: document.source,
+        };
+        if (document.background !== undefined) indexedFeature.background = document.background;
+
+        const featureDiagramIds = new Set<string>();
+
+        for (const scenario of document.scenarios) {
+          const diagramLinks = linkDiagramsToScenario(
+            {
+              name: scenario.name,
+              featureTitle: document.title,
+              tags: scenario.tags,
+              stepTexts: scenario.steps.map(function toText(step) {
+                return step.text;
+              }),
+            },
+            relevanceDiagrams
+          );
+
+          for (const link of diagramLinks) featureDiagramIds.add(link.diagramId);
+
+          const indexedScenario: IndexedScenario = {
+            ...scenario,
+            featureId: document.featureId,
+            featureTitle: document.title,
+            featurePath: document.path,
+            diagramLinks,
+          };
+
+          index.scenarios.set(scenario.id, indexedScenario);
+          matchableScenarios.push({
+            id: scenario.id,
+            name: scenario.name,
+            featureTitle: document.title,
+            tags: scenario.tags,
+          });
+        }
+
+        // Feature-level diagram links are the union of its scenarios', kept in a
+        // stable order so repeated indexing produces an identical index.
+        indexedFeature.diagramLinks = [...featureDiagramIds]
+          .sort()
+          .flatMap(function toLink(diagramId) {
+            for (const scenarioId of indexedFeature.scenarioIds) {
+              const link = index.scenarios
+                .get(scenarioId)
+                ?.diagramLinks.find(function matches(candidate) {
+                  return candidate.diagramId === diagramId;
+                });
+              if (link !== undefined) return [link];
+            }
+            return [];
+          });
+
+        index.features.set(document.featureId, indexedFeature);
+      }
+
+      const matches = matchTestsToScenarios(matchableScenarios, tests.values);
+      index.testLinks = matches.linksByScenario;
+      index.scenarioByTestId = matches.scenarioByTestId;
+
+      index.durationMs = Math.max(0, clock.monotonicMs() - startedAt);
+
+      logger.info('Indexed behavior specs', {
+        features: index.features.size,
+        scenarios: index.scenarios.size,
+        diagrams: index.diagrams.size,
+        testFiles: index.testFileCount,
+        problems: index.problems.length,
+        durationMs: index.durationMs,
+      });
+
+      return index;
+    });
+}

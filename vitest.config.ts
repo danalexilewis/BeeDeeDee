@@ -59,6 +59,9 @@ export default defineConfig({
         'packages/*/src/**/*.test.ts',
         'packages/*/src/**/*.prop.test.ts',
         'packages/*/src/index.ts',
+        // Test doubles and fixture builders are test infrastructure, not shipped
+        // logic, so counting them would dilute the figure they help produce.
+        'packages/*/src/testing/**',
         'packages/test-support/**',
       ],
       thresholds: {
