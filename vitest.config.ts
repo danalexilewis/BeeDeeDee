@@ -69,9 +69,14 @@ export default defineConfig({
         'packages/*/src/**/*.test.ts',
         'packages/*/src/**/*.prop.test.ts',
         'packages/*/src/index.ts',
-        // Test doubles and fixture builders are test infrastructure, not shipped
-        // logic, so counting them would dilute the figure they help produce.
+        // Test doubles, fixtures, and harnesses are test infrastructure rather
+        // than shipped logic, so counting them would dilute the figure they help
+        // produce.
         'packages/*/src/testing/**',
+        'packages/*/src/test/**',
+        // Exercised by cli.integration.test.ts, which spawns the built binary;
+        // v8 coverage does not follow into a child process.
+        'packages/behavior-cli/src/cli.ts',
         'packages/test-support/**',
       ],
       thresholds: {

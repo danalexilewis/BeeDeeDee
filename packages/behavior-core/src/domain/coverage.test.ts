@@ -22,8 +22,16 @@ function result(status: TestResult['status'], testId = 't1'): TestResult {
   };
 }
 
-function scenario(id: string, results: TestResult[] = []): CoverageScenario {
-  return { id, status: aggregateScenarioStatus(id, results) };
+/**
+ * A scenario with results implies a linked test; `hasLinkedTest` is passed
+ * explicitly so tests can also describe a test that exists but has not run.
+ */
+function scenario(
+  id: string,
+  results: TestResult[] = [],
+  hasLinkedTest = results.length > 0
+): CoverageScenario {
+  return { id, hasLinkedTest, status: aggregateScenarioStatus(id, results) };
 }
 
 function feature(id: string, scenarios: CoverageScenario[]): CoverageFeature {
@@ -70,6 +78,44 @@ describe('aggregateFeatureStatus', () => {
 
   it('is untested for a feature with no scenarios at all', () => {
     expect(aggregateFeatureStatus([])).toBe('untested');
+  });
+});
+
+describe('coverage counts linked tests, not recorded results', () => {
+  it('counts a scenario whose test exists but has never run as covered', () => {
+    // Regression: deriving coverage from results reported a scenario with a
+    // brand-new test as uncovered, hiding the gap coverage exists to show.
+    const coverage = calculateFeatureCoverage(
+      feature('login', [scenario('a', [], true), scenario('b', [], true)])
+    );
+
+    expect(coverage.coverage).toBe(100);
+    expect(coverage.testedScenarios).toBe(2);
+  });
+
+  it('still reports that feature as untested, since nothing has passed yet', () => {
+    // Covered and passing are different claims; a test that never ran earns
+    // neither a pass nor a failure.
+    const coverage = calculateFeatureCoverage(feature('login', [scenario('a', [], true)]));
+    expect(coverage.status).toBe('untested');
+  });
+
+  it('reports a scenario with no test at all as uncovered', () => {
+    const coverage = calculateFeatureCoverage(feature('login', [scenario('a', [], false)]));
+    expect(coverage.coverage).toBe(0);
+    expect(coverage.status).toBe('untested');
+  });
+
+  it('becomes passing once a result arrives', () => {
+    const coverage = calculateFeatureCoverage(feature('login', [scenario('a', [result('pass')])]));
+    expect(coverage.coverage).toBe(100);
+    expect(coverage.status).toBe('passing');
+  });
+
+  it('is failing when a covered scenario failed', () => {
+    const coverage = calculateFeatureCoverage(feature('login', [scenario('a', [result('fail')])]));
+    expect(coverage.coverage).toBe(100);
+    expect(coverage.status).toBe('failing');
   });
 });
 

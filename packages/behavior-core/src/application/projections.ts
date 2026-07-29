@@ -8,11 +8,11 @@ import type {
 } from '@eddy/behavior-contracts';
 import {
   calculateCoverageMetrics,
+  calculateFeatureCoverage,
   countFeatureStatuses,
-  percentage,
   type CoverageFeature,
 } from '../domain/coverage.js';
-import { aggregateScenarioStatus, isTested } from '../domain/status.js';
+import { aggregateScenarioStatus } from '../domain/status.js';
 import {
   resultsFor,
   testLinksFor,
@@ -34,13 +34,22 @@ export function statusOf(index: BehaviorIndex, scenarioId: string): TestStatus {
   return aggregateScenarioStatus(scenarioId, resultsFor(index, scenarioId));
 }
 
+/** Coverage-shaped view of one scenario. */
+function toCoverageScenario(index: BehaviorIndex, scenarioId: string) {
+  return {
+    id: scenarioId,
+    hasLinkedTest: testLinksFor(index, scenarioId).length > 0,
+    status: statusOf(index, scenarioId),
+  };
+}
+
 /** Coverage-shaped view of a feature, for the coverage calculations. */
 function toCoverageFeature(index: BehaviorIndex, feature: IndexedFeature): CoverageFeature {
   return {
     id: feature.id,
     title: feature.title,
     scenarios: feature.scenarioIds.map(function toScenario(scenarioId) {
-      return { id: scenarioId, status: statusOf(index, scenarioId) };
+      return toCoverageScenario(index, scenarioId);
     }),
   };
 }
@@ -88,17 +97,7 @@ export function toScenarioDetail(index: BehaviorIndex, scenario: IndexedScenario
 
 /** Projects a feature onto its summary shape. */
 export function toFeatureSummary(index: BehaviorIndex, feature: IndexedFeature): FeatureSummary {
-  const scenarios = feature.scenarioIds.map(function toScenario(scenarioId) {
-    return { id: scenarioId, status: statusOf(index, scenarioId) };
-  });
-
-  const tested = scenarios.filter(function hasTests(scenario) {
-    return isTested(scenario.status);
-  }).length;
-
-  const failing = scenarios.some(function isFailing(scenario) {
-    return scenario.status.overall === 'fail';
-  });
+  const coverage = calculateFeatureCoverage(toCoverageFeature(index, feature));
 
   return {
     id: feature.id,
@@ -106,9 +105,9 @@ export function toFeatureSummary(index: BehaviorIndex, feature: IndexedFeature):
     description: feature.description,
     path: feature.path,
     tags: feature.tags,
-    scenarioCount: scenarios.length,
-    testCoverage: percentage(tested, scenarios.length),
-    status: failing ? 'failing' : tested === 0 ? 'untested' : 'passing',
+    scenarioCount: coverage.totalScenarios,
+    testCoverage: coverage.coverage,
+    status: coverage.status,
     lastUpdated: index.indexedAt,
   };
 }

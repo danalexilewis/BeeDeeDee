@@ -89,8 +89,14 @@ export function aggregateScenarioStatus(
   };
 }
 
-/** True when a scenario has at least one linked test, regardless of outcome. */
-export function isTested(status: TestStatus): boolean {
+/**
+ * True when at least one result has been recorded for the scenario.
+ *
+ * Distinct from having a linked test: a test can exist without having run. Use
+ * this to ask "did anything run", and a scenario's test-link count to ask "is
+ * this covered".
+ */
+export function hasResults(status: TestStatus): boolean {
   return status.results.length > 0;
 }
 

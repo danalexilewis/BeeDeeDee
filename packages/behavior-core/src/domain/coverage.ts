@@ -4,11 +4,18 @@ import type {
   FeatureStatus,
   TestStatus,
 } from '@eddy/behavior-contracts';
-import { isTested } from './status.js';
 
 /** The coverage-relevant slice of a scenario. */
 export type CoverageScenario = {
   id: string;
+  /**
+   * Whether any test is linked to this scenario.
+   *
+   * Coverage asks whether a test exists, not whether it has run. Deriving this
+   * from recorded results instead would report a scenario with a brand-new test
+   * as uncovered, hiding the very gap coverage exists to show.
+   */
+  hasLinkedTest: boolean;
   status: TestStatus;
 };
 
@@ -28,9 +35,10 @@ export function percentage(part: number, whole: number): number {
 /**
  * Rolls scenario statuses up into a feature status.
  *
- * Any failing scenario makes the feature failing. A feature with no tested
- * scenarios is untested. Otherwise it is passing, even when some scenarios remain
- * untested, since coverage reports that gap separately.
+ * Any failing scenario makes the feature failing. A feature is passing only once
+ * something has actually passed, so a feature whose tests exist but have never
+ * run reads as untested rather than claiming success it has not earned. Coverage
+ * reports the existence of tests separately.
  */
 export function aggregateFeatureStatus(scenarios: readonly CoverageScenario[]): FeatureStatus {
   if (
@@ -41,18 +49,18 @@ export function aggregateFeatureStatus(scenarios: readonly CoverageScenario[]): 
     return 'failing';
   }
 
-  const tested = scenarios.filter(function hasTests(scenario) {
-    return isTested(scenario.status);
+  const anyPassed = scenarios.some(function isPassing(scenario) {
+    return scenario.status.overall === 'pass';
   });
 
-  return tested.length === 0 ? 'untested' : 'passing';
+  return anyPassed ? 'passing' : 'untested';
 }
 
 /** Coverage for a single feature. */
 export function calculateFeatureCoverage(feature: CoverageFeature): FeatureCoverage {
   const totalScenarios = feature.scenarios.length;
-  const testedScenarios = feature.scenarios.filter(function hasTests(scenario) {
-    return isTested(scenario.status);
+  const testedScenarios = feature.scenarios.filter(function isCovered(scenario) {
+    return scenario.hasLinkedTest;
   }).length;
 
   return {

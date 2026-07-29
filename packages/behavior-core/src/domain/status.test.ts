@@ -4,7 +4,7 @@ import {
   aggregateOutcome,
   aggregateScenarioStatus,
   detectFlaky,
-  isTested,
+  hasResults,
   latestRun,
   mergeResults,
 } from './status.js';
@@ -142,13 +142,13 @@ describe('aggregateScenarioStatus', () => {
   });
 });
 
-describe('isTested', () => {
-  it('is false when a scenario has no results', () => {
-    expect(isTested(aggregateScenarioStatus('s', []))).toBe(false);
+describe('hasResults', () => {
+  it('is false when nothing has run', () => {
+    expect(hasResults(aggregateScenarioStatus('s', []))).toBe(false);
   });
 
-  it('is true even when the only result was skipped', () => {
-    expect(isTested(aggregateScenarioStatus('s', [result({ status: 'skipped' })]))).toBe(true);
+  it('is true even when the only result was skipped, because it still ran', () => {
+    expect(hasResults(aggregateScenarioStatus('s', [result({ status: 'skipped' })]))).toBe(true);
   });
 });
 

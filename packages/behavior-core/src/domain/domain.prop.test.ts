@@ -45,8 +45,9 @@ function toCoverageFeature(feature: ArbitraryFeature, testedCount: number): Cove
   );
 
   const scenarios: CoverageScenario[] = ids.map(function toScenario(id, index) {
-    const results = index < testedCount ? [passingResult(`${id}-test`)] : [];
-    return { id, status: aggregateScenarioStatus(id, results) };
+    const covered = index < testedCount;
+    const results = covered ? [passingResult(`${id}-test`)] : [];
+    return { id, hasLinkedTest: covered, status: aggregateScenarioStatus(id, results) };
   });
 
   return { id: featureIdFromPath('', feature.path), title: feature.title, scenarios };
