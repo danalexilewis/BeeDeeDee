@@ -64,5 +64,16 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
+  },
+  {
+    // Build scripts run under plain Node, so they need its globals declared. The
+    // TypeScript sources get them from @types/node instead.
+    files: ['**/scripts/**/*.mjs', '**/scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
   }
 );

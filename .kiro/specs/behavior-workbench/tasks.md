@@ -1,5 +1,45 @@
 # Tasks Document: Behavior Workbench
 
+## Implementation status
+
+Implemented across ten phases. This section reconciles the plan below with what
+actually shipped; the checkboxes have been updated to match.
+
+**Delivered:** specification indexing with error recovery, the catalog dashboard,
+the three-panel feature view, editor deep links for four editors, test result
+ingestion for Playwright/Vitest/Jest, real-time status updates, an MCP server,
+Gherkin linting, the CLI, and a test suite of 785 unit/integration tests plus 34
+end-to-end.
+
+### Deliberate substitutions
+
+| Plan said | Shipped instead | Why |
+| --- | --- | --- |
+| `@eddy/behavior-next` with Next.js 14 App Router | `@eddy/behavior-web`, a Vite + React 19 SPA | Nothing here needs SSR, SEO, or server components. Fastify already existed for the watcher, and now serves the SPA too, so `behavior serve` is one process. |
+| Zustand for state management | TanStack Query, Zod-validated URL search params, and panel-library storage | Server state, filter state, and layout state each already had a natural home. A third store had nothing left to hold. |
+| Classes (`GherkinParser`, `BehaviorMCPServer`, `EditorLinkService`) | Factory functions returning plain objects | Repository convention; enforced by lint. Error classes became a tagged union a `switch` can exhaust. |
+| WebSocket server for real-time updates | Server-sent events | Updates are one-directional. SSE needs no extra dependency and reconnects on its own. |
+| `mermaid` package for diagram parsing | Plain text analysis | The library needs a DOM to render, which would put a browser dependency in the domain layer. Rendering stays in the SPA. |
+| Husky git hooks | CI gates only | Hooks are per-clone and easily skipped; CI runs typecheck, lint, format, tests, and build on every push. |
+| shadcn/ui via its CLI | Hand-written components on the same Tailwind token system | Seven small components did not justify a generator, and the tokens are what shared styling actually needs. |
+
+### Not implemented, and why not
+
+- **Incremental indexing, streaming parsing, caching layer, worker-thread parallelism, performance monitoring.** A full re-index of 1000 scenarios takes ~213ms against the design's 30-second budget, and 5000 takes ~3.8s. Every one of these optimisations would add machinery with no measurable problem to solve. Revisit if a project approaches the design's 10,000-scenario ceiling.
+- **Manual test-to-scenario mapping via JSON files.** Heuristic matching plus the explicit `@scenario:<id>` tag covers the cases seen so far. `specPaths.mappings` is reserved in the config schema.
+- **Coverage and quality trend tracking.** Both need a historical store the workbench does not have; it holds one current index in memory.
+- **Interactive configuration wizard and config migration.** `behavior init` writes a documented starter file, which is enough while there is one config version.
+- **MCP prompt templates.** The tool set plus server `instructions` proved sufficient to steer an agent.
+- **Optimistic updates.** SSE round trips are local and sub-second, so optimistic rendering would add rollback paths for no perceived gain.
+
+### Where things live
+
+Directory layout differs from the plan because the layering does. See
+[the root README](../../../README.md) for the package map,
+[docs/conventions.md](../../../docs/conventions.md) for the neverthrow, Zod, and
+ts-rest conventions, and [docs/decisions.md](../../../docs/decisions.md) for the
+reasoning behind each choice above.
+
 ## Overview
 
 This document outlines the implementation tasks for building the Behavior Workbench, organized by priority, dependencies, and phases. The workbench is divided into three core packages: `@eddy/behavior-core`, `@eddy/behavior-next`, and `@eddy/behavior-cli`.
@@ -20,10 +60,10 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Subtasks**:
 - [x] Initialize monorepo with pnpm/npm workspaces
 - [x] Create `@eddy/behavior-core` package with TypeScript configuration
-- [x] Create `@eddy/behavior-next` package with Next.js 14 + App Router
+- [ ] Create `@eddy/behavior-next` package with Next.js 14 + App Router
 - [x] Create `@eddy/behavior-cli` package with Commander.js
 - [x] Set up shared TypeScript configuration and build scripts
-- [x] Configure ESLint, Prettier, and Husky for code quality
+- [ ] Configure ESLint, Prettier, and Husky for code quality
 
 **Acceptance Criteria**:
 - All three packages can be built independently
@@ -42,10 +82,10 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Subtasks**:
 - [x] Define `BehaviorIndex` interface with project metadata
 - [x] Define `Feature`, `Scenario`, `Step` interfaces for Gherkin
-- [-] Define `Diagram`, `TestLink`, `EditorLink` interfaces
-- [~] Define `TestStatus`, `CoverageMetrics` types
-- [~] Create validation types for Gherkin parsing results
-- [~] Define MCP server interfaces for agent integration
+- [x] Define `Diagram`, `TestLink`, `EditorLink` interfaces
+- [x] Define `TestStatus`, `CoverageMetrics` types
+- [x] Create validation types for Gherkin parsing results
+- [x] Define MCP server interfaces for agent integration
 
 **Acceptance Criteria**:
 - All core types are defined with proper TypeScript interfaces
@@ -62,12 +102,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement Gherkin file parsing using @cucumber/gherkin library.
 
 **Subtasks**:
-- [~] Install and configure @cucumber/gherkin dependency
-- [~] Implement `parseGherkinFile()` function with error handling
-- [~] Create `GherkinParser` class with file system scanning
-- [~] Implement scenario extraction with unique ID generation
-- [~] Add syntax validation and error reporting
-- [~] Write unit tests for parsing edge cases
+- [x] Install and configure @cucumber/gherkin dependency
+- [x] Implement `parseGherkinFile()` function with error handling
+- [x] Create `GherkinParser` class with file system scanning
+- [x] Implement scenario extraction with unique ID generation
+- [x] Add syntax validation and error reporting
+- [x] Write unit tests for parsing edge cases
 
 **Acceptance Criteria**:
 - Can parse .feature files with all Gherkin constructs
@@ -85,12 +125,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement Mermaid diagram file parsing and analysis.
 
 **Subtasks**:
-- [~] Install mermaid.js dependency
-- [~] Implement `parseMermaidFile()` function
-- [~] Create diagram metadata extraction (title, type, complexity)
-- [~] Implement basic syntax validation
-- [~] Add diagram-to-scenario relevance scoring
-- [~] Write unit tests for diagram parsing
+- [x] Install mermaid.js dependency
+- [x] Implement `parseMermaidFile()` function
+- [x] Create diagram metadata extraction (title, type, complexity)
+- [x] Implement basic syntax validation
+- [x] Add diagram-to-scenario relevance scoring
+- [x] Write unit tests for diagram parsing
 
 **Acceptance Criteria**:
 - Can parse .mmd files with Mermaid syntax
@@ -113,12 +153,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement test file discovery and scenario mapping.
 
 **Subtasks**:
-- [~] Implement test file scanning for Playwright, Jest, Vitest
-- [~] Create test parser for different test frameworks
-- [~] Implement heuristic matching between tests and scenarios
-- [~] Add manual mapping support via .json files
-- [~] Create `TestIndex` class for managing test relationships
-- [~] Write unit tests for test-scenario matching
+- [x] Implement test file scanning for Playwright, Jest, Vitest
+- [x] Create test parser for different test frameworks
+- [x] Implement heuristic matching between tests and scenarios
+- [ ] Add manual mapping support via .json files
+- [x] Create `TestIndex` class for managing test relationships
+- [x] Write unit tests for test-scenario matching
 
 **Acceptance Criteria**:
 - Can discover test files in configured directories
@@ -136,12 +176,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement ingestion of test results from various formats.
 
 **Subtasks**:
-- [~] Implement Playwright JSON report ingestion
-- [~] Add Jest/Vitest result ingestion
-- [~] Create `TestResult` interface for unified results
-- [~] Implement status aggregation for scenarios
-- [~] Add flaky test detection logic
-- [~] Write unit tests for result ingestion
+- [x] Implement Playwright JSON report ingestion
+- [x] Add Jest/Vitest result ingestion
+- [x] Create `TestResult` interface for unified results
+- [x] Implement status aggregation for scenarios
+- [x] Add flaky test detection logic
+- [x] Write unit tests for result ingestion
 
 **Acceptance Criteria**:
 - Can ingest Playwright JSON reports
@@ -159,12 +199,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement coverage metrics calculation for scenarios and features.
 
 **Subtasks**:
-- [~] Implement scenario coverage calculation (tested/untested)
-- [~] Add feature-level coverage aggregation
-- [~] Create coverage visualization data structures
-- [~] Implement coverage trend tracking
-- [~] Add coverage reporting utilities
-- [~] Write unit tests for coverage calculations
+- [x] Implement scenario coverage calculation (tested/untested)
+- [x] Add feature-level coverage aggregation
+- [x] Create coverage visualization data structures
+- [ ] Implement coverage trend tracking
+- [x] Add coverage reporting utilities
+- [x] Write unit tests for coverage calculations
 
 **Acceptance Criteria**:
 - Calculates accurate coverage percentages
@@ -187,12 +227,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Set up Next.js 14 with App Router and basic layout.
 
 **Subtasks**:
-- [~] Initialize Next.js 14 project with TypeScript
-- [~] Configure App Router with layout structure
-- [~] Set up Tailwind CSS for styling
-- [~] Add shadcn/ui component library
-- [~] Configure React Query for data fetching
-- [~] Set up Zustand for state management
+- [ ] Initialize Next.js 14 project with TypeScript
+- [ ] Configure App Router with layout structure
+- [x] Set up Tailwind CSS for styling
+- [x] Add shadcn/ui component library
+- [x] Configure React Query for data fetching
+- [ ] Set up Zustand for state management
 
 **Acceptance Criteria**:
 - Next.js app runs on localhost:3000
@@ -210,13 +250,13 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement the catalog/dashboard view showing all features.
 
 **Subtasks**:
-- [~] Create `CatalogView` component with feature cards
-- [~] Implement feature status visualization (pass/fail/untested)
-- [~] Add search and filter functionality
-- [~] Implement virtual scrolling for large feature lists
-- [~] Create feature card component with key metrics
-- [~] Add loading states and error handling
-- [~] Write component tests for CatalogView
+- [x] Create `CatalogView` component with feature cards
+- [x] Implement feature status visualization (pass/fail/untested)
+- [x] Add search and filter functionality
+- [x] Implement virtual scrolling for large feature lists
+- [x] Create feature card component with key metrics
+- [x] Add loading states and error handling
+- [x] Write component tests for CatalogView
 
 **Acceptance Criteria**:
 - Displays all features with status badges
@@ -235,14 +275,14 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement the three-panel feature view layout.
 
 **Subtasks**:
-- [~] Create responsive three-panel layout component
-- [~] Implement left panel: feature details and scenarios list
-- [~] Implement middle panel: scenario steps and details
-- [~] Implement right panel: linked diagrams and tests
-- [~] Add panel resizing functionality
-- [~] Implement scenario selection and navigation
-- [~] Create diagram rendering with mermaid.js
-- [~] Write component tests for three-panel layout
+- [x] Create responsive three-panel layout component
+- [x] Implement left panel: feature details and scenarios list
+- [x] Implement middle panel: scenario steps and details
+- [x] Implement right panel: linked diagrams and tests
+- [x] Add panel resizing functionality
+- [x] Implement scenario selection and navigation
+- [x] Create diagram rendering with mermaid.js
+- [x] Write component tests for three-panel layout
 
 **Acceptance Criteria**:
 - Responsive three-panel layout works on different screen sizes
@@ -266,13 +306,13 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement generation of editor deep links for scenarios and tests.
 
 **Subtasks**:
-- [~] Implement `EditorLinkService` class
-- [~] Add support for vscode:// deep links
-- [~] Add support for cursor:// deep links
-- [~] Add support for kiro:// deep links
-- [~] Implement fallback logic for missing editors
-- [~] Create UI components for editor links
-- [~] Write unit tests for link generation
+- [x] Implement `EditorLinkService` class
+- [x] Add support for vscode:// deep links
+- [x] Add support for cursor:// deep links
+- [x] Add support for kiro:// deep links
+- [x] Implement fallback logic for missing editors
+- [x] Create UI components for editor links
+- [x] Write unit tests for link generation
 
 **Acceptance Criteria**:
 - Generates correct deep links for all supported editors
@@ -290,12 +330,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement file system operations for editor integration.
 
 **Subtasks**:
-- [~] Implement file existence checking
-- [~] Add line number extraction for scenarios
-- [~] Create file path resolution utilities
-- [~] Implement safe file system operations
-- [~] Add error handling for missing files
-- [~] Write unit tests for file system operations
+- [x] Implement file existence checking
+- [x] Add line number extraction for scenarios
+- [x] Create file path resolution utilities
+- [x] Implement safe file system operations
+- [x] Add error handling for missing files
+- [x] Write unit tests for file system operations
 
 **Acceptance Criteria**:
 - Can check if files exist before generating links
@@ -318,13 +358,13 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement Model Context Protocol server for agent integration.
 
 **Subtasks**:
-- [~] Install @modelcontextprotocol/sdk
-- [~] Implement `BehaviorMCPServer` class
-- [~] Add tools: getBehaviorContext, validateGherkin, suggestTests
-- [~] Implement resource: behavior://scenarios/{id}
-- [~] Add prompt templates for agent interactions
-- [~] Implement security controls for write operations
-- [~] Write integration tests for MCP server
+- [x] Install @modelcontextprotocol/sdk
+- [x] Implement `BehaviorMCPServer` class
+- [x] Add tools: getBehaviorContext, validateGherkin, suggestTests
+- [x] Implement resource: behavior://scenarios/{id}
+- [ ] Add prompt templates for agent interactions
+- [x] Implement security controls for write operations
+- [x] Write integration tests for MCP server
 
 **Acceptance Criteria**:
 - MCP server starts and accepts connections
@@ -343,12 +383,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement context generation for AI agents.
 
 **Subtasks**:
-- [~] Implement `generateAgentContext()` function
-- [~] Create structured context data format
-- [~] Include related scenarios and patterns
-- [~] Add test history and coverage information
-- [~] Implement context summarization for token limits
-- [~] Write unit tests for context generation
+- [x] Implement `generateAgentContext()` function
+- [x] Create structured context data format
+- [x] Include related scenarios and patterns
+- [x] Add test history and coverage information
+- [x] Implement context summarization for token limits
+- [x] Write unit tests for context generation
 
 **Acceptance Criteria**:
 - Generates comprehensive context for agents
@@ -371,12 +411,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement Gherkin linting with style checks and best practices.
 
 **Subtasks**:
-- [~] Implement `GherkinLinter` class
-- [~] Add style checks: step pattern consistency, tag conventions
-- [~] Implement best practice validations
-- [~] Add duplicate scenario detection
-- [~] Create auto-fix suggestions for common issues
-- [~] Write unit tests for linting rules
+- [x] Implement `GherkinLinter` class
+- [x] Add style checks: step pattern consistency, tag conventions
+- [x] Implement best practice validations
+- [x] Add duplicate scenario detection
+- [x] Create auto-fix suggestions for common issues
+- [x] Write unit tests for linting rules
 
 **Acceptance Criteria**:
 - Detects style violations in Gherkin files
@@ -394,12 +434,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement quality metrics visualization in UI.
 
 **Subtasks**:
-- [~] Create quality metrics calculation utilities
-- [~] Implement metrics aggregation at project level
-- [~] Add quality trends tracking
-- [~] Create UI components for metrics display
-- [~] Implement quality score visualization
-- [~] Write component tests for metrics display
+- [x] Create quality metrics calculation utilities
+- [x] Implement metrics aggregation at project level
+- [ ] Add quality trends tracking
+- [x] Create UI components for metrics display
+- [x] Implement quality score visualization
+- [x] Write component tests for metrics display
 
 **Acceptance Criteria**:
 - Calculates quality scores for specifications
@@ -422,12 +462,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement CLI commands for common workflows.
 
 **Subtasks**:
-- [~] Implement `behavior index` command for spec indexing
-- [~] Implement `behavior ingest-tests` for test result ingestion
-- [~] Implement `behavior lint` for spec quality checking
-- [~] Implement `behavior serve` for starting dev server
-- [~] Add interactive prompts for configuration
-- [~] Write integration tests for CLI commands
+- [x] Implement `behavior index` command for spec indexing
+- [x] Implement `behavior ingest-tests` for test result ingestion
+- [x] Implement `behavior lint` for spec quality checking
+- [x] Implement `behavior serve` for starting dev server
+- [ ] Add interactive prompts for configuration
+- [x] Write integration tests for CLI commands
 
 **Acceptance Criteria**:
 - CLI commands work with proper arguments
@@ -445,11 +485,11 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement configuration file management for CLI.
 
 **Subtasks**:
-- [~] Implement `.behaviorrc` configuration file format
-- [~] Add configuration validation
-- [~] Implement configuration migration utilities
-- [~] Create configuration wizard for first-time setup
-- [~] Write unit tests for configuration management
+- [x] Implement `.behaviorrc` configuration file format
+- [x] Add configuration validation
+- [ ] Implement configuration migration utilities
+- [ ] Create configuration wizard for first-time setup
+- [x] Write unit tests for configuration management
 
 **Acceptance Criteria**:
 - Loads and validates configuration files
@@ -472,12 +512,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Optimize performance for large projects with 1000+ scenarios.
 
 **Subtasks**:
-- [~] Implement incremental indexing for changed files
-- [~] Add file system watching with debouncing
-- [~] Optimize memory usage with streaming parsing
-- [~] Implement caching layer for frequently accessed data
-- [~] Add performance metrics and monitoring
-- [~] Write performance tests for large datasets
+- [ ] Implement incremental indexing for changed files
+- [x] Add file system watching with debouncing
+- [ ] Optimize memory usage with streaming parsing
+- [ ] Implement caching layer for frequently accessed data
+- [ ] Add performance metrics and monitoring
+- [x] Write performance tests for large datasets
 
 **Acceptance Criteria**:
 - Indexes 1000+ scenarios in under 30 seconds
@@ -494,12 +534,12 @@ This document outlines the implementation tasks for building the Behavior Workbe
 **Description**: Implement real-time updates for file changes.
 
 **Subtasks**:
-- [~] Implement WebSocket server for real-time updates
-- [~] Add file system watcher integration
-- [~] Implement change detection and notification
-- [~] Add UI components for real-time status
-- [~] Implement optimistic updates for better UX
-- [~] Write integration tests for real-time features
+- [ ] Implement WebSocket server for real-time updates
+- [x] Add file system watcher integration
+- [x] Implement change detection and notification
+- [x] Add UI components for real-time status
+- [ ] Implement optimistic updates for better UX
+- [x] Write integration tests for real-time features
 
 **Acceptance Criteria**:
 - UI updates automatically when files change

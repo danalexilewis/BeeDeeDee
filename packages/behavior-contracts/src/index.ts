@@ -1,4 +1,5 @@
 export * from './contract.js';
+export * from './openapi.js';
 export * from './schemas/agent.js';
 export * from './schemas/catalog.js';
 export * from './schemas/common.js';

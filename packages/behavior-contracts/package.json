@@ -16,10 +16,14 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "clean": "rm -rf dist *.tsbuildinfo"
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "openapi": "node scripts/generate-openapi.mjs"
   },
   "dependencies": {
     "@ts-rest/core": "3.52.1",
     "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@ts-rest/open-api": "3.52.1"
   }
 }
