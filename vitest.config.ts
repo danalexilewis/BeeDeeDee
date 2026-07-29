@@ -42,20 +42,25 @@ export default defineConfig({
     // Packages gain tests as phases land; a filtered run should not fail for an
     // empty project.
     passWithNoTests: true,
-    projects: nodePackages.map(function toProject(name) {
-      return {
-        resolve: {
-          alias: workspaceAliases,
-        },
-        test: {
-          name,
-          root: `packages/${name}`,
-          environment: 'node',
-          include: ['src/**/*.test.ts', 'src/**/*.prop.test.ts'],
-          passWithNoTests: true,
-        },
-      };
-    }),
+    projects: [
+      ...nodePackages.map(function toProject(name) {
+        return {
+          resolve: {
+            alias: workspaceAliases,
+          },
+          test: {
+            name,
+            root: `packages/${name}`,
+            environment: 'node' as const,
+            include: ['src/**/*.test.ts', 'src/**/*.prop.test.ts'],
+            passWithNoTests: true,
+          },
+        };
+      }),
+      // The SPA runs its own project in browser mode, configured alongside its
+      // Vite build so plugins and aliases match what ships.
+      './packages/behavior-web/vitest.config.ts',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],

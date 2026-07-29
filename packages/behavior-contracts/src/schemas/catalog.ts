@@ -50,4 +50,14 @@ export const featureFilterSchema = z.object({
 });
 
 export type CatalogData = z.infer<typeof catalogDataSchema>;
+
+/** The filter as the server sees it, with `tags` already split into a list. */
 export type FeatureFilter = z.infer<typeof featureFilterSchema>;
+
+/**
+ * The filter as a caller supplies it, with `tags` still a comma-separated string.
+ *
+ * Distinct from `FeatureFilter` because the schema transforms `tags`, so input and
+ * output genuinely differ. Clients building a request need this one.
+ */
+export type FeatureFilterInput = z.input<typeof featureFilterSchema>;

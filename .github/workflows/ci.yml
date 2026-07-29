@@ -25,6 +25,10 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile --strict-peer-dependencies
 
+      # Component tests run in a real browser rather than jsdom.
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Typecheck
         run: pnpm typecheck
 
