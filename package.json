@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc --build && pnpm --filter @eddy/behavior-web build",
-    "typecheck": "tsc --build --force",
+    "typecheck": "tsc --build --force && tsc -p tsconfig.test.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
