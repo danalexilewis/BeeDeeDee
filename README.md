@@ -11,7 +11,22 @@ AI agents.
 
 ## Quick start
 
+Until [PR #2](https://github.com/danalexilewis/BeeDeeDee/pull/2) lands on
+`main`, check out the implementation branch first. On `main` today you still
+have the empty Next.js scaffold (`packages/behavior-next`, four workspace
+packages, `pnpm@8.0.0`) — that tree will fail with `next: command not found`
+and often with `ERR_INVALID_THIS` / `URLSearchParams` against the registry.
+
 ```bash
+git fetch origin
+git checkout cursor/behavior-workbench-implementation-f46d
+
+# Node 22+ and the pinned pnpm (via Corepack)
+node -v                    # expect v22.x or newer
+corepack enable
+corepack prepare pnpm@10.33.3 --activate
+pnpm -v                    # expect 10.33.3
+
 pnpm install
 pnpm build
 
@@ -20,6 +35,12 @@ node packages/behavior-cli/dist/cli.js --cwd examples/demo-project serve
 ```
 
 Then open <http://127.0.0.1:4100>.
+
+If `pnpm install` still reports `ERR_INVALID_THIS` /
+`Value of "this" must be of type URLSearchParams`, an older global `pnpm`
+(or a shell alias such as `p`) is winning over Corepack. Run
+`which pnpm`, drop the stale binary/alias, then re-run
+`corepack prepare pnpm@10.33.3 --activate`.
 
 In your own project:
 
