@@ -1,0 +1,23 @@
+{
+  "name": "@eddy/test-support",
+  "version": "0.1.0",
+  "description": "Temp-project builders, fixture factories, and fast-check arbitraries",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@eddy/behavior-contracts": "workspace:*",
+    "fast-check": "^4.9.0"
+  }
+}

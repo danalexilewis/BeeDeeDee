@@ -1,0 +1,29 @@
+{
+  "name": "@eddy/behavior-contracts",
+  "version": "0.1.0",
+  "description": "Zod schemas and ts-rest contract shared across the Behavior Workbench",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "openapi": "node scripts/generate-openapi.mjs"
+  },
+  "dependencies": {
+    "@ts-rest/core": "3.52.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@ts-rest/open-api": "3.52.1"
+  }
+}

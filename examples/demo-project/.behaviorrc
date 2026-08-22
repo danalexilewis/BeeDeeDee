@@ -1,0 +1,19 @@
+{
+  "name": "Demo Project",
+  "specPaths": {
+    "features": "specs/features",
+    "diagrams": "specs/diagrams"
+  },
+  "testPaths": {
+    "e2e": "tests/e2e",
+    "components": "tests/components"
+  },
+  "editorConfig": {
+    "supportedEditors": ["vscode", "cursor"],
+    "openCommand": "code"
+  },
+  "server": {
+    "port": 4100,
+    "host": "127.0.0.1"
+  }
+}

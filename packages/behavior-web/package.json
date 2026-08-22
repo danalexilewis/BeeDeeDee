@@ -1,0 +1,45 @@
+{
+  "name": "@eddy/behavior-web",
+  "version": "0.1.0",
+  "description": "Vite + React SPA for the Behavior Workbench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eddy/behavior-contracts": "workspace:*",
+    "@tanstack/react-query": "^5.101.4",
+    "@tanstack/react-router": "^1.170.18",
+    "@tanstack/react-virtual": "^3.14.8",
+    "@tanstack/zod-adapter": "^1.167.0",
+    "@ts-rest/core": "3.52.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "mermaid": "^11.4.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-resizable-panels": "^4.12.2",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.4",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.1.5",
+    "@vitest/browser": "^4.1.10",
+    "vitest-browser-react": "^2.2.0",
+    "playwright": "^1.62.0",
+    "vitest": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10"
+  }
+}

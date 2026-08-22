@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/behavior-contracts" },
+    { "path": "./packages/behavior-core" },
+    { "path": "./packages/behavior-server" },
+    { "path": "./packages/behavior-cli" },
+    { "path": "./packages/behavior-mcp" },
+    { "path": "./packages/test-support" }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "packages/*/src/**/*.test.ts",
+    "packages/*/src/**/*.prop.test.ts",
+    "e2e/**/*.ts",
+    "vitest.config.ts",
+    "e2e/playwright.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    // behavior-web is a browser project: its tests need DOM libs and bundler
+    // resolution, so it typechecks under its own tsconfig via `pnpm typecheck`
+    // in that package rather than under these Node settings.
+    "packages/behavior-web/**"
+  ]
+}

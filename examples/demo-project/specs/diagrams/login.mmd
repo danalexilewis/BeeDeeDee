@@ -1,0 +1,10 @@
+---
+title: Login flow
+---
+flowchart TD
+  member[Registered member] --> signin[Sign-in page]
+  signin --> credentials{Valid credentials}
+  credentials -->|yes| locked{Account locked}
+  credentials -->|no| invalid[Invalid credentials message]
+  locked -->|no| dashboard[Dashboard]
+  locked -->|yes| lockout[Lockout message]

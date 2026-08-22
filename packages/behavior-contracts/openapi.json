@@ -1,0 +1,4058 @@
+{
+  "openapi": "3.0.2",
+  "paths": {
+    "/api/catalog": {
+      "get": {
+        "summary": "Dashboard payload: all features with status and coverage roll-ups",
+        "tags": [],
+        "parameters": [],
+        "operationId": "getCatalog",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "features": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "scenarioCount": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "testCoverage": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["passing", "failing", "untested"]
+                          },
+                          "lastUpdated": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "description",
+                          "path",
+                          "tags",
+                          "scenarioCount",
+                          "testCoverage",
+                          "status",
+                          "lastUpdated"
+                        ]
+                      }
+                    },
+                    "totalScenarios": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "overallCoverage": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "statusCounts": {
+                      "type": "object",
+                      "properties": {
+                        "passing": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "failing": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "untested": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": ["passing", "failing", "untested"]
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "features",
+                    "totalScenarios",
+                    "overallCoverage",
+                    "statusCounts",
+                    "tags"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/features": {
+      "get": {
+        "summary": "Features matching a filter",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["passing", "failing", "untested"]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minCoverage",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "nullable": true
+            }
+          },
+          {
+            "name": "maxCoverage",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "nullable": true
+            }
+          }
+        ],
+        "operationId": "listFeatures",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "string"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "scenarioCount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "testCoverage": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["passing", "failing", "untested"]
+                      },
+                      "lastUpdated": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "description",
+                      "path",
+                      "tags",
+                      "scenarioCount",
+                      "testCoverage",
+                      "status",
+                      "lastUpdated"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/features/{featureId}": {
+      "get": {
+        "summary": "One feature with its scenarios and linked artifacts",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "featureId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getFeature",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "scenarioCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "testCoverage": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["passing", "failing", "untested"]
+                    },
+                    "lastUpdated": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "scenarios": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "steps": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "keyword": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "argument": {
+                                  "discriminator": {
+                                    "propertyName": "type"
+                                  },
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["doc_string"]
+                                        },
+                                        "content": {
+                                          "type": "string"
+                                        },
+                                        "line": {
+                                          "type": "integer",
+                                          "minimum": 0,
+                                          "exclusiveMinimum": 0
+                                        }
+                                      },
+                                      "required": ["type", "content", "line"]
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["table"]
+                                        },
+                                        "content": {
+                                          "type": "object",
+                                          "properties": {
+                                            "headers": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "rows": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "line": {
+                                              "type": "integer",
+                                              "minimum": 0,
+                                              "exclusiveMinimum": 0
+                                            }
+                                          },
+                                          "required": ["headers", "rows", "line"]
+                                        },
+                                        "line": {
+                                          "type": "integer",
+                                          "minimum": 0,
+                                          "exclusiveMinimum": 0
+                                        }
+                                      },
+                                      "required": ["type", "content", "line"]
+                                    }
+                                  ]
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": ["id", "keyword", "text", "line"]
+                            }
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "testLinks": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "testId": {
+                                  "type": "string"
+                                },
+                                "framework": {
+                                  "type": "string",
+                                  "enum": ["playwright", "jest", "vitest", "custom"]
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": ["pass", "fail", "skipped", "not-run"]
+                                },
+                                "durationMs": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "errorMessage": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": ["testId", "framework", "path", "line", "status"]
+                            }
+                          },
+                          "diagramLinks": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "diagramId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": ["mermaid", "plantuml", "drawio"]
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "relevance": {
+                                  "type": "string",
+                                  "enum": ["high", "medium", "low"]
+                                },
+                                "relevanceScore": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                }
+                              },
+                              "required": [
+                                "diagramId",
+                                "type",
+                                "path",
+                                "title",
+                                "relevance",
+                                "relevanceScore"
+                              ]
+                            }
+                          },
+                          "status": {
+                            "type": "object",
+                            "properties": {
+                              "scenarioId": {
+                                "type": "string"
+                              },
+                              "overall": {
+                                "type": "string",
+                                "enum": ["pass", "fail", "skipped", "not-run"]
+                              },
+                              "results": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "testId": {
+                                      "type": "string"
+                                    },
+                                    "testName": {
+                                      "type": "string"
+                                    },
+                                    "status": {
+                                      "type": "string",
+                                      "enum": ["pass", "fail", "skipped", "not-run"]
+                                    },
+                                    "durationMs": {
+                                      "type": "number",
+                                      "minimum": 0
+                                    },
+                                    "errorMessage": {
+                                      "type": "string"
+                                    },
+                                    "stackTrace": {
+                                      "type": "string"
+                                    },
+                                    "timestamp": {
+                                      "type": "string",
+                                      "format": "date-time"
+                                    },
+                                    "file": {
+                                      "type": "string"
+                                    },
+                                    "line": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "tags": {
+                                      "default": [],
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "attempt": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": ["testId", "testName", "status", "timestamp", "file"]
+                                }
+                              },
+                              "lastRun": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true
+                              },
+                              "flaky": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": ["scenarioId", "overall", "results", "lastRun", "flaky"]
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "description",
+                          "steps",
+                          "tags",
+                          "testLinks",
+                          "diagramLinks",
+                          "status",
+                          "line"
+                        ]
+                      }
+                    },
+                    "diagramLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "diagramId": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["mermaid", "plantuml", "drawio"]
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "relevance": {
+                            "type": "string",
+                            "enum": ["high", "medium", "low"]
+                          },
+                          "relevanceScore": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
+                          }
+                        },
+                        "required": [
+                          "diagramId",
+                          "type",
+                          "path",
+                          "title",
+                          "relevance",
+                          "relevanceScore"
+                        ]
+                      }
+                    },
+                    "background": {
+                      "type": "object",
+                      "properties": {
+                        "keyword": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "steps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "keyword": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "argument": {
+                                "discriminator": {
+                                  "propertyName": "type"
+                                },
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": ["doc_string"]
+                                      },
+                                      "content": {
+                                        "type": "string"
+                                      },
+                                      "line": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": ["type", "content", "line"]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": ["table"]
+                                      },
+                                      "content": {
+                                        "type": "object",
+                                        "properties": {
+                                          "headers": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "rows": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          },
+                                          "line": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "exclusiveMinimum": 0
+                                          }
+                                        },
+                                        "required": ["headers", "rows", "line"]
+                                      },
+                                      "line": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": ["type", "content", "line"]
+                                  }
+                                ]
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": ["id", "keyword", "text", "line"]
+                          }
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "exclusiveMinimum": 0
+                        }
+                      },
+                      "required": ["keyword", "name", "description", "steps", "line"]
+                    },
+                    "rules": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "keyword": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "scenarioIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": ["keyword", "name", "description", "scenarioIds", "line"]
+                      }
+                    },
+                    "gherkinSource": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "path",
+                    "tags",
+                    "scenarioCount",
+                    "testCoverage",
+                    "status",
+                    "lastUpdated",
+                    "scenarios",
+                    "diagramLinks",
+                    "gherkinSource"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios/{scenarioId}": {
+      "get": {
+        "summary": "One scenario with full source context",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "scenarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getScenario",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "keyword": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "argument": {
+                            "discriminator": {
+                              "propertyName": "type"
+                            },
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["doc_string"]
+                                  },
+                                  "content": {
+                                    "type": "string"
+                                  },
+                                  "line": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "exclusiveMinimum": 0
+                                  }
+                                },
+                                "required": ["type", "content", "line"]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["table"]
+                                  },
+                                  "content": {
+                                    "type": "object",
+                                    "properties": {
+                                      "headers": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "rows": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      },
+                                      "line": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": ["headers", "rows", "line"]
+                                  },
+                                  "line": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "exclusiveMinimum": 0
+                                  }
+                                },
+                                "required": ["type", "content", "line"]
+                              }
+                            ]
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": ["id", "keyword", "text", "line"]
+                      }
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "testLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "testId": {
+                            "type": "string"
+                          },
+                          "framework": {
+                            "type": "string",
+                            "enum": ["playwright", "jest", "vitest", "custom"]
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["pass", "fail", "skipped", "not-run"]
+                          },
+                          "durationMs": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "errorMessage": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["testId", "framework", "path", "line", "status"]
+                      }
+                    },
+                    "diagramLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "diagramId": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["mermaid", "plantuml", "drawio"]
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "relevance": {
+                            "type": "string",
+                            "enum": ["high", "medium", "low"]
+                          },
+                          "relevanceScore": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
+                          }
+                        },
+                        "required": [
+                          "diagramId",
+                          "type",
+                          "path",
+                          "title",
+                          "relevance",
+                          "relevanceScore"
+                        ]
+                      }
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "scenarioId": {
+                          "type": "string"
+                        },
+                        "overall": {
+                          "type": "string",
+                          "enum": ["pass", "fail", "skipped", "not-run"]
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "testId": {
+                                "type": "string"
+                              },
+                              "testName": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": ["pass", "fail", "skipped", "not-run"]
+                              },
+                              "durationMs": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "errorMessage": {
+                                "type": "string"
+                              },
+                              "stackTrace": {
+                                "type": "string"
+                              },
+                              "timestamp": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "file": {
+                                "type": "string"
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              },
+                              "tags": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "attempt": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": ["testId", "testName", "status", "timestamp", "file"]
+                          }
+                        },
+                        "lastRun": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "flaky": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": ["scenarioId", "overall", "results", "lastRun", "flaky"]
+                    },
+                    "line": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "exclusiveMinimum": 0
+                    },
+                    "featureId": {
+                      "type": "string"
+                    },
+                    "featureTitle": {
+                      "type": "string"
+                    },
+                    "featurePath": {
+                      "type": "string"
+                    },
+                    "gherkinSource": {
+                      "type": "string"
+                    },
+                    "lastUpdated": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "steps",
+                    "tags",
+                    "testLinks",
+                    "diagramLinks",
+                    "status",
+                    "line",
+                    "featureId",
+                    "featureTitle",
+                    "featurePath",
+                    "gherkinSource",
+                    "lastUpdated"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios/{scenarioId}/context": {
+      "get": {
+        "summary": "Everything an agent needs to reason about a scenario",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "scenarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getAgentContext",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "scenario": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "steps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "keyword": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "argument": {
+                                "discriminator": {
+                                  "propertyName": "type"
+                                },
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": ["doc_string"]
+                                      },
+                                      "content": {
+                                        "type": "string"
+                                      },
+                                      "line": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": ["type", "content", "line"]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": ["table"]
+                                      },
+                                      "content": {
+                                        "type": "object",
+                                        "properties": {
+                                          "headers": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "rows": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          },
+                                          "line": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "exclusiveMinimum": 0
+                                          }
+                                        },
+                                        "required": ["headers", "rows", "line"]
+                                      },
+                                      "line": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": ["type", "content", "line"]
+                                  }
+                                ]
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": ["id", "keyword", "text", "line"]
+                          }
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "testLinks": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "testId": {
+                                "type": "string"
+                              },
+                              "framework": {
+                                "type": "string",
+                                "enum": ["playwright", "jest", "vitest", "custom"]
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": ["pass", "fail", "skipped", "not-run"]
+                              },
+                              "durationMs": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "errorMessage": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["testId", "framework", "path", "line", "status"]
+                          }
+                        },
+                        "diagramLinks": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "diagramId": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": ["mermaid", "plantuml", "drawio"]
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "relevance": {
+                                "type": "string",
+                                "enum": ["high", "medium", "low"]
+                              },
+                              "relevanceScore": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              }
+                            },
+                            "required": [
+                              "diagramId",
+                              "type",
+                              "path",
+                              "title",
+                              "relevance",
+                              "relevanceScore"
+                            ]
+                          }
+                        },
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "scenarioId": {
+                              "type": "string"
+                            },
+                            "overall": {
+                              "type": "string",
+                              "enum": ["pass", "fail", "skipped", "not-run"]
+                            },
+                            "results": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "testId": {
+                                    "type": "string"
+                                  },
+                                  "testName": {
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": ["pass", "fail", "skipped", "not-run"]
+                                  },
+                                  "durationMs": {
+                                    "type": "number",
+                                    "minimum": 0
+                                  },
+                                  "errorMessage": {
+                                    "type": "string"
+                                  },
+                                  "stackTrace": {
+                                    "type": "string"
+                                  },
+                                  "timestamp": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "file": {
+                                    "type": "string"
+                                  },
+                                  "line": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "exclusiveMinimum": 0
+                                  },
+                                  "tags": {
+                                    "default": [],
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "attempt": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "exclusiveMinimum": 0
+                                  }
+                                },
+                                "required": ["testId", "testName", "status", "timestamp", "file"]
+                              }
+                            },
+                            "lastRun": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true
+                            },
+                            "flaky": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": ["scenarioId", "overall", "results", "lastRun", "flaky"]
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "exclusiveMinimum": 0
+                        },
+                        "featureId": {
+                          "type": "string"
+                        },
+                        "featureTitle": {
+                          "type": "string"
+                        },
+                        "featurePath": {
+                          "type": "string"
+                        },
+                        "gherkinSource": {
+                          "type": "string"
+                        },
+                        "lastUpdated": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "description",
+                        "steps",
+                        "tags",
+                        "testLinks",
+                        "diagramLinks",
+                        "status",
+                        "line",
+                        "featureId",
+                        "featureTitle",
+                        "featurePath",
+                        "gherkinSource",
+                        "lastUpdated"
+                      ]
+                    },
+                    "relatedScenarios": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "steps": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "keyword": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "argument": {
+                                  "discriminator": {
+                                    "propertyName": "type"
+                                  },
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["doc_string"]
+                                        },
+                                        "content": {
+                                          "type": "string"
+                                        },
+                                        "line": {
+                                          "type": "integer",
+                                          "minimum": 0,
+                                          "exclusiveMinimum": 0
+                                        }
+                                      },
+                                      "required": ["type", "content", "line"]
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["table"]
+                                        },
+                                        "content": {
+                                          "type": "object",
+                                          "properties": {
+                                            "headers": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "rows": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "line": {
+                                              "type": "integer",
+                                              "minimum": 0,
+                                              "exclusiveMinimum": 0
+                                            }
+                                          },
+                                          "required": ["headers", "rows", "line"]
+                                        },
+                                        "line": {
+                                          "type": "integer",
+                                          "minimum": 0,
+                                          "exclusiveMinimum": 0
+                                        }
+                                      },
+                                      "required": ["type", "content", "line"]
+                                    }
+                                  ]
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": ["id", "keyword", "text", "line"]
+                            }
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "testLinks": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "testId": {
+                                  "type": "string"
+                                },
+                                "framework": {
+                                  "type": "string",
+                                  "enum": ["playwright", "jest", "vitest", "custom"]
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": ["pass", "fail", "skipped", "not-run"]
+                                },
+                                "durationMs": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "errorMessage": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": ["testId", "framework", "path", "line", "status"]
+                            }
+                          },
+                          "diagramLinks": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "diagramId": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": ["mermaid", "plantuml", "drawio"]
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "relevance": {
+                                  "type": "string",
+                                  "enum": ["high", "medium", "low"]
+                                },
+                                "relevanceScore": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                }
+                              },
+                              "required": [
+                                "diagramId",
+                                "type",
+                                "path",
+                                "title",
+                                "relevance",
+                                "relevanceScore"
+                              ]
+                            }
+                          },
+                          "status": {
+                            "type": "object",
+                            "properties": {
+                              "scenarioId": {
+                                "type": "string"
+                              },
+                              "overall": {
+                                "type": "string",
+                                "enum": ["pass", "fail", "skipped", "not-run"]
+                              },
+                              "results": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "testId": {
+                                      "type": "string"
+                                    },
+                                    "testName": {
+                                      "type": "string"
+                                    },
+                                    "status": {
+                                      "type": "string",
+                                      "enum": ["pass", "fail", "skipped", "not-run"]
+                                    },
+                                    "durationMs": {
+                                      "type": "number",
+                                      "minimum": 0
+                                    },
+                                    "errorMessage": {
+                                      "type": "string"
+                                    },
+                                    "stackTrace": {
+                                      "type": "string"
+                                    },
+                                    "timestamp": {
+                                      "type": "string",
+                                      "format": "date-time"
+                                    },
+                                    "file": {
+                                      "type": "string"
+                                    },
+                                    "line": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "tags": {
+                                      "default": [],
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "attempt": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": ["testId", "testName", "status", "timestamp", "file"]
+                                }
+                              },
+                              "lastRun": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true
+                              },
+                              "flaky": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": ["scenarioId", "overall", "results", "lastRun", "flaky"]
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "description",
+                          "steps",
+                          "tags",
+                          "testLinks",
+                          "diagramLinks",
+                          "status",
+                          "line"
+                        ]
+                      }
+                    },
+                    "testResults": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "testId": {
+                            "type": "string"
+                          },
+                          "testName": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["pass", "fail", "skipped", "not-run"]
+                          },
+                          "durationMs": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "errorMessage": {
+                            "type": "string"
+                          },
+                          "stackTrace": {
+                            "type": "string"
+                          },
+                          "timestamp": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "file": {
+                            "type": "string"
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attempt": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": ["testId", "testName", "status", "timestamp", "file"]
+                      }
+                    },
+                    "diagrams": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["mermaid", "plantuml", "drawio"]
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "metadata": {
+                            "type": "object",
+                            "properties": {
+                              "lineCount": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "wordCount": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "nodeCount": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "complexity": {
+                                "type": "string",
+                                "enum": ["simple", "moderate", "complex"]
+                              }
+                            },
+                            "required": ["lineCount", "wordCount", "nodeCount", "complexity"]
+                          },
+                          "lineNumbers": {
+                            "type": "object",
+                            "properties": {
+                              "start": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              },
+                              "end": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": ["start", "end"]
+                          },
+                          "link": {
+                            "type": "object",
+                            "properties": {
+                              "diagramId": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": ["mermaid", "plantuml", "drawio"]
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "relevance": {
+                                "type": "string",
+                                "enum": ["high", "medium", "low"]
+                              },
+                              "relevanceScore": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              }
+                            },
+                            "required": [
+                              "diagramId",
+                              "type",
+                              "path",
+                              "title",
+                              "relevance",
+                              "relevanceScore"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "type",
+                          "path",
+                          "title",
+                          "content",
+                          "metadata",
+                          "lineNumbers",
+                          "link"
+                        ]
+                      }
+                    },
+                    "codeReferences": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "startLine": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "endLine": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "context": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["implementation", "test", "config", "utility"]
+                          }
+                        },
+                        "required": ["path", "startLine", "endLine", "context", "type"]
+                      }
+                    },
+                    "suggestedActions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "generate-test",
+                              "fix-scenario",
+                              "add-diagram",
+                              "improve-coverage"
+                            ]
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "priority": {
+                            "type": "string",
+                            "enum": ["high", "medium", "low"]
+                          },
+                          "estimatedMinutes": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": ["type", "description", "priority", "estimatedMinutes"]
+                      }
+                    }
+                  },
+                  "required": [
+                    "scenario",
+                    "relatedScenarios",
+                    "testResults",
+                    "diagrams",
+                    "codeReferences",
+                    "suggestedActions"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/diagrams/{diagramId}": {
+      "get": {
+        "summary": "Diagram source and metadata",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "diagramId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getDiagram",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["mermaid", "plantuml", "drawio"]
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "lineCount": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "wordCount": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "nodeCount": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "complexity": {
+                          "type": "string",
+                          "enum": ["simple", "moderate", "complex"]
+                        }
+                      },
+                      "required": ["lineCount", "wordCount", "nodeCount", "complexity"]
+                    },
+                    "lineNumbers": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "exclusiveMinimum": 0
+                        },
+                        "end": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "exclusiveMinimum": 0
+                        }
+                      },
+                      "required": ["start", "end"]
+                    },
+                    "link": {
+                      "type": "object",
+                      "properties": {
+                        "diagramId": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": ["mermaid", "plantuml", "drawio"]
+                        },
+                        "path": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "relevance": {
+                          "type": "string",
+                          "enum": ["high", "medium", "low"]
+                        },
+                        "relevanceScore": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      },
+                      "required": [
+                        "diagramId",
+                        "type",
+                        "path",
+                        "title",
+                        "relevance",
+                        "relevanceScore"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type",
+                    "path",
+                    "title",
+                    "content",
+                    "metadata",
+                    "lineNumbers",
+                    "link"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/results": {
+      "post": {
+        "summary": "Ingest test results and update scenario status",
+        "tags": [],
+        "parameters": [],
+        "operationId": "ingestTestResults",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "format": {
+                        "type": "string",
+                        "enum": ["native"]
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "testId": {
+                              "type": "string"
+                            },
+                            "testName": {
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": ["pass", "fail", "skipped", "not-run"]
+                            },
+                            "durationMs": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "errorMessage": {
+                              "type": "string"
+                            },
+                            "stackTrace": {
+                              "type": "string"
+                            },
+                            "timestamp": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "file": {
+                              "type": "string"
+                            },
+                            "line": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "exclusiveMinimum": 0
+                            },
+                            "tags": {
+                              "default": [],
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "attempt": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "exclusiveMinimum": 0
+                            }
+                          },
+                          "required": ["testId", "testName", "status", "timestamp", "file"]
+                        },
+                        "minItems": 1
+                      }
+                    },
+                    "required": ["format", "results"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "format": {
+                        "type": "string",
+                        "enum": ["playwright-json", "vitest-json", "jest-json"]
+                      },
+                      "report": {
+                        "nullable": true
+                      }
+                    },
+                    "required": ["format"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ingested": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "matchedScenarios": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "unmatchedTests": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "scenariosChanged": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["ingested", "matchedScenarios", "unmatchedTests", "scenariosChanged"]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "422",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/{scenarioId}/status": {
+      "get": {
+        "summary": "Aggregated test status for one scenario",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "scenarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getTestStatus",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "scenarioId": {
+                      "type": "string"
+                    },
+                    "overall": {
+                      "type": "string",
+                      "enum": ["pass", "fail", "skipped", "not-run"]
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "testId": {
+                            "type": "string"
+                          },
+                          "testName": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["pass", "fail", "skipped", "not-run"]
+                          },
+                          "durationMs": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "errorMessage": {
+                            "type": "string"
+                          },
+                          "stackTrace": {
+                            "type": "string"
+                          },
+                          "timestamp": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "file": {
+                            "type": "string"
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attempt": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": ["testId", "testName", "status", "timestamp", "file"]
+                      }
+                    },
+                    "lastRun": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "flaky": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": ["scenarioId", "overall", "results", "lastRun", "flaky"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/index/refresh": {
+      "post": {
+        "summary": "Re-index specs, optionally limited to given paths",
+        "tags": [],
+        "parameters": [],
+        "operationId": "refreshIndex",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "force": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "enum": ["idle", "indexing", "ready", "failed"]
+                    },
+                    "featureCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "scenarioCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "diagramCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "testFileCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lastIndexedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "durationMs": {
+                      "type": "number",
+                      "minimum": 0,
+                      "nullable": true
+                    },
+                    "problems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "error": {
+                            "type": "object",
+                            "properties": {
+                              "tag": {
+                                "type": "string",
+                                "enum": [
+                                  "FileNotFound",
+                                  "ReadFailed",
+                                  "GherkinSyntax",
+                                  "MermaidSyntax",
+                                  "SchemaValidation",
+                                  "ScenarioNotFound",
+                                  "FeatureNotFound",
+                                  "DiagramNotFound",
+                                  "EditorNotSupported",
+                                  "PathEscapesProject",
+                                  "UnsupportedReportFormat",
+                                  "IndexNotReady"
+                                ]
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "details": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "nullable": true
+                                }
+                              }
+                            },
+                            "required": ["tag", "message"]
+                          }
+                        },
+                        "required": ["path", "error"]
+                      }
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "featureCount",
+                    "scenarioCount",
+                    "diagramCount",
+                    "testFileCount",
+                    "lastIndexedAt",
+                    "durationMs",
+                    "problems"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/index/status": {
+      "get": {
+        "summary": "Index lifecycle state, counts, and per-file problems",
+        "tags": [],
+        "parameters": [],
+        "operationId": "getIndexStatus",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "enum": ["idle", "indexing", "ready", "failed"]
+                    },
+                    "featureCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "scenarioCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "diagramCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "testFileCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lastIndexedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "durationMs": {
+                      "type": "number",
+                      "minimum": 0,
+                      "nullable": true
+                    },
+                    "problems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "error": {
+                            "type": "object",
+                            "properties": {
+                              "tag": {
+                                "type": "string",
+                                "enum": [
+                                  "FileNotFound",
+                                  "ReadFailed",
+                                  "GherkinSyntax",
+                                  "MermaidSyntax",
+                                  "SchemaValidation",
+                                  "ScenarioNotFound",
+                                  "FeatureNotFound",
+                                  "DiagramNotFound",
+                                  "EditorNotSupported",
+                                  "PathEscapesProject",
+                                  "UnsupportedReportFormat",
+                                  "IndexNotReady"
+                                ]
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "details": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "nullable": true
+                                }
+                              }
+                            },
+                            "required": ["tag", "message"]
+                          }
+                        },
+                        "required": ["path", "error"]
+                      }
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "featureCount",
+                    "scenarioCount",
+                    "diagramCount",
+                    "testFileCount",
+                    "lastIndexedAt",
+                    "durationMs",
+                    "problems"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lint": {
+      "post": {
+        "summary": "Lint Gherkin specs for style and best-practice violations",
+        "tags": [],
+        "parameters": [],
+        "operationId": "lintSpecs",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "rule": {
+                        "type": "string",
+                        "enum": [
+                          "missing-feature-description",
+                          "missing-scenario-name",
+                          "duplicate-scenario-name",
+                          "inconsistent-step-keyword",
+                          "step-without-given",
+                          "too-many-steps",
+                          "untagged-feature",
+                          "empty-scenario"
+                        ]
+                      },
+                      "severity": {
+                        "type": "string",
+                        "enum": ["error", "warning", "info"]
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "line": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "exclusiveMinimum": 0
+                      },
+                      "column": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "exclusiveMinimum": 0
+                      },
+                      "suggestedFix": {
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string"
+                          },
+                          "to": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["from", "to"]
+                      }
+                    },
+                    "required": ["path", "rule", "severity", "message"]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gherkin/validate": {
+      "post": {
+        "summary": "Validate Gherkin against project conventions",
+        "tags": [],
+        "parameters": [],
+        "operationId": "validateGherkin",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "gherkin": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["gherkin"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          },
+                          "severity": {
+                            "type": "string",
+                            "enum": ["error", "warning", "info"]
+                          },
+                          "location": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string"
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              }
+                            }
+                          }
+                        },
+                        "required": ["message", "severity"]
+                      }
+                    },
+                    "suggestions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["fix", "improve", "refactor"]
+                          },
+                          "from": {
+                            "type": "string"
+                          },
+                          "to": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["message", "type"]
+                      }
+                    },
+                    "compatibility": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  },
+                  "required": ["valid", "warnings", "suggestions", "compatibility"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/editor-links": {
+      "get": {
+        "summary": "Editor deep links for a scenario, feature, or test",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["scenario", "feature", "test"]
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "editor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["vscode", "cursor", "kiro", "intellij"]
+            }
+          }
+        ],
+        "operationId": "getEditorLinks",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "editor": {
+                        "type": "string",
+                        "enum": ["vscode", "cursor", "kiro", "intellij"]
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "string"
+                      },
+                      "line": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "exclusiveMinimum": 0
+                      },
+                      "targetExists": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": ["editor", "url", "label", "path", "line", "targetExists"]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Behavior Workbench API",
+    "version": "0.1.0",
+    "description": "Local API for browsing Gherkin specifications, linked tests, and diagrams. Served by `behavior serve` alongside the web UI."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:4000",
+      "description": "Local workbench"
+    }
+  ],
+  "tags": [
+    {
+      "name": "catalog",
+      "description": "Features and project-level roll-ups"
+    },
+    {
+      "name": "scenarios",
+      "description": "Individual scenarios and agent context"
+    },
+    {
+      "name": "tests",
+      "description": "Result ingestion and status"
+    },
+    {
+      "name": "index",
+      "description": "Index lifecycle"
+    },
+    {
+      "name": "quality",
+      "description": "Linting and Gherkin validation"
+    }
+  ]
+}

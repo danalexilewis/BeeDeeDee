@@ -3,19 +3,44 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.33.3",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "build": "pnpm --filter '@eddy/*' --parallel build",
-    "test": "pnpm --filter '@eddy/*' --parallel test",
-    "lint": "pnpm --filter '@eddy/*' --parallel lint",
-    "dev": "pnpm --filter '@eddy/behavior-next' dev",
-    "clean": "pnpm run -r clean && rm -rf node_modules"
+    "build": "tsc --build && pnpm --filter @eddy/behavior-web build",
+    "typecheck": "tsc --build --force && tsc -p tsconfig.test.json && pnpm --filter @eddy/behavior-web typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,yml}\"",
+    "e2e": "playwright test -c e2e/playwright.config.ts",
+    "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo coverage",
+    "openapi": "pnpm --filter @eddy/behavior-contracts build && pnpm --filter @eddy/behavior-contracts openapi",
+    "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build"
   },
   "devDependencies": {
-    "typescript": "^5.7.2",
-    "@eslint/eslintrc": "^3.2.0",
-    "eslint": "^8.57.0",
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^9.39.5",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "prettier": "^3.3.3",
-    "vitest": "^2.1.8"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   },
-  "packageManager": "pnpm@8.0.0"
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "fastify": "5",
+        "@emnapi/core": "1",
+        "@emnapi/runtime": "1"
+      }
+    }
+  }
 }

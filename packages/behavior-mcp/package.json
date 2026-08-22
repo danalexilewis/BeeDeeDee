@@ -1,0 +1,25 @@
+{
+  "name": "@eddy/behavior-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Behavior Workbench context to AI agents",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "behavior-mcp": "./dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@eddy/behavior-contracts": "workspace:*",
+    "@eddy/behavior-core": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "neverthrow": "^8.2.0",
+    "zod": "^3.25.76"
+  }
+}
