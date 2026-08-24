@@ -3,8 +3,14 @@ import type { ParsedDiagram } from '@eddy/behavior-contracts';
 import type { MatchableTest } from '../domain/matching.js';
 import { partitionResults, type BehaviorError } from '../errors.js';
 import { parseGherkinContent, type ParsedFeatureDocument } from './gherkin.js';
+import { parseGurkiContent, type ParsedGurkiFeatureDocument } from './gurki.js';
 import { parseMermaidContent } from './mermaid.js';
 import { parseTestFileContent } from './test-file.js';
+
+/** True when the path is a Gurki modelling envelope. */
+export function isGurkiSpecPath(filePath: string): boolean {
+  return filePath.toLowerCase().endsWith('.spec.md');
+}
 
 /** A file's path and contents, as handed to the parsers. */
 export type SourceFile = {
@@ -39,6 +45,56 @@ export function parseAllGherkin(
       });
     })
   );
+}
+
+/**
+ * Parses Gurki `*.spec.md` files into feature-shaped documents (one per System).
+ * Failures partition the same way as classic Gherkin.
+ */
+export function parseAllGurki(
+  files: readonly SourceFile[],
+  featuresRoot: string
+): BatchOutcome<ParsedGurkiFeatureDocument> {
+  const results = files.map(function parseOne(file) {
+    return parseGurkiContent({
+      path: file.path,
+      content: file.content,
+      featuresRoot,
+    });
+  });
+
+  const partitioned = partitionResults(results);
+  return {
+    values: partitioned.values.flat(),
+    errors: partitioned.errors,
+  };
+}
+
+/**
+ * Parses classic `.feature` and Gurki `.spec.md` together into one feature list.
+ */
+export function parseAllSpecDocuments(
+  files: readonly SourceFile[],
+  featuresRoot: string
+): BatchOutcome<ParsedFeatureDocument | ParsedGurkiFeatureDocument> {
+  const classic: SourceFile[] = [];
+  const gurki: SourceFile[] = [];
+
+  for (const file of files) {
+    if (isGurkiSpecPath(file.path)) {
+      gurki.push(file);
+    } else {
+      classic.push(file);
+    }
+  }
+
+  const classicOutcome = parseAllGherkin(classic, featuresRoot);
+  const gurkiOutcome = parseAllGurki(gurki, featuresRoot);
+
+  return {
+    values: [...classicOutcome.values, ...gurkiOutcome.values],
+    errors: [...classicOutcome.errors, ...gurkiOutcome.errors],
+  };
 }
 
 /** Parses every diagram file, keeping the good ones. */

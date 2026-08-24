@@ -27,6 +27,7 @@
     "@cucumber/messages": "^34.2.0",
     "@eddy/behavior-contracts": "workspace:*",
     "fast-glob": "^3.3.3",
+    "gurki": "github:danalexilewis/gurki#d1b1f7fad53fc5c880a23faccd9007cdce7fa250",
     "neverthrow": "^8.2.0",
     "zod": "^3.25.76"
   },

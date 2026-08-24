@@ -123,6 +123,9 @@ export function toFeatureDetail(index: BehaviorIndex, feature: IndexedFeature): 
     diagramLinks: feature.diagramLinks,
     rules: feature.rules,
     gherkinSource: feature.source,
+    dialect: feature.dialect,
+    systemOutputs: feature.systemOutputs,
+    systemOutcomes: feature.systemOutcomes,
   };
 
   return feature.background === undefined ? detail : { ...detail, background: feature.background };

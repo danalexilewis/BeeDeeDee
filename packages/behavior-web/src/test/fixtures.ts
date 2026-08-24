@@ -71,6 +71,9 @@ export function aFeatureDetail(overrides: Partial<FeatureDetail> = {}): FeatureD
     diagramLinks: [],
     rules: [],
     gherkinSource: 'Feature: Login\n',
+    dialect: 'gherkin',
+    systemOutputs: [],
+    systemOutcomes: [],
     ...overrides,
   };
 }

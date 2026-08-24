@@ -11,6 +11,7 @@ import { GherkinSteps } from '@/components/gherkin-steps';
 import { MermaidDiagram } from '@/components/mermaid-diagram';
 import { OutcomeBadge, StatusBadge } from '@/components/status-badge';
 import { EmptyState, ErrorState, LoadingState } from '@/components/states';
+import { SystemValueReport } from '@/components/system-value-report';
 import { cn } from '@/lib/cn';
 import { Route as rootRoute } from './root';
 
@@ -199,7 +200,22 @@ function FeatureView() {
         <div className="mt-3 flex items-center gap-4">
           <CoverageBar value={feature.testCoverage} className="max-w-64" />
           <EditorLinks query={{ target: 'feature', id: feature.id }} />
+          {feature.dialect === 'gurki' ? (
+            <span
+              className="border-border text-muted-foreground rounded border px-1.5 py-0.5 text-xs"
+              data-testid="dialect-badge"
+            >
+              Gurki
+            </span>
+          ) : null}
         </div>
+        {feature.dialect === 'gurki' ? (
+          <SystemValueReport
+            className="mt-4"
+            outputs={feature.systemOutputs}
+            outcomes={feature.systemOutcomes}
+          />
+        ) : null}
       </div>
 
       <Group orientation="horizontal" className="min-h-0 flex-1" {...layout}>

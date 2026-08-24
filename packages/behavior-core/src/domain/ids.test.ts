@@ -62,6 +62,12 @@ describe('featureIdFromPath', () => {
     expect(featureIdFromPath('specs/features', 'specs/features/login.FEATURE')).toBe('login');
   });
 
+  it('strips .spec.md for Gurki envelopes', () => {
+    expect(
+      featureIdFromPath('specs/features', 'specs/features/volunteer/event-medics.spec.md')
+    ).toBe('volunteer.event-medics');
+  });
+
   it('falls back to the whole path when the root does not match', () => {
     expect(featureIdFromPath('specs/features', 'elsewhere/login.feature')).toBe('elsewhere.login');
   });

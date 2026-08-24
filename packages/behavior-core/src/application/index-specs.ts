@@ -4,11 +4,13 @@ import { linkDiagramsToScenario, type RelevanceDiagram } from '../domain/relevan
 import { matchTestsToScenarios, type MatchableScenario } from '../domain/matching.js';
 import { partitionResults, toErrorBody, type BehaviorError } from '../errors.js';
 import {
-  parseAllGherkin,
   parseAllMermaid,
+  parseAllSpecDocuments,
   parseAllTestFiles,
   type SourceFile,
 } from '../parsers/batch.js';
+import type { ParsedFeatureDocument } from '../parsers/gherkin.js';
+import type { ParsedGurkiFeatureDocument } from '../parsers/gurki.js';
 import type { ClockPort } from '../ports/clock.js';
 import type { FileSystemPort } from '../ports/file-system.js';
 import type { LoggerPort } from '../ports/logger.js';
@@ -19,7 +21,7 @@ import {
   type IndexedScenario,
 } from './behavior-index.js';
 
-const FEATURE_EXTENSIONS = ['.feature'] as const;
+const FEATURE_EXTENSIONS = ['.feature', '.spec.md'] as const;
 const DIAGRAM_EXTENSIONS = ['.mmd', '.mermaid'] as const;
 const TEST_EXTENSIONS = ['.spec.ts', '.spec.tsx', '.test.ts', '.test.tsx', '.spec.js', '.test.js'];
 
@@ -113,7 +115,7 @@ export function indexBehaviorSpecs(
     .map(function build({ batches, testFileCount }) {
       const [featureFiles, diagramFiles, testFiles] = batches;
 
-      const features = parseAllGherkin(featureFiles.values, project.specPaths.features);
+      const features = parseAllSpecDocuments(featureFiles.values, project.specPaths.features);
       const diagrams = parseAllMermaid(diagramFiles.values, project.specPaths.diagrams);
       const tests = parseAllTestFiles(testFiles.values);
 
@@ -147,6 +149,7 @@ export function indexBehaviorSpecs(
       const matchableScenarios: MatchableScenario[] = [];
 
       for (const document of features.values) {
+        const gurki = isGurkiDocument(document) ? document : undefined;
         const indexedFeature: IndexedFeature = {
           id: document.featureId,
           title: document.title,
@@ -160,6 +163,9 @@ export function indexBehaviorSpecs(
           }),
           diagramLinks: [],
           source: document.source,
+          dialect: gurki === undefined ? 'gherkin' : 'gurki',
+          systemOutputs: gurki?.systemOutputs ?? [],
+          systemOutcomes: gurki?.systemOutcomes ?? [],
         };
         if (document.background !== undefined) indexedFeature.background = document.background;
 
@@ -233,4 +239,11 @@ export function indexBehaviorSpecs(
 
       return index;
     });
+}
+
+/** Narrows a parsed document to the Gurki-enriched shape. */
+function isGurkiDocument(
+  document: ParsedFeatureDocument | ParsedGurkiFeatureDocument
+): document is ParsedGurkiFeatureDocument {
+  return 'dialect' in document && document.dialect === 'gurki';
 }

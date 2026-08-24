@@ -182,15 +182,34 @@ ledger netting.
 
 ## Suggested delivery order (PRs)
 
-1. **Docs:** this plan + landscape Gurki note + ADR stub (this PR / follow-up).
-2. **Core parse/index** for `*.spec.md` behind `dialect: auto` (Phase 1).
-3. **Contracts + value report + Activates resolution** (Phase 2).
-4. **UI system value + kind styling + Activates list/graph** (Phase 3).
+1. **Docs:** this plan + landscape Gurki note + ADR stub.
+2. **Thin vertical (in progress on this branch):** one Gurki `*.spec.md` through
+   parse → index → feature detail (`systemOutputs` / `systemOutcomes`) → UI
+   value report + kind-coloured steps, beside classic `.feature` demo files.
+3. **Contracts polish + Activates resolution** (Phase 2 remainder).
+4. **Activates graph + catalog dialect rollups** (Phase 3 remainder).
 5. **Demo Gurki corpus + skill rewrite** (Phases 5–6 can overlap with 3).
 6. **Analysis sidecar** when a real consumer needs net/churn (Phase 4).
 
-Prefer thin vertical slices (one Gurki file visible end-to-end) over a big-bang
-parser swap.
+### Why thin vertical (not horizontal layers)
+
+The hard unknowns are at **package seams**, not inside a single parser:
+
+1. **Dialect mapping** — Gurki `System`/`Output`/`Outcome`/`Activates` must land in
+   BeeDeeDee’s Feature/Scenario IR (or force a contracts rewrite). That only
+   becomes real when a projection and one UI panel consume the parse.
+2. **Dual dialect safety** — classic `.feature` (Background / Rule / Outline)
+   must keep working. An end-to-end Gurki sample beside the existing demo
+   proves coexistence; a months-long “finish all parsers first” branch does not.
+3. **Feedback loop** — value reports and Activates only pay off when browsable.
+   Horizontal work (all schemas, then all MCP, then all UI) delays the first
+   moment someone can see aggregation — the actual product bet.
+4. **Dependency risk** — `gurki` is pre-1.0 / may be git-pinned. Touching encode,
+   lint, valueReport, and UI against one fixture surfaces API mismatch early.
+
+Horizontal layering is fine *inside* a vertical slice (parse → index → one
+API field → one panel). Avoid a horizontal-only Phase 1 that ships no visible
+Gurki system.
 
 ## Risks
 
