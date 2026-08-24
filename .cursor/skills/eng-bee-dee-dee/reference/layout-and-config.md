@@ -49,7 +49,7 @@ Filenames searched, in order: `.behaviorrc`, then `.behaviorrc.json`.
 
 Constraints:
 
-- `supportedEditors`: `vscode` | `cursor` | `kiro` | `intellij` (at least one if set)
+- `supportedEditors`: `vscode` | `cursor` | `intellij` (at least one if set)
 - `server.port`: integer 1–65535
 - Path strings must be non-empty when set
 - `id` and `rootPath` are derived from the project directory — never put them in the file

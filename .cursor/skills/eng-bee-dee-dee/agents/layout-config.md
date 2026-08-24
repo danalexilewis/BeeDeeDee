@@ -70,7 +70,7 @@ Server default: `127.0.0.1:4000`. Editor default: vscode/cursor, `openCommand: "
 
 ## Rules
 
-- Valid `supportedEditors`: `vscode` | `cursor` | `kiro` | `intellij`.
+- Valid `supportedEditors`: `vscode` | `cursor` | `intellij`.
 - Paths are relative to the project root; non-empty strings only.
 - Do not invent a `package.json` script unless asked.
 - If a `.behaviorrc` already exists, emit a full updated file (not a partial patch) so the orchestrator can write it safely.

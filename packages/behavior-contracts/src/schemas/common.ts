@@ -13,7 +13,7 @@ export const featureStatusSchema = z.enum(['passing', 'failing', 'untested']);
 export const relevanceSchema = z.enum(['high', 'medium', 'low']);
 
 /** Editors that support deep linking into spec and test files. */
-export const editorTypeSchema = z.enum(['vscode', 'cursor', 'kiro', 'intellij']);
+export const editorTypeSchema = z.enum(['vscode', 'cursor', 'intellij']);
 
 /** Test frameworks whose files and reports can be indexed. */
 export const testFrameworkSchema = z.enum(['playwright', 'jest', 'vitest', 'custom']);

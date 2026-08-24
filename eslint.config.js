@@ -9,7 +9,6 @@ export default tseslint.config(
       '**/dist/**',
       '**/coverage/**',
       '**/*.tsbuildinfo',
-      '.kiro/**',
       'packages/behavior-web/src/components/ui/**',
       'playwright-report/**',
       'test-results/**',
