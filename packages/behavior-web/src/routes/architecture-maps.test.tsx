@@ -108,6 +108,6 @@ describe('architecture maps routes', () => {
     const screen = await renderAt('/maps/overview');
     await expect.element(screen.getByTestId('architecture-map-page')).toBeVisible();
     await expect.element(screen.getByTestId('architecture-canvas')).toBeVisible();
-    await expect.element(screen.getByText('Overview')).toBeVisible();
+    await expect.element(screen.getByRole('heading', { level: 1, name: 'Overview' })).toBeVisible();
   });
 });

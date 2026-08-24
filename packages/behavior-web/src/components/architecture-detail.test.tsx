@@ -137,7 +137,9 @@ describe('ArchitectureDetailPanel', () => {
 
     await expect.element(screen.getByText('Fed by stages')).toBeVisible();
     await expect.element(screen.getByText('Login')).toBeVisible();
-    await expect.element(screen.getByText('email')).toBeVisible();
+    await expect
+      .element(screen.getByRole('listitem').getByText('email', { exact: true }))
+      .toBeVisible();
   });
 
   test('reports when a domain node has no inbound lineage', async () => {
@@ -188,7 +190,7 @@ describe('ArchitectureDetailPanel', () => {
     );
 
     await expect.element(screen.getByText('Flows into domain')).toBeVisible();
-    await expect.element(screen.getByText('email')).toBeVisible();
+    await expect.element(screen.getByText('email', { exact: true })).toBeVisible();
   });
 
   test('resolves required-to-proceed ids that are not collected', async () => {
