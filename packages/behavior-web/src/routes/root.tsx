@@ -67,17 +67,14 @@ function StatusBar() {
   const { connected, problem } = useWorkbenchEvents();
 
   return (
-    <div className="text-muted-foreground flex items-center gap-4 text-xs">
+    <div className="text-muted-foreground flex flex-wrap items-center justify-end gap-2 font-mono text-xs">
       {status === undefined ? null : (
         <>
-          <span data-testid="index-state">
-            {status.featureCount} features, {status.scenarioCount} scenarios
+          <span data-testid="index-state" className="pb-chip">
+            {status.featureCount} features · {status.scenarioCount} scenarios
           </span>
           {status.problems.length === 0 ? null : (
-            <Link
-              to="/problems"
-              className="text-failing inline-flex items-center gap-1 hover:underline"
-            >
+            <Link to="/problems" className="pb-chip text-failing hover:bg-paper-muted">
               <AlertTriangle className="size-3" aria-hidden />
               {status.problems.length} problem{status.problems.length === 1 ? '' : 's'}
             </Link>
@@ -88,10 +85,7 @@ function StatusBar() {
         data-testid="live-indicator"
         data-connected={connected}
         title={problem ?? (connected ? 'Live updates connected' : 'Connecting')}
-        className={cn(
-          'inline-flex items-center gap-1',
-          connected ? 'text-passing' : 'text-muted-foreground'
-        )}
+        className={cn('pb-chip', connected ? 'text-passing' : 'text-muted-foreground')}
       >
         <Activity className="size-3" aria-hidden />
         {connected ? 'Live' : 'Offline'}
@@ -102,40 +96,34 @@ function StatusBar() {
 
 function RootLayout() {
   return (
-    <div className="flex h-screen flex-col">
-      <header className="border-border flex shrink-0 items-center justify-between border-b px-4 py-2">
-        <nav className="flex items-center gap-4">
-          <Link to="/" className="text-sm font-semibold">
-            Behavior Workbench
+    <div className="flex h-screen flex-col bg-[var(--paper)]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b-2 border-[var(--ink)] px-4 py-3">
+        <nav className="flex flex-wrap items-center gap-4">
+          <Link to="/" className="pb-brand">
+            BeeDeeDee
           </Link>
           <Link
             to="/"
             activeOptions={{ exact: true }}
-            activeProps={{ className: 'text-foreground' }}
-            className="text-muted-foreground hover:text-foreground text-sm"
+            activeProps={{ 'data-status': 'active' }}
+            className="pb-nav-link"
           >
             Catalog
           </Link>
-          <Link
-            to="/maps"
-            activeProps={{ className: 'text-foreground' }}
-            className="text-muted-foreground hover:text-foreground text-sm"
-          >
+          <Link to="/maps" activeProps={{ 'data-status': 'active' }} className="pb-nav-link">
             Architecture
           </Link>
-          <Link
-            to="/problems"
-            activeProps={{ className: 'text-foreground' }}
-            className="text-muted-foreground hover:text-foreground text-sm"
-          >
+          <Link to="/problems" activeProps={{ 'data-status': 'active' }} className="pb-nav-link">
             Problems
           </Link>
         </nav>
         <StatusBar />
       </header>
 
-      <main className="min-h-0 flex-1 overflow-hidden">
-        <Outlet />
+      <main className="min-h-0 flex-1 overflow-hidden p-3 sm:p-4">
+        <div className="pb-window flex h-full min-h-0 flex-col overflow-hidden">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

@@ -1,67 +1,152 @@
 @import 'tailwindcss';
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-muted: var(--paper-muted);
+  --color-muted-foreground: var(--muted);
+  --color-border: var(--ink);
+  --color-ring: var(--ink);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--on-accent);
   --color-passing: var(--passing);
   --color-failing: var(--failing);
   --color-untested: var(--untested);
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
+  --shadow-hard: var(--shadow);
+  --radius-sm: var(--radius);
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.15 0.01 260);
-  --card: oklch(0.99 0.002 260);
-  --card-foreground: oklch(0.15 0.01 260);
-  --muted: oklch(0.96 0.004 260);
-  --muted-foreground: oklch(0.5 0.015 260);
-  --border: oklch(0.9 0.006 260);
-  --ring: oklch(0.6 0.13 255);
-  --primary: oklch(0.55 0.16 255);
-  --primary-foreground: oklch(0.99 0 0);
-  --passing: oklch(0.63 0.15 150);
-  --failing: oklch(0.6 0.2 25);
-  --untested: oklch(0.65 0.02 260);
+  /* Policy Bias tokens — browsable paper/ink chrome */
+  --paper: #fffbe6;
+  --paper-muted: #f3ecd0;
+  --ink: #171717;
+  --accent: #1a0dab;
+  --on-accent: #fffbe6;
+  --muted: #4a4740;
+  --shadow: 4px 4px 0 #171717;
+  --radius: 6px;
+  --font-ui: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --chrome-control: 48px;
+
+  --passing: #0f7a3a;
+  --failing: #b42318;
+  --untested: #6b6558;
+
+  /* Aliases kept for existing utility class names */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --border: var(--ink);
+  --ring: var(--ink);
+  --primary: var(--accent);
+  --primary-foreground: var(--on-accent);
 }
 
-.dark {
-  --background: oklch(0.17 0.012 260);
-  --foreground: oklch(0.95 0.004 260);
-  --card: oklch(0.21 0.014 260);
-  --card-foreground: oklch(0.95 0.004 260);
-  --muted: oklch(0.26 0.014 260);
-  --muted-foreground: oklch(0.68 0.015 260);
-  --border: oklch(0.31 0.016 260);
-  --ring: oklch(0.65 0.14 255);
-  --primary: oklch(0.68 0.15 255);
-  --primary-foreground: oklch(0.17 0.012 260);
-  --passing: oklch(0.7 0.16 150);
-  --failing: oklch(0.66 0.2 25);
-  --untested: oklch(0.6 0.02 260);
+*,
+*::before,
+*::after {
+  border-color: var(--ink);
 }
 
-* {
-  border-color: var(--color-border);
-}
-
+html,
 body {
   margin: 0;
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
 code,
-pre {
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+pre,
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+a:link,
+a:visited {
+  color: var(--accent);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Window chrome shared with Policy Bias directory pages */
+.pb-window {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.pb-title-bar {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 12px;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0 0.65rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pb-nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pb-nav-link[data-status='active'],
+.pb-nav-link:hover {
+  color: var(--ink);
+}
+
+.pb-brand {
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pb-brand:link,
+.pb-brand:visited {
+  color: var(--ink);
 }

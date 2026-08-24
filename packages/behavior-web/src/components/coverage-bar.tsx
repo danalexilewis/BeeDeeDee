@@ -19,11 +19,11 @@ export function CoverageBar({ value, className }: CoverageBarProps) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Test coverage"
-        className="bg-muted h-1.5 w-full overflow-hidden rounded-full"
+        className="bg-[var(--paper-muted)] h-1.5 w-full overflow-hidden rounded-[var(--radius)] border border-[var(--ink)]"
       >
         <div
           data-testid="coverage-fill"
-          className={cn('h-full rounded-full transition-[width]', tone)}
+          className={cn('h-full transition-[width]', tone)}
           style={{ width: `${clamped}%` }}
         />
       </div>

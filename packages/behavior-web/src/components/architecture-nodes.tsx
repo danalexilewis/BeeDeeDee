@@ -38,10 +38,10 @@ export function FlowStageNode({ data }: NodeProps<FlowCanvasNode>) {
       data-testid={`flow-node-${node.id}`}
       data-kind={node.kind}
       className={cn(
-        'border-border bg-card min-w-44 max-w-56 rounded-lg border px-3 py-2 shadow-sm',
-        node.kind === 'hub' && 'border-primary/40 bg-primary/5',
+        'min-w-44 max-w-56 rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--paper)] px-3 py-2 shadow-[2px_2px_0_var(--ink)]',
+        node.kind === 'hub' && 'bg-[var(--paper-muted)]',
         node.kind === 'leaf' && 'border-dashed',
-        selected && 'ring-ring ring-2'
+        selected && 'outline outline-2 outline-offset-2 outline-[var(--ink)]'
       )}
     >
       <Handle type="target" position={Position.Left} className="!bg-primary !size-2" />
@@ -91,9 +91,9 @@ export function DomainModelNode({ data }: NodeProps<DomainCanvasNode>) {
       data-testid={`domain-node-${node.id}`}
       data-kind={node.kind}
       className={cn(
-        'border-border bg-card min-w-36 max-w-48 rounded-lg border px-3 py-2 shadow-sm',
-        isField && 'bg-muted/40',
-        selected && 'ring-ring ring-2'
+        'min-w-36 max-w-48 rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--paper)] px-3 py-2 shadow-[2px_2px_0_var(--ink)]',
+        isField && 'bg-[var(--paper-muted)]',
+        selected && 'outline outline-2 outline-offset-2 outline-[var(--ink)]'
       )}
     >
       <Handle type="target" position={Position.Top} className="!bg-passing !size-2" />

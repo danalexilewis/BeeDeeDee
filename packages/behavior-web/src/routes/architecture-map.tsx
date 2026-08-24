@@ -15,18 +15,20 @@ function ArchitectureMapPage() {
 
   return (
     <div className="flex h-full min-h-0 flex-col" data-testid="architecture-map-page">
-      <div className="border-border flex shrink-0 items-center justify-between gap-3 border-b px-4 py-2">
+      <div className="pb-title-bar justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-muted-foreground flex items-center gap-2 text-xs">
-            <Link to="/maps" className="hover:text-foreground hover:underline">
+          <div className="text-muted-foreground flex items-center gap-2 normal-case tracking-normal">
+            <Link to="/maps" className="hover:underline">
               Maps
             </Link>
             <span>/</span>
             <span className="truncate">{data.path}</span>
           </div>
-          <h1 className="truncate text-sm font-semibold">{data.title}</h1>
+          <h1 className="truncate font-sans text-sm font-semibold normal-case tracking-normal">
+            {data.title}
+          </h1>
         </div>
-        <p className="text-muted-foreground hidden text-xs sm:block">
+        <p className="text-muted-foreground hidden font-mono text-[10px] normal-case tracking-normal sm:block">
           Collapse hubs · zoom for leaf stages · select a node for data detail
         </p>
       </div>

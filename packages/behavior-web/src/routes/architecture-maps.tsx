@@ -21,44 +21,44 @@ function ArchitectureMapsPage() {
   }
 
   return (
-    <div className="h-full overflow-auto p-4" data-testid="architecture-maps-page">
-      <div className="mb-4">
-        <h1 className="text-lg font-semibold">Architecture maps</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="h-full overflow-auto" data-testid="architecture-maps-page">
+      <div className="pb-title-bar">Architecture maps</div>
+      <div className="p-4">
+        <p className="text-muted-foreground mb-4 font-serif text-sm">
           Split-plane canvases of user flow above and domain model below.
         </p>
-      </div>
-      <ul className="space-y-2">
-        {data.map(function toCard(map) {
-          return (
-            <li key={map.id}>
-              <Link
-                to="/maps/$mapId"
-                params={{ mapId: map.id }}
-                data-testid="architecture-map-card"
-                className="border-border bg-card hover:border-ring block rounded-lg border p-3 transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <Network className="text-primary mt-0.5 size-4 shrink-0" aria-hidden />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium">{map.title}</p>
-                    <p className="text-muted-foreground truncate text-xs">{map.path}</p>
-                    {map.description.length === 0 ? null : (
-                      <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">
-                        {map.description}
+        <ul className="space-y-3">
+          {data.map(function toCard(map) {
+            return (
+              <li key={map.id}>
+                <Link
+                  to="/maps/$mapId"
+                  params={{ mapId: map.id }}
+                  data-testid="architecture-map-card"
+                  className="block rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--paper)] p-3 shadow-[2px_2px_0_var(--ink)] transition-[transform,background-color] hover:translate-x-px hover:translate-y-px hover:bg-[var(--paper-muted)] hover:shadow-none"
+                >
+                  <div className="flex items-start gap-3">
+                    <Network className="mt-0.5 size-4 shrink-0 text-[var(--accent)]" aria-hidden />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium">{map.title}</p>
+                      <p className="text-muted-foreground truncate font-mono text-xs">{map.path}</p>
+                      {map.description.length === 0 ? null : (
+                        <p className="text-muted-foreground mt-1 line-clamp-2 font-serif text-sm">
+                          {map.description}
+                        </p>
+                      )}
+                      <p className="text-muted-foreground mt-2 font-mono text-xs">
+                        {map.flowNodeCount} flow · {map.domainNodeCount} domain · {map.lineageCount}{' '}
+                        lineage
                       </p>
-                    )}
-                    <p className="text-muted-foreground mt-2 text-xs">
-                      {map.flowNodeCount} flow · {map.domainNodeCount} domain · {map.lineageCount}{' '}
-                      lineage
-                    </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import type { FeatureStatus, TestOutcome } from '@eddy/behavior-contracts';
 import { cn } from '@/lib/cn';
 
-/** Visual treatment per status, shared by feature and scenario badges. */
+/** Visual treatment per status — hard ink chips in the Policy Bias style. */
 const STATUS_CLASSES: Record<FeatureStatus, string> = {
-  passing: 'bg-passing/15 text-passing border-passing/30',
-  failing: 'bg-failing/15 text-failing border-failing/30',
-  untested: 'bg-untested/15 text-untested border-untested/30',
+  passing: 'bg-[color-mix(in_srgb,var(--passing)_12%,var(--paper))] text-passing border-[var(--ink)]',
+  failing: 'bg-[color-mix(in_srgb,var(--failing)_12%,var(--paper))] text-failing border-[var(--ink)]',
+  untested:
+    'bg-[color-mix(in_srgb,var(--untested)_12%,var(--paper))] text-untested border-[var(--ink)]',
 };
 
 const STATUS_LABELS: Record<FeatureStatus, string> = {
@@ -28,14 +29,14 @@ export type StatusBadgeProps = {
   className?: string;
 };
 
-/** A coloured pill showing pass, fail, or untested. */
+/** A coloured chip showing pass, fail, or untested. */
 export function StatusBadge({ status, label, className }: StatusBadgeProps) {
   return (
     <span
       data-testid="status-badge"
       data-status={status}
       className={cn(
-        'inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium',
+        'inline-flex items-center rounded-[var(--radius)] border-2 px-2 py-0.5 font-mono text-xs font-semibold',
         STATUS_CLASSES[status],
         className
       )}

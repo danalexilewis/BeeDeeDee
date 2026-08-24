@@ -47,6 +47,11 @@ An earlier draft justified this partly by claiming SSE could not work in Next
 route handlers. That was wrong — SSE streams fine there; only WebSockets are
 unsupported. The argument stands on the other reasons.
 
+**Visual language.** The SPA follows the Policy Bias paper/ink window chrome
+(cream `#fffbe6`, hard 2px borders, offset shadows, Bricolage Grotesque + IBM
+Plex Mono) so BeeDeeDee and Policy Bias feel like one family — without adopting
+Policy Bias’s election-card product surface.
+
 ## 4. Fastify 5 with a pnpm peer override
 
 **Decision.** Run Fastify 5 and declare

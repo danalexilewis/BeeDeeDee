@@ -42,7 +42,7 @@ export function ArchitectureDetailPanel({
     return (
       <aside
         data-testid="architecture-detail"
-        className={cn('border-border bg-card space-y-3 border-l p-4', className)}
+        className={cn('space-y-3 border-l-2 border-[var(--ink)] bg-[var(--paper)] p-4', className)}
       >
         <h2 className="text-sm font-semibold">{map.title}</h2>
         {map.description.length === 0 ? (
@@ -73,7 +73,10 @@ export function ArchitectureDetailPanel({
     return (
       <aside
         data-testid="architecture-detail"
-        className={cn('border-border bg-card space-y-4 overflow-auto border-l p-4', className)}
+        className={cn(
+          'space-y-4 overflow-auto border-l-2 border-[var(--ink)] bg-[var(--paper)] p-4',
+          className
+        )}
       >
         <div>
           <p className="text-muted-foreground text-[10px] font-semibold uppercase">Lineage</p>
@@ -114,7 +117,10 @@ export function ArchitectureDetailPanel({
     return (
       <aside
         data-testid="architecture-detail"
-        className={cn('border-border bg-card space-y-4 overflow-auto border-l p-4', className)}
+        className={cn(
+          'space-y-4 overflow-auto border-l-2 border-[var(--ink)] bg-[var(--paper)] p-4',
+          className
+        )}
       >
         <div>
           <p className="text-muted-foreground text-[10px] font-semibold uppercase">
@@ -141,7 +147,7 @@ export function ArchitectureDetailPanel({
                   return candidate.id === edge.source;
                 });
                 return (
-                  <li key={edge.id} className="border-border rounded-md border p-2 text-sm">
+                  <li key={edge.id} className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm">
                     <p className="font-medium">{source?.label ?? edge.source}</p>
                     <p className="text-muted-foreground text-xs">
                       {edge.label.length > 0 ? edge.label : edge.dataId ?? edge.id}
@@ -165,7 +171,10 @@ export function ArchitectureDetailPanel({
   return (
     <aside
       data-testid="architecture-detail"
-      className={cn('border-border bg-card space-y-4 overflow-auto border-l p-4', className)}
+      className={cn(
+        'space-y-4 overflow-auto border-l-2 border-[var(--ink)] bg-[var(--paper)] p-4',
+        className
+      )}
     >
       <div>
         <p className="text-muted-foreground text-[10px] font-semibold uppercase">
@@ -181,7 +190,7 @@ export function ArchitectureDetailPanel({
         <button
           type="button"
           data-testid="architecture-drill-in"
-          className="bg-primary text-primary-foreground inline-flex rounded-md px-3 py-1.5 text-xs font-medium"
+          className="inline-flex rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--ink)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--paper)] shadow-[2px_2px_0_var(--accent)]"
           onClick={function onClick() {
             onOpenFeature?.(node.featureId!, node.scenarioId);
           }}
@@ -200,7 +209,7 @@ export function ArchitectureDetailPanel({
           <ul className="space-y-2" data-testid="data-collected">
             {node.dataCollected.map(function toItem(item) {
               return (
-                <li key={item.id} className="border-border rounded-md border p-2 text-sm">
+                <li key={item.id} className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium">{item.name}</span>
                     {item.required || required.has(item.id) ? (
