@@ -47,9 +47,7 @@ function toValueItem(item: GurkiValueItem): SystemValueItem {
 function toGherkinStep(scenarioId: string, step: GurkiStep, index: number): GherkinStep {
   const kindSurface = surfaceForKind(step.kind);
   const keyword =
-    step.connector === null
-      ? `${kindSurface} `
-      : `${surfaceForConnector(step.connector)} `;
+    step.connector === null ? `${kindSurface} ` : `${surfaceForConnector(step.connector)} `;
 
   return {
     id: stepIdFrom(scenarioId, index),
@@ -137,9 +135,7 @@ export function parseGurkiContent(
         input.path,
         first?.line ?? 1,
         1,
-        first === undefined
-          ? 'gurki parse failed'
-          : `gurki ${first.code}: ${first.message}`
+        first === undefined ? 'gurki parse failed' : `gurki ${first.code}: ${first.message}`
       )
     );
   }

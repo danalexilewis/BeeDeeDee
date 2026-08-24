@@ -2,14 +2,7 @@ import type { GherkinStep } from '@eddy/behavior-contracts';
 import { normalizeName } from './text.js';
 
 /** Optional Gurki (and mapped classic) step kinds. */
-export const SPEC_STEP_KINDS = [
-  'given',
-  'when',
-  'then',
-  'output',
-  'outcome',
-  'activates',
-] as const;
+export const SPEC_STEP_KINDS = ['given', 'when', 'then', 'output', 'outcome', 'activates'] as const;
 
 export type SpecStepKind = (typeof SPEC_STEP_KINDS)[number];
 
@@ -34,10 +27,7 @@ export type ActivatesScenario = {
 };
 
 /** True when the step is an Activates primary or continuation. */
-export function isActivatesStep(step: {
-  keyword: string;
-  kind?: SpecStepKind;
-}): boolean {
+export function isActivatesStep(step: { keyword: string; kind?: SpecStepKind }): boolean {
   if (step.kind === 'activates') return true;
   return step.keyword.trim().toLowerCase() === 'activates';
 }
@@ -46,9 +36,7 @@ export function isActivatesStep(step: {
  * Resolves Activates steps against scenario titles (normalised name match).
  * Ambiguous titles leave the edge unresolved rather than picking arbitrarily.
  */
-export function resolveActivatesEdges(
-  scenarios: readonly ActivatesScenario[]
-): ActivatesEdge[] {
+export function resolveActivatesEdges(scenarios: readonly ActivatesScenario[]): ActivatesEdge[] {
   const byName = new Map<string, ActivatesScenario[]>();
 
   for (const scenario of scenarios) {

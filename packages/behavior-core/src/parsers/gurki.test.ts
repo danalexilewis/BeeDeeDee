@@ -41,12 +41,16 @@ describe('parseGurkiContent', () => {
     expect(document?.tags).toEqual(['health', 'volunteer']);
     expect(document?.scenarios).toHaveLength(1);
     expect(document?.scenarios[0]?.name).toBe('An event medic covers a stadium fixture');
-    expect(document?.scenarios[0]?.steps.map(function toKeyword(step) {
-      return step.keyword.trim();
-    })).toEqual(['Given', 'When', 'Then', 'Output', 'And', 'Outcome', 'But', 'Activates']);
-    expect(document?.systemOutputs.map(function toText(item) {
-      return item.text;
-    })).toEqual(['14 hours of event cover', '9 patients assessed']);
+    expect(
+      document?.scenarios[0]?.steps.map(function toKeyword(step) {
+        return step.keyword.trim();
+      })
+    ).toEqual(['Given', 'When', 'Then', 'Output', 'And', 'Outcome', 'But', 'Activates']);
+    expect(
+      document?.systemOutputs.map(function toText(item) {
+        return item.text;
+      })
+    ).toEqual(['14 hours of event cover', '9 patients assessed']);
     expect(document?.systemOutcomes).toEqual([
       { text: 'the event can run with on-site first response' },
       { text: 'they missed a paid weekend shift', connector: 'but' },

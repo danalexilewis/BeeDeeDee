@@ -48,12 +48,12 @@ from journeys” loop (MCP already has `propose_gherkin` as a draft path).
 ## System modelling (Gurki)
 
 A third cluster sits beside living docs and reverse-spec: **system value
-modelling** in a Gherkin-shaped language that is *not* a Cucumber dialect.
+modelling** in a Gherkin-shaped language that is _not_ a Cucumber dialect.
 
-| Tool | What it does | Overlap with BeeDeeDee |
-| --- | --- | --- |
+| Tool                                                                           | What it does                                                                                                            | Overlap with BeeDeeDee                                                                            |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **[Gurki](https://gurki.nz)** ([repo](https://github.com/danalexilewis/gurki)) | Tiny Gherkin flavour: `System`, `Output`, `Outcome`, `Activates`; derived system value reports and optional ledger nets | Intended primary dialect for BeeDeeDee — see [gurki-migration-plan.md](./gurki-migration-plan.md) |
-| **[Policy Bias](https://policybias.com)** | Browsable card wall / game built from Gurki `*.spec.md` corpora | Proof of “specs → aggregate canvas”; product is separate from the workbench |
+| **[Policy Bias](https://policybias.com)**                                      | Browsable card wall / game built from Gurki `*.spec.md` corpora                                                         | Proof of “specs → aggregate canvas”; product is separate from the workbench                       |
 
 Gurki answers what exists, what happens, what is produced, what changes, and what
 becomes possible next. Cucumber living docs answer whether automated scenarios

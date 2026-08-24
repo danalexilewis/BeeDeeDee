@@ -10,17 +10,11 @@ export type SystemValueReportProps = {
 /** Formats one value-report line with And/But valence. */
 function ValueLine({ item, isFirst }: { item: SystemValueItem; isFirst: boolean }) {
   const prefix =
-    isFirst && item.connector !== 'but'
-      ? null
-      : item.connector === 'but'
-        ? 'But'
-        : 'And';
+    isFirst && item.connector !== 'but' ? null : item.connector === 'but' ? 'But' : 'And';
 
   return (
     <li className="text-sm">
-      {prefix === null ? null : (
-        <span className="text-primary font-medium">{prefix} </span>
-      )}
+      {prefix === null ? null : <span className="text-primary font-medium">{prefix} </span>}
       <span className={item.connector === 'but' ? 'text-failing' : undefined}>{item.text}</span>
     </li>
   );

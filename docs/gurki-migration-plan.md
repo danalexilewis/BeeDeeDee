@@ -20,8 +20,8 @@ BeeDeeDee indexes **Gurki** as the primary modelling dialect:
 - Classic `.feature` remains readable for a transition period (dual dialect)
 
 The workbench stays what it is good at: local always-on index, Mermaid, editor
-deep links, test ingest, MCP. Gurki supplies *what the system produces and
-unlocks*; BeeDeeDee supplies *the map and the agent loop*.
+deep links, test ingest, MCP. Gurki supplies _what the system produces and
+unlocks_; BeeDeeDee supplies _the map and the agent loop_.
 
 Simulation stays out of scope (same as Gurki v0.1).
 
@@ -54,11 +54,11 @@ dual-dialect first, then Gurki-first fixtures and authoring guidance.
 
 ## Dependency gate
 
-| State | Action |
-| --- | --- |
+| State                        | Action                                                                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `gurki` not on npm (current) | Prefer `github:danalexilewis/gurki` (pinned commit/tag) or a pnpm workspace sibling; do not invent a permanent fork |
-| `gurki@0.1.x` published | Switch to registry dep; pin minor; use public exports only (`gurki`, `gurki/keywords.json`) |
-| Schema drift | Pin `schemaVersion: "0.1"` and fail loudly on unknown versions |
+| `gurki@0.1.x` published      | Switch to registry dep; pin minor; use public exports only (`gurki`, `gurki/keywords.json`)                         |
+| Schema drift                 | Pin `schemaVersion: "0.1"` and fail loudly on unknown versions                                                      |
 
 Publish of `gurki` is an external unblocker, not a BeeDeeDee task — plan assumes
 git dependency works from day one of Phase 1.
@@ -82,15 +82,15 @@ No code required.
 **Done when:** `behavior index` against a Gurki corpus reports systems,
 scenarios, and step kinds including Output/Outcome/Activates.
 
-| Work | Seams |
-| --- | --- |
-| Add Gurki dependency (git or npm) | root / `behavior-core` package.json |
-| `parseGurkiContent` adapter → existing `ParsedFeatureDocument`-shaped IR **or** a new `ParsedSystemDocument` mapped at the application boundary | `packages/behavior-core/src/parsers/` |
-| Extend indexer: `FEATURE_EXTENSIONS` → also `.spec.md`; optional book-fence scan later | `application/index-specs.ts` |
-| Config: `dialect: 'auto' \| 'gurki' \| 'gherkin'` (default `auto` by extension / first keyword) | `behavior-cli` config + contracts `project` schema |
-| Preserve classic path via `@cucumber/gherkin` | keep `gherkin.ts` |
-| Errors: add `GurkiSyntax` (or generalise to `SpecSyntax`) in the tagged union + OpenAPI | `errors.ts`, contracts |
-| Property/unit tests with Gurki fixtures copied/adapted from gurki `examples/` | `behavior-core` tests |
+| Work                                                                                                                                            | Seams                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Add Gurki dependency (git or npm)                                                                                                               | root / `behavior-core` package.json                |
+| `parseGurkiContent` adapter → existing `ParsedFeatureDocument`-shaped IR **or** a new `ParsedSystemDocument` mapped at the application boundary | `packages/behavior-core/src/parsers/`              |
+| Extend indexer: `FEATURE_EXTENSIONS` → also `.spec.md`; optional book-fence scan later                                                          | `application/index-specs.ts`                       |
+| Config: `dialect: 'auto' \| 'gurki' \| 'gherkin'` (default `auto` by extension / first keyword)                                                 | `behavior-cli` config + contracts `project` schema |
+| Preserve classic path via `@cucumber/gherkin`                                                                                                   | keep `gherkin.ts`                                  |
+| Errors: add `GurkiSyntax` (or generalise to `SpecSyntax`) in the tagged union + OpenAPI                                                         | `errors.ts`, contracts                             |
+| Property/unit tests with Gurki fixtures copied/adapted from gurki `examples/`                                                                   | `behavior-core` tests                              |
 
 **Mapping choices (lock in this phase):**
 
@@ -106,13 +106,13 @@ scenarios, and step kinds including Output/Outcome/Activates.
 **Done when:** API returns system value reports and Activates links for Gurki
 documents.
 
-| Work | Seams |
-| --- | --- |
-| Optional `systemOutputs` / `systemOutcomes` on feature detail | `schemas/feature.ts` |
-| Step `kind` enum or normalised keyword (`given`…`activates`) | `schemas/gherkin.ts` (consider rename to `spec.ts` later) |
-| Projection: build value report from steps; resolve `Activates` text → scenario id when titles match | `application/projections.ts` |
-| Lint: lifecycle order warning; unresolved Activates; “don’t hand-edit value report” | wrap `gurki` lint + BeeDeeDee rules |
-| `POST /api/gherkin/validate` accepts Gurki bodies (additive) or add `/api/spec/validate` | contracts + server |
+| Work                                                                                                | Seams                                                     |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Optional `systemOutputs` / `systemOutcomes` on feature detail                                       | `schemas/feature.ts`                                      |
+| Step `kind` enum or normalised keyword (`given`…`activates`)                                        | `schemas/gherkin.ts` (consider rename to `spec.ts` later) |
+| Projection: build value report from steps; resolve `Activates` text → scenario id when titles match | `application/projections.ts`                              |
+| Lint: lifecycle order warning; unresolved Activates; “don’t hand-edit value report”                 | wrap `gurki` lint + BeeDeeDee rules                       |
+| `POST /api/gherkin/validate` accepts Gurki bodies (additive) or add `/api/spec/validate`            | contracts + server                                        |
 
 Keep wire field `gherkinSource` for now (raw source blob); rename to `source` in
 a later breaking pass if needed.
@@ -122,14 +122,14 @@ a later breaking pass if needed.
 **Done when:** a user can open a Gurki project and see aggregation, not only a
 flat scenario list.
 
-| Work | Seams |
-| --- | --- |
-| Kind-aware step styling (Output / Outcome / Activates distinct) | `gherkin-steps.tsx` |
-| Feature view: **System value** section (Outputs then Outcomes; `But` as strain) | `routes/feature.tsx` |
-| Activates graph: scenario → scenario edges (Mermaid or simple SVG list first) | new component; may reuse diagram panel |
-| Catalog: dialect badge; optional rollup counts (N outputs, M activates) | `routes/catalog.tsx` |
-| Rename test `OutcomeBadge` → `TestOutcomeBadge` (or similar) | `status-badge.tsx` |
-| Problems route: Gurki diagnostics codes | `routes/problems.tsx` |
+| Work                                                                            | Seams                                  |
+| ------------------------------------------------------------------------------- | -------------------------------------- |
+| Kind-aware step styling (Output / Outcome / Activates distinct)                 | `gherkin-steps.tsx`                    |
+| Feature view: **System value** section (Outputs then Outcomes; `But` as strain) | `routes/feature.tsx`                   |
+| Activates graph: scenario → scenario edges (Mermaid or simple SVG list first)   | new component; may reuse diagram panel |
+| Catalog: dialect badge; optional rollup counts (N outputs, M activates)         | `routes/catalog.tsx`                   |
+| Rename test `OutcomeBadge` → `TestOutcomeBadge` (or similar)                    | `status-badge.tsx`                     |
+| Problems route: Gurki diagnostics codes                                         | `routes/problems.tsx`                  |
 
 First viewport of the catalog stays one job: health of the indexed systems.
 Deep aggregation lives on system (feature) view — avoid dashboard clutter.
@@ -139,11 +139,11 @@ Deep aggregation lives on system (feature) view — avoid dashboard clutter.
 **Done when:** optional `*.analysis.json` (or configured path) validates against
 source digest and can drive **System Net Outputs / Outcomes** in the UI.
 
-| Work | Seams |
-| --- | --- |
-| Ingest / validate via `gurki` `checkAnalysis` | CLI + core |
-| Attach measures / ledger to steps in detail views | projections |
-| Surface churn vs net (Gurki semantics) | feature view |
+| Work                                                                     | Seams          |
+| ------------------------------------------------------------------------ | -------------- |
+| Ingest / validate via `gurki` `checkAnalysis`                            | CLI + core     |
+| Attach measures / ledger to steps in detail views                        | projections    |
+| Surface churn vs net (Gurki semantics)                                   | feature view   |
 | MCP: expose analysis summary, refuse writes by default (existing policy) | `behavior-mcp` |
 
 Do not block Phases 1–3 on sidecars. Free-text Outputs remain useful without
@@ -153,23 +153,23 @@ ledger netting.
 
 **Done when:** agents author and validate Gurki by default for new work.
 
-| Work | Seams |
-| --- | --- |
-| `validate_gherkin` accepts Gurki; add `propose_gurki` (or mode flag) emitting System / Output / Outcome / Activates | `behavior-mcp` |
-| Compose Gurki mixin skill (`npx gurki skill`) with eng-bee-dee-dee | `.cursor/skills/` |
-| Rewrite eng-bee-dee-dee lanes: Gurki-primary; classic Gherkin as legacy lane | `agents/gherkin.md` → `agents/gurki.md`, style refs |
-| Drop Background / Rule / Outline from default authoring guidance | skill + examples |
+| Work                                                                                                                | Seams                                               |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `validate_gherkin` accepts Gurki; add `propose_gurki` (or mode flag) emitting System / Output / Outcome / Activates | `behavior-mcp`                                      |
+| Compose Gurki mixin skill (`npx gurki skill`) with eng-bee-dee-dee                                                  | `.cursor/skills/`                                   |
+| Rewrite eng-bee-dee-dee lanes: Gurki-primary; classic Gherkin as legacy lane                                        | `agents/gherkin.md` → `agents/gurki.md`, style refs |
+| Drop Background / Rule / Outline from default authoring guidance                                                    | skill + examples                                    |
 
 ### Phase 6 — Demo, docs, classic de-emphasis
 
 **Done when:** default demo is a Gurki corpus; classic fixtures are optional.
 
-| Work | Notes |
-| --- | --- |
-| Replace or dual-track `examples/demo-project` | Current login feature uses Background + Rule + Outline — incompatible with Gurki v0.1 |
-| Add a small civic/ops sample (or submodule pointer to gurki examples) | Prefer named real operations |
-| README quick start on Gurki | Point at gurki.nz for language learning |
-| ADR: classic `.feature` support window | e.g. supported but not extended |
+| Work                                                                  | Notes                                                                                 |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Replace or dual-track `examples/demo-project`                         | Current login feature uses Background + Rule + Outline — incompatible with Gurki v0.1 |
+| Add a small civic/ops sample (or submodule pointer to gurki examples) | Prefer named real operations                                                          |
+| README quick start on Gurki                                           | Point at gurki.nz for language learning                                               |
+| ADR: classic `.feature` support window                                | e.g. supported but not extended                                                       |
 
 ## Explicit non-goals (near term)
 
@@ -177,7 +177,7 @@ ledger netting.
 - Full simulation / discrete-event engine
 - New Gurki keywords (resist until examples hurt — Gurki’s rule)
 - Forcing Policy Bias’s election-card UX into BeeDeeDee (different product;
-  reuse the *pattern*: specs → derived cards/rollups → browsable wall)
+  reuse the _pattern_: specs → derived cards/rollups → browsable wall)
 - Dropping Mermaid or editor deep links
 
 ## Suggested delivery order (PRs)
@@ -210,19 +210,19 @@ The hard unknowns are at **package seams**, not inside a single parser:
 4. **Dependency risk** — `gurki` is pre-1.0 / may be git-pinned. Touching encode,
    lint, valueReport, and UI against one fixture surfaces API mismatch early.
 
-Horizontal layering is fine *inside* a vertical slice (parse → index → one
+Horizontal layering is fine _inside_ a vertical slice (parse → index → one
 API field → one panel). Avoid a horizontal-only Phase 1 that ships no visible
 Gurki system.
 
 ## Risks
 
-| Risk | Mitigation |
-| --- | --- |
-| `gurki` API churn pre-1.0 | Pin commit; depend only on documented exports |
-| Demo/e2e tied to Background/Rule/Outline | Dual dialect; migrate demo in its own PR |
-| Vocabulary collision (Feature vs System, Outcome vs test outcome) | UI copy + badge rename early |
-| Book fences in arbitrary Markdown | Defer book-envelope indexing; start with `*.spec.md` only |
-| Scope creep into Policy Bias features | Keep BeeDeeDee local/agent; cards/games stay elsewhere |
+| Risk                                                              | Mitigation                                                |
+| ----------------------------------------------------------------- | --------------------------------------------------------- |
+| `gurki` API churn pre-1.0                                         | Pin commit; depend only on documented exports             |
+| Demo/e2e tied to Background/Rule/Outline                          | Dual dialect; migrate demo in its own PR                  |
+| Vocabulary collision (Feature vs System, Outcome vs test outcome) | UI copy + badge rename early                              |
+| Book fences in arbitrary Markdown                                 | Defer book-envelope indexing; start with `*.spec.md` only |
+| Scope creep into Policy Bias features                             | Keep BeeDeeDee local/agent; cards/games stay elsewhere    |
 
 ## Success criteria
 

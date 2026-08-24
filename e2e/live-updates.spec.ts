@@ -90,7 +90,7 @@ test.describe('API served alongside the UI', () => {
 
     const status = (await response.json()) as { state: string; featureCount: number };
     expect(status.state).toBe('ready');
-    expect(status.featureCount).toBe(5);
+    expect(status.featureCount).toBe(6);
   });
 
   test('reports no parse problems for the demo project', async ({ request }) => {
