@@ -72,6 +72,21 @@ export function diagramIdFromPath(diagramsRoot: string, filePath: string): strin
     .join(ID_SEPARATOR);
 }
 
+/** Derives an architecture map id from its file path under the mappings root. */
+export function architectureMapIdFromPath(mappingsRoot: string, filePath: string): string {
+  const relative = stripRoot(filePath, mappingsRoot).replace(/\.architecture\.json$/i, '');
+  return relative
+    .split('/')
+    .filter(function isNotEmpty(segment) {
+      return segment.length > 0;
+    })
+    .map(slugify)
+    .filter(function isNotEmpty(segment) {
+      return segment.length > 0;
+    })
+    .join(ID_SEPARATOR);
+}
+
 /**
  * Builds a scenario id as `featureId.scenario-slug`. Scenarios with duplicate
  * names within a feature are disambiguated by their one-based ordinal, so ids

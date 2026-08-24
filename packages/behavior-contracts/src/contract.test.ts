@@ -21,10 +21,11 @@ function pathParamsOf(path: string): string[] {
 }
 
 describe('behaviorContract shape', () => {
-  it('declares the thirteen planned routes', () => {
+  it('declares the planned routes', () => {
     expect(routes.map(([key]) => key).sort()).toEqual(
       [
         'getAgentContext',
+        'getArchitectureMap',
         'getCatalog',
         'getDiagram',
         'getEditorLinks',
@@ -34,6 +35,7 @@ describe('behaviorContract shape', () => {
         'getTestStatus',
         'ingestTestResults',
         'lintSpecs',
+        'listArchitectureMaps',
         'listFeatures',
         'refreshIndex',
         'validateGherkin',

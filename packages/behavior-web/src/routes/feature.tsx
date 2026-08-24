@@ -195,23 +195,23 @@ function FeatureView() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-border shrink-0 border-b p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h1 className="font-semibold">{feature.title}</h1>
-            <p className="text-muted-foreground truncate text-xs">{feature.path}</p>
-          </div>
-          <StatusBadge status={feature.status} />
+      <div className="pb-title-bar justify-between gap-3 normal-case tracking-normal">
+        <div className="min-w-0">
+          <h1 className="truncate font-sans text-sm font-semibold">{feature.title}</h1>
+          <p className="text-muted-foreground truncate font-mono text-[10px]">{feature.path}</p>
         </div>
+        <StatusBadge status={feature.status} />
+      </div>
+      <div className="shrink-0 space-y-3 border-b-2 border-[var(--ink)] p-4">
         {feature.description.length > 0 ? (
-          <p className="text-muted-foreground mt-2 text-sm">{feature.description}</p>
+          <p className="text-muted-foreground font-serif text-sm">{feature.description}</p>
         ) : null}
-        <div className="mt-3 flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <CoverageBar value={feature.testCoverage} className="max-w-64" />
           <EditorLinks query={{ target: 'feature', id: feature.id }} />
           {feature.dialect === 'gurki' ? (
             <span
-              className="border-border text-muted-foreground rounded border px-1.5 py-0.5 text-xs"
+              className="rounded-[var(--radius)] border-2 border-[var(--ink)] px-1.5 py-0.5 font-mono text-xs font-semibold"
               data-testid="dialect-badge"
             >
               Gurki

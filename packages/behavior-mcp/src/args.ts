@@ -52,7 +52,11 @@ export function defaultProject(projectRoot: string): ProjectMetadata {
     id: basename(projectRoot),
     name: basename(projectRoot),
     rootPath: projectRoot,
-    specPaths: { features: 'specs/features', diagrams: 'specs/diagrams' },
+    specPaths: {
+      features: 'specs/features',
+      diagrams: 'specs/diagrams',
+      mappings: 'specs/mappings',
+    },
     testPaths: { e2e: 'tests/e2e', components: 'tests/components' },
     editorConfig: { supportedEditors: ['vscode', 'cursor'], openCommand: 'code' },
   };

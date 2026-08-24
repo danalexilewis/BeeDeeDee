@@ -154,6 +154,36 @@ describe('GET /api/diagrams/:diagramId', () => {
   });
 });
 
+describe('GET /api/architecture-maps', () => {
+  it('lists indexed architecture maps', async () => {
+    const response = await harness.client.listArchitectureMaps();
+    expect(response.status).toBe(200);
+    if (response.status !== 200) return;
+
+    expect(response.body.map(map => map.id)).toEqual(['overview']);
+    expect(response.body[0]?.lineageCount).toBe(1);
+    expect(response.body[0]?.linkedFeatureIds).toEqual(['login']);
+  });
+});
+
+describe('GET /api/architecture-maps/:mapId', () => {
+  it('returns the map document', async () => {
+    const response = await harness.client.getArchitectureMap({ params: { mapId: 'overview' } });
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      expect(response.body.title).toBe('Overview');
+      expect(response.body.userFlows.nodes[0]?.id).toBe('login');
+      expect(response.body.lineage[0]?.target).toBe('user.email');
+    }
+  });
+
+  it('returns 404 for an unknown map', async () => {
+    const response = await harness.client.getArchitectureMap({ params: { mapId: 'nope' } });
+    expect(response.status).toBe(404);
+    if (response.status === 404) expect(response.body.tag).toBe('ArchitectureMapNotFound');
+  });
+});
+
 describe('POST /api/tests/results', () => {
   it('ingests native results and reports what changed', async () => {
     const response = await harness.client.ingestTestResults({

@@ -46,6 +46,7 @@ export function createWatcher(deps: WatcherDeps): Watcher {
   const directories = [
     project.specPaths.features,
     project.specPaths.diagrams,
+    project.specPaths.mappings,
     project.testPaths.e2e,
     project.testPaths.components,
     ...(project.testPaths.unit === undefined ? [] : [project.testPaths.unit]),

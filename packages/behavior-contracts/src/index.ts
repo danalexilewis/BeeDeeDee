@@ -1,6 +1,7 @@
 export * from './contract.js';
 export * from './openapi.js';
 export * from './schemas/agent.js';
+export * from './schemas/architecture-map.js';
 export * from './schemas/catalog.js';
 export * from './schemas/common.js';
 export * from './schemas/diagram.js';

@@ -157,6 +157,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -196,6 +197,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -374,6 +376,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -413,6 +416,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1149,6 +1153,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1188,6 +1193,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1227,6 +1233,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1631,6 +1638,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1670,6 +1678,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -1709,6 +1718,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2673,6 +2683,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2712,6 +2723,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2751,6 +2763,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2920,6 +2933,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2959,6 +2973,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -2998,6 +3013,566 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/architecture-maps": {
+      "get": {
+        "summary": "Architecture maps indexed from specPaths.mappings",
+        "tags": [],
+        "parameters": [],
+        "operationId": "listArchitectureMaps",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "flowNodeCount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "domainNodeCount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "lineageCount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "linkedFeatureIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "description",
+                      "path",
+                      "flowNodeCount",
+                      "domainNodeCount",
+                      "lineageCount",
+                      "linkedFeatureIds"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "ArchitectureMapNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "ArchitectureMapNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/architecture-maps/{mapId}": {
+      "get": {
+        "summary": "One architecture map for the split flow / domain canvas",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getArchitectureMap",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string",
+                      "enum": ["0.1"]
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": {
+                      "default": "",
+                      "type": "string"
+                    },
+                    "dividerY": {
+                      "default": 420,
+                      "type": "number"
+                    },
+                    "userFlows": {
+                      "type": "object",
+                      "properties": {
+                        "nodes": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "label": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": ["hub", "stage", "leaf"]
+                              },
+                              "position": {
+                                "type": "object",
+                                "properties": {
+                                  "x": {
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": ["x", "y"]
+                              },
+                              "description": {
+                                "default": "",
+                                "type": "string"
+                              },
+                              "parentId": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "featureId": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "scenarioId": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "dataCollected": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "required": {
+                                      "default": false,
+                                      "type": "boolean"
+                                    },
+                                    "description": {
+                                      "default": "",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["id", "name"]
+                                }
+                              },
+                              "requiredToProceed": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "zoomRevealAt": {
+                                "default": 0,
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "collapsedByDefault": {
+                                "default": false,
+                                "type": "boolean"
+                              }
+                            },
+                            "required": ["id", "label", "kind", "position"]
+                          }
+                        },
+                        "edges": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "source": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "target": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "label": {
+                                "default": "",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "source", "target"]
+                          }
+                        }
+                      }
+                    },
+                    "domainModel": {
+                      "type": "object",
+                      "properties": {
+                        "nodes": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "label": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": ["entity", "field"]
+                              },
+                              "position": {
+                                "type": "object",
+                                "properties": {
+                                  "x": {
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": ["x", "y"]
+                              },
+                              "description": {
+                                "default": "",
+                                "type": "string"
+                              },
+                              "parentId": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "dataType": {
+                                "default": "",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "label", "kind", "position"]
+                          }
+                        },
+                        "edges": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "source": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "target": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "label": {
+                                "default": "",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "source", "target"]
+                          }
+                        }
+                      }
+                    },
+                    "lineage": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "source": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "target": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "dataId": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "label": {
+                            "default": "",
+                            "type": "string"
+                          },
+                          "description": {
+                            "default": "",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "source", "target"]
+                      }
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": ["schemaVersion", "title", "userFlows", "domainModel", "id", "path"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "ArchitectureMapNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "ArchitectureMapNotFound",
+                        "EditorNotSupported",
+                        "PathEscapesProject",
+                        "UnsupportedReportFormat",
+                        "IndexNotReady"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": ["tag", "message"]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string",
+                      "enum": [
+                        "FileNotFound",
+                        "ReadFailed",
+                        "GherkinSyntax",
+                        "MermaidSyntax",
+                        "SchemaValidation",
+                        "ScenarioNotFound",
+                        "FeatureNotFound",
+                        "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3168,6 +3743,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3207,6 +3783,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3246,6 +3823,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3385,6 +3963,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3424,6 +4003,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3463,6 +4043,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3539,6 +4120,11 @@
                       "type": "integer",
                       "minimum": 0
                     },
+                    "architectureMapCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
                     "testFileCount": {
                       "type": "integer",
                       "minimum": 0
@@ -3575,6 +4161,7 @@
                                   "ScenarioNotFound",
                                   "FeatureNotFound",
                                   "DiagramNotFound",
+                                  "ArchitectureMapNotFound",
                                   "EditorNotSupported",
                                   "PathEscapesProject",
                                   "UnsupportedReportFormat",
@@ -3630,6 +4217,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3669,6 +4257,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3723,6 +4312,11 @@
                       "type": "integer",
                       "minimum": 0
                     },
+                    "architectureMapCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
                     "testFileCount": {
                       "type": "integer",
                       "minimum": 0
@@ -3759,6 +4353,7 @@
                                   "ScenarioNotFound",
                                   "FeatureNotFound",
                                   "DiagramNotFound",
+                                  "ArchitectureMapNotFound",
                                   "EditorNotSupported",
                                   "PathEscapesProject",
                                   "UnsupportedReportFormat",
@@ -3814,6 +4409,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3943,6 +4539,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -3982,6 +4579,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -4125,6 +4723,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -4164,6 +4763,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -4277,6 +4877,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -4316,6 +4917,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",
@@ -4355,6 +4957,7 @@
                         "ScenarioNotFound",
                         "FeatureNotFound",
                         "DiagramNotFound",
+                        "ArchitectureMapNotFound",
                         "EditorNotSupported",
                         "PathEscapesProject",
                         "UnsupportedReportFormat",

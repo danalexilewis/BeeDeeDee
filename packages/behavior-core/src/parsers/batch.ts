@@ -1,7 +1,8 @@
 import { Result } from 'neverthrow';
-import type { ParsedDiagram } from '@eddy/behavior-contracts';
+import type { ArchitectureMap, ParsedDiagram } from '@eddy/behavior-contracts';
 import type { MatchableTest } from '../domain/matching.js';
 import { partitionResults, type BehaviorError } from '../errors.js';
+import { parseArchitectureMapContent } from './architecture-map.js';
 import { parseGherkinContent, type ParsedFeatureDocument } from './gherkin.js';
 import { parseGurkiContent, type ParsedGurkiFeatureDocument } from './gurki.js';
 import { parseMermaidContent } from './mermaid.js';
@@ -108,6 +109,22 @@ export function parseAllMermaid(
         path: file.path,
         content: file.content,
         diagramsRoot,
+      });
+    })
+  );
+}
+
+/** Parses every architecture map file, keeping the good ones. */
+export function parseAllArchitectureMaps(
+  files: readonly SourceFile[],
+  mappingsRoot: string
+): BatchOutcome<ArchitectureMap> {
+  return partitionResults(
+    files.map(function parseOne(file) {
+      return parseArchitectureMapContent({
+        path: file.path,
+        content: file.content,
+        mappingsRoot,
       });
     })
   );

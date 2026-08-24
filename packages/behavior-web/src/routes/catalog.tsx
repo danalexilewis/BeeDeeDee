@@ -40,7 +40,7 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
       to="/features/$featureId"
       params={{ featureId: feature.id }}
       data-testid="feature-card"
-      className="border-border bg-card hover:border-ring block rounded-lg border p-3 transition-colors"
+      className="block rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--paper)] p-3 shadow-[2px_2px_0_var(--ink)] transition-[transform,background-color] hover:translate-x-px hover:translate-y-px hover:bg-[var(--paper-muted)] hover:shadow-none"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -49,7 +49,7 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {feature.dialect === 'gurki' ? (
-            <span className="border-border text-muted-foreground rounded border px-1.5 py-0.5 text-xs">
+            <span className="rounded-[var(--radius)] border-2 border-[var(--ink)] px-1.5 py-0.5 font-mono text-xs font-semibold">
               Gurki
             </span>
           ) : null}
@@ -71,7 +71,10 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
         <div className="flex gap-1">
           {feature.tags.slice(0, 3).map(function toTag(tag) {
             return (
-              <span key={tag} className="bg-muted rounded px-1.5 py-0.5 text-xs">
+              <span
+                key={tag}
+                className="rounded-[var(--radius)] border border-[var(--ink)] bg-[var(--paper-muted)] px-1.5 py-0.5 font-mono text-xs"
+              >
                 {tag}
               </span>
             );
@@ -164,7 +167,8 @@ function CatalogView() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-border shrink-0 space-y-3 border-b p-4">
+      <div className="pb-title-bar">Catalog</div>
+      <div className="shrink-0 space-y-3 border-b-2 border-[var(--ink)] p-4">
         <div className="flex flex-wrap items-center gap-3">
           <label className="relative flex-1 sm:max-w-xs">
             <Search
@@ -179,7 +183,7 @@ function CatalogView() {
               onChange={function onSearchChange(event) {
                 updateSearch({ search: event.target.value });
               }}
-              className="border-border bg-card focus:ring-ring w-full rounded-md border py-2 pr-3 pl-8 text-sm focus:ring-2 focus:outline-none"
+              className="w-full rounded-[var(--radius)] border-2 border-[var(--ink)] bg-[var(--paper)] py-2 pr-3 pl-8 text-sm shadow-[2px_2px_0_var(--ink)] focus:outline-none focus:ring-0"
             />
           </label>
 
@@ -195,8 +199,10 @@ function CatalogView() {
                     updateSearch({ status: active ? undefined : status });
                   }}
                   className={cn(
-                    'border-border rounded-md border px-2 py-1 text-xs capitalize transition-colors',
-                    active ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                    'rounded-[var(--radius)] border-2 border-[var(--ink)] px-2 py-1 font-mono text-xs capitalize shadow-[2px_2px_0_var(--ink)] transition-[transform,background-color,box-shadow]',
+                    active
+                      ? 'bg-[var(--ink)] text-[var(--paper)] shadow-none'
+                      : 'bg-[var(--paper)] hover:bg-[var(--paper-muted)]'
                   )}
                 >
                   {status}
@@ -207,7 +213,7 @@ function CatalogView() {
         </div>
 
         {catalog === undefined ? null : (
-          <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-xs">
+          <div className="text-muted-foreground flex flex-wrap items-center gap-4 font-mono text-xs">
             <span>
               {catalog.statusCounts.passing} passing, {catalog.statusCounts.failing} failing,{' '}
               {catalog.statusCounts.untested} untested
@@ -226,8 +232,10 @@ function CatalogView() {
                       updateSearch({ tags: active ? undefined : bare });
                     }}
                     className={cn(
-                      'rounded px-1.5 py-0.5 transition-colors',
-                      active ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-border'
+                      'rounded-[var(--radius)] border-2 border-[var(--ink)] px-1.5 py-0.5 transition-colors',
+                      active
+                        ? 'bg-[var(--ink)] text-[var(--paper)]'
+                        : 'bg-[var(--paper-muted)] hover:bg-[var(--paper)]'
                     )}
                   >
                     {tag}

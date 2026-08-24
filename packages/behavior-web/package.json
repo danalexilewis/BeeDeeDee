@@ -19,6 +19,7 @@
     "@tanstack/react-virtual": "^3.14.8",
     "@tanstack/zod-adapter": "^1.167.0",
     "@ts-rest/core": "3.52.1",
+    "@xyflow/react": "^12.8.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",
@@ -34,12 +35,12 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.4",
+    "@vitest/browser": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10",
+    "playwright": "^1.62.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.1.5",
-    "@vitest/browser": "^4.1.10",
-    "vitest-browser-react": "^2.2.0",
-    "playwright": "^1.62.0",
     "vitest": "^4.1.10",
-    "@vitest/browser-playwright": "^4.1.10"
+    "vitest-browser-react": "^2.2.0"
   }
 }

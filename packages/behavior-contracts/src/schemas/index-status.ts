@@ -17,6 +17,7 @@ export const indexStatusSchema = z.object({
   featureCount: z.number().int().nonnegative(),
   scenarioCount: z.number().int().nonnegative(),
   diagramCount: z.number().int().nonnegative(),
+  architectureMapCount: z.number().int().nonnegative().default(0),
   testFileCount: z.number().int().nonnegative(),
   lastIndexedAt: isoDateTimeSchema.nullable(),
   durationMs: z.number().nonnegative().nullable(),

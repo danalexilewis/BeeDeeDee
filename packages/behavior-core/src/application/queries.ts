@@ -1,4 +1,6 @@
 import type {
+  ArchitectureMap,
+  ArchitectureMapSummary,
   CatalogData,
   DiagramContent,
   FeatureDetail,
@@ -11,6 +13,7 @@ import type {
 import { err, ok, type Result } from 'neverthrow';
 import { normalizeTag } from '../domain/text.js';
 import {
+  architectureMapNotFound,
   diagramNotFound,
   featureNotFound,
   scenarioNotFound,
@@ -21,6 +24,7 @@ import type { IndexStorePort } from '../ports/index-store.js';
 import type { BehaviorIndex } from './behavior-index.js';
 import {
   statusOf,
+  toArchitectureMapSummary,
   toCatalogData,
   toFeatureDetail,
   toFeatureSummary,
@@ -142,6 +146,30 @@ export function getDiagram(
   });
 }
 
+/** Architecture maps indexed from `specPaths.mappings`, ordered by title. */
+export function listArchitectureMaps(
+  deps: QueryDeps
+): Result<ArchitectureMapSummary[], BehaviorError> {
+  return deps.indexStore.read().map(function summarise(index) {
+    return [...index.architectureMaps.values()]
+      .map(toArchitectureMapSummary)
+      .sort(function byTitle(left, right) {
+        return left.title.localeCompare(right.title) || left.id.localeCompare(right.id);
+      });
+  });
+}
+
+/** One architecture map for the canvas. */
+export function getArchitectureMap(
+  deps: QueryDeps,
+  mapId: string
+): Result<ArchitectureMap, BehaviorError> {
+  return deps.indexStore.read().andThen(function find(index) {
+    const map = index.architectureMaps.get(mapId);
+    return map === undefined ? err(architectureMapNotFound(mapId)) : ok(map);
+  });
+}
+
 /** Aggregated test status for one scenario. */
 export function getTestStatus(
   deps: QueryDeps,
@@ -165,6 +193,7 @@ export function getIndexStatus(deps: QueryDeps): IndexStatus {
       featureCount: 0,
       scenarioCount: 0,
       diagramCount: 0,
+      architectureMapCount: 0,
       testFileCount: 0,
       lastIndexedAt: null,
       durationMs: null,
@@ -182,6 +211,7 @@ export function toIndexStatus(index: BehaviorIndex, state: IndexStatus['state'])
     featureCount: index.features.size,
     scenarioCount: index.scenarios.size,
     diagramCount: index.diagrams.size,
+    architectureMapCount: index.architectureMaps.size,
     testFileCount: index.testFileCount,
     lastIndexedAt: index.indexedAt,
     durationMs: index.durationMs,

@@ -1,4 +1,5 @@
 import type {
+  ArchitectureMap,
   IndexProblem,
   ParsedDiagram,
   ProjectMetadata,
@@ -56,6 +57,7 @@ export type BehaviorIndex = {
   features: Map<string, IndexedFeature>;
   scenarios: Map<string, IndexedScenario>;
   diagrams: Map<string, ParsedDiagram>;
+  architectureMaps: Map<string, ArchitectureMap>;
   /** Tests linked to each scenario, by scenario id. */
   testLinks: Map<string, TestLink[]>;
   /** Ingested results per scenario, by scenario id. */
@@ -76,6 +78,7 @@ export function emptyIndex(project: ProjectMetadata, indexedAt: string): Behavio
     features: new Map(),
     scenarios: new Map(),
     diagrams: new Map(),
+    architectureMaps: new Map(),
     testLinks: new Map(),
     results: new Map(),
     scenarioByTestId: new Map(),

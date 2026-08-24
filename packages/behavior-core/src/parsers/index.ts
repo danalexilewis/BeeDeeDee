@@ -1,3 +1,4 @@
+export * from './architecture-map.js';
 export * from './batch.js';
 export * from './gherkin.js';
 export * from './gurki.js';

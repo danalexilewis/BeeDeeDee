@@ -114,6 +114,7 @@ export function createTestProject(overrides: Partial<ProjectMetadata> = {}): Pro
     specPaths: {
       features: 'specs/features',
       diagrams: 'specs/diagrams',
+      mappings: 'specs/mappings',
     },
     testPaths: {
       e2e: 'tests/e2e',
@@ -159,6 +160,50 @@ title: Login flow
 flowchart TD
   user --> credentials
   credentials --> dashboard
+`,
+    'specs/mappings/overview.architecture.json': `{
+  "schemaVersion": "0.1",
+  "title": "Overview",
+  "description": "Test map",
+  "dividerY": 400,
+  "userFlows": {
+    "nodes": [
+      {
+        "id": "login",
+        "label": "Login",
+        "kind": "stage",
+        "position": { "x": 0, "y": 0 },
+        "featureId": "login",
+        "dataCollected": [
+          { "id": "email", "name": "Email", "required": true, "description": "" }
+        ],
+        "requiredToProceed": ["email"]
+      }
+    ],
+    "edges": []
+  },
+  "domainModel": {
+    "nodes": [
+      {
+        "id": "user.email",
+        "label": "email",
+        "kind": "field",
+        "position": { "x": 0, "y": 500 },
+        "dataType": "email"
+      }
+    ],
+    "edges": []
+  },
+  "lineage": [
+    {
+      "id": "lin-1",
+      "source": "login",
+      "target": "user.email",
+      "dataId": "email",
+      "label": "email"
+    }
+  ]
+}
 `,
     'tests/e2e/login.spec.ts': `import { test } from '@playwright/test';
 

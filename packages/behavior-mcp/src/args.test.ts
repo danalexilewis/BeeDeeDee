@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { parseArgs } from './args.js';
+import { defaultProject, parseArgs } from './args.js';
 
 describe('parseArgs', () => {
   it('defaults to the working directory with writes disabled', () => {
@@ -40,5 +40,17 @@ describe('parseArgs', () => {
     // ignoring what we do not recognise.
     const parsed = parseArgs(['--unknown', '--allow-writes', '--project', '/tmp/demo']);
     expect(parsed).toEqual({ projectRoot: '/tmp/demo', allowWrites: true });
+  });
+});
+
+describe('defaultProject', () => {
+  it('matches the conventional layout including mappings', () => {
+    const project = defaultProject('/repo/demo');
+    expect(project.specPaths).toEqual({
+      features: 'specs/features',
+      diagrams: 'specs/diagrams',
+      mappings: 'specs/mappings',
+    });
+    expect(project.id).toBe('demo');
   });
 });

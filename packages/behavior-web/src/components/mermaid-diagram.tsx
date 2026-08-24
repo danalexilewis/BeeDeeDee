@@ -9,7 +9,21 @@ function ensureInitialised(): void {
   if (initialised) return;
   mermaid.initialize({
     startOnLoad: false,
-    theme: 'dark',
+    theme: 'neutral',
+    themeVariables: {
+      primaryColor: '#fffbe6',
+      primaryTextColor: '#171717',
+      primaryBorderColor: '#171717',
+      lineColor: '#171717',
+      secondaryColor: '#f3ecd0',
+      tertiaryColor: '#fffbe6',
+      background: '#fffbe6',
+      mainBkg: '#fffbe6',
+      nodeBorder: '#171717',
+      clusterBkg: '#f3ecd0',
+      titleColor: '#171717',
+      edgeLabelBackground: '#fffbe6',
+    },
     securityLevel: 'strict',
     flowchart: { htmlLabels: false },
   });

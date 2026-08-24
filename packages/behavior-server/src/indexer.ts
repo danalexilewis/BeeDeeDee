@@ -57,6 +57,7 @@ export function createIndexer(deps: IndexerDeps): Indexer {
           featureCount: 0,
           scenarioCount: 0,
           diagramCount: 0,
+          architectureMapCount: 0,
           testFileCount: 0,
           lastIndexedAt: null,
           durationMs: null,

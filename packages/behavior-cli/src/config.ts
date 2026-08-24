@@ -70,7 +70,11 @@ export function defaultConfig(projectRoot: string): ResolvedConfig {
       id: basename(root),
       name: basename(root),
       rootPath: root,
-      specPaths: { features: 'specs/features', diagrams: 'specs/diagrams' },
+      specPaths: {
+        features: 'specs/features',
+        diagrams: 'specs/diagrams',
+        mappings: 'specs/mappings',
+      },
       testPaths: { e2e: 'tests/e2e', components: 'tests/components' },
       editorConfig: { supportedEditors: ['vscode', 'cursor'], openCommand: 'code' },
     },
@@ -160,7 +164,11 @@ export function loadConfig(
 export function configTemplate(projectName: string): string {
   const template: BehaviorConfig = {
     name: projectName,
-    specPaths: { features: 'specs/features', diagrams: 'specs/diagrams' },
+    specPaths: {
+      features: 'specs/features',
+      diagrams: 'specs/diagrams',
+      mappings: 'specs/mappings',
+    },
     testPaths: { e2e: 'tests/e2e', components: 'tests/components' },
     editorConfig: { supportedEditors: ['vscode', 'cursor'], openCommand: 'code' },
     server: { port: DEFAULT_PORT, host: DEFAULT_HOST },
