@@ -60,11 +60,11 @@ function StepArgument({ step }: { step: GherkinStep }) {
 }
 
 /** Emphasises Gurki Output / Outcome / Activates distinctly from Given/When/Then. */
-function keywordClassName(keyword: string): string {
-  const trimmed = keyword.trim().toLowerCase();
-  if (trimmed === 'output') return 'text-emerald-700 dark:text-emerald-400 font-medium';
-  if (trimmed === 'outcome') return 'text-amber-700 dark:text-amber-400 font-medium';
-  if (trimmed === 'activates') return 'text-sky-700 dark:text-sky-400 font-medium';
+function keywordClassName(keyword: string, kind?: string): string {
+  const resolved = (kind ?? keyword.trim()).toLowerCase();
+  if (resolved === 'output') return 'text-emerald-700 dark:text-emerald-400 font-medium';
+  if (resolved === 'outcome') return 'text-amber-700 dark:text-amber-400 font-medium';
+  if (resolved === 'activates') return 'text-sky-700 dark:text-sky-400 font-medium';
   return 'text-primary font-medium';
 }
 
@@ -79,7 +79,7 @@ export function GherkinSteps({ steps, className }: GherkinStepsProps) {
       {steps.map(function toStep(step) {
         return (
           <li key={step.id} className="text-sm">
-            <span className={keywordClassName(step.keyword)}>{step.keyword.trim()}</span>{' '}
+            <span className={keywordClassName(step.keyword, step.kind)}>{step.keyword.trim()}</span>{' '}
             <span>{step.text}</span>
             <span className="text-muted-foreground ml-2 text-xs tabular-nums">:{step.line}</span>
             <StepArgument step={step} />

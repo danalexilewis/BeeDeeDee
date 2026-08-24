@@ -183,12 +183,15 @@ ledger netting.
 ## Suggested delivery order (PRs)
 
 1. **Docs:** this plan + landscape Gurki note + ADR stub.
-2. **Thin vertical (in progress on this branch):** one Gurki `*.spec.md` through
+2. **Thin vertical (done on this branch):** one Gurki `*.spec.md` through
    parse → index → feature detail (`systemOutputs` / `systemOutcomes`) → UI
    value report + kind-coloured steps, beside classic `.feature` demo files.
-3. **Contracts polish + Activates resolution** (Phase 2 remainder).
-4. **Activates graph + catalog dialect rollups** (Phase 3 remainder).
-5. **Demo Gurki corpus + skill rewrite** (Phases 5–6 can overlap with 3).
+3. **Activates unlock graph (done on this branch):** resolve Activates → scenario
+   ids, feature `activatesLinks` / Mermaid, catalog dialect + unlock counts,
+   lint `unresolved-activates`.
+4. **MCP/skill rewrite** (Phase 5) — Gurki-primary authoring.
+5. **Demo classic migration + docs** (Phase 6) — move Background/Rule/Outline
+   samples off the default path.
 6. **Analysis sidecar** when a real consumer needs net/churn (Phase 4).
 
 ### Why thin vertical (not horizontal layers)

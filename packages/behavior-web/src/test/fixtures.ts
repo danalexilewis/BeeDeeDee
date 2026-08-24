@@ -45,6 +45,7 @@ export function aScenario(overrides: Partial<ScenarioSummary> = {}): ScenarioSum
     diagramLinks: [],
     status: aTestStatus(),
     line: 5,
+    activates: [],
     ...overrides,
   };
 }
@@ -60,6 +61,11 @@ export function aFeatureSummary(overrides: Partial<FeatureSummary> = {}): Featur
     testCoverage: 50,
     status: 'passing',
     lastUpdated: AT,
+    dialect: 'gherkin',
+    outputCount: 0,
+    outcomeCount: 0,
+    activatesCount: 0,
+    activatesResolvedCount: 0,
     ...overrides,
   };
 }
@@ -74,6 +80,8 @@ export function aFeatureDetail(overrides: Partial<FeatureDetail> = {}): FeatureD
     dialect: 'gherkin',
     systemOutputs: [],
     systemOutcomes: [],
+    activatesLinks: [],
+    activatesMermaid: '',
     ...overrides,
   };
 }

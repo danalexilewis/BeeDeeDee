@@ -12,6 +12,7 @@ import { MermaidDiagram } from '@/components/mermaid-diagram';
 import { OutcomeBadge, StatusBadge } from '@/components/status-badge';
 import { EmptyState, ErrorState, LoadingState } from '@/components/states';
 import { SystemValueReport } from '@/components/system-value-report';
+import { ActivatesGraph, ScenarioActivates } from '@/components/activates-graph';
 import { cn } from '@/lib/cn';
 import { Route as rootRoute } from './root';
 
@@ -70,7 +71,13 @@ function ScenarioList({
 }
 
 /** Middle panel: the selected scenario's steps and test results. */
-function ScenarioDetailPanel({ scenario }: { scenario: ScenarioSummary }) {
+function ScenarioDetailPanel({
+  scenario,
+  onSelectScenario,
+}: {
+  scenario: ScenarioSummary;
+  onSelectScenario?: (scenarioId: string) => void;
+}) {
   return (
     <div className="space-y-4 p-4">
       <div>
@@ -89,6 +96,8 @@ function ScenarioDetailPanel({ scenario }: { scenario: ScenarioSummary }) {
         <h3 className="text-muted-foreground mb-2 text-xs font-semibold uppercase">Steps</h3>
         <GherkinSteps steps={scenario.steps} />
       </section>
+
+      <ScenarioActivates links={scenario.activates} onSelectScenario={onSelectScenario} />
 
       <section>
         <h3 className="text-muted-foreground mb-2 text-xs font-semibold uppercase">Tests</h3>
@@ -216,6 +225,14 @@ function FeatureView() {
             outcomes={feature.systemOutcomes}
           />
         ) : null}
+        {feature.dialect === 'gurki' ? (
+          <ActivatesGraph
+            className="mt-4"
+            links={feature.activatesLinks}
+            mermaid={feature.activatesMermaid}
+            onSelectScenario={selectScenario}
+          />
+        ) : null}
       </div>
 
       <Group orientation="horizontal" className="min-h-0 flex-1" {...layout}>
@@ -233,7 +250,7 @@ function FeatureView() {
           {selected === undefined ? (
             <EmptyState title="Select a scenario" />
           ) : (
-            <ScenarioDetailPanel scenario={selected} />
+            <ScenarioDetailPanel scenario={selected} onSelectScenario={selectScenario} />
           )}
         </Panel>
 

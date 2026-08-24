@@ -7,7 +7,7 @@ import {
 } from './common.js';
 import { diagramLinkSchema } from './diagram.js';
 import { gherkinBackgroundSchema } from './gherkin.js';
-import { scenarioSummarySchema } from './scenario.js';
+import { activatesLinkSchema, scenarioSummarySchema } from './scenario.js';
 
 /**
  * A Gherkin Rule block. Scenarios are referenced by id rather than nested, which
@@ -21,6 +21,15 @@ export const gherkinRuleSchema = z.object({
   line: lineNumberSchema,
 });
 
+/** Spec dialect for a catalogued feature / system. */
+export const specDialectSchema = z.enum(['gherkin', 'gurki']);
+
+/** A derived System Outputs / Outcomes line. */
+export const systemValueItemSchema = z.object({
+  text: z.string(),
+  connector: z.enum(['and', 'but']).optional(),
+});
+
 /** A feature as shown in the catalog. */
 export const featureSummarySchema = z.object({
   id: z.string(),
@@ -32,16 +41,12 @@ export const featureSummarySchema = z.object({
   testCoverage: percentageSchema,
   status: featureStatusSchema,
   lastUpdated: isoDateTimeSchema,
+  dialect: specDialectSchema.default('gherkin'),
+  outputCount: z.number().int().nonnegative().default(0),
+  outcomeCount: z.number().int().nonnegative().default(0),
+  activatesCount: z.number().int().nonnegative().default(0),
+  activatesResolvedCount: z.number().int().nonnegative().default(0),
 });
-
-/** A derived System Outputs / Outcomes line. */
-export const systemValueItemSchema = z.object({
-  text: z.string(),
-  connector: z.enum(['and', 'but']).optional(),
-});
-
-/** Spec dialect for a catalogued feature / system. */
-export const specDialectSchema = z.enum(['gherkin', 'gurki']);
 
 /** A feature with its scenarios and linked artifacts. */
 export const featureDetailSchema = featureSummarySchema.extend({
@@ -50,9 +55,10 @@ export const featureDetailSchema = featureSummarySchema.extend({
   background: gherkinBackgroundSchema.optional(),
   rules: z.array(gherkinRuleSchema).default([]),
   gherkinSource: z.string(),
-  dialect: specDialectSchema.default('gherkin'),
   systemOutputs: z.array(systemValueItemSchema).default([]),
   systemOutcomes: z.array(systemValueItemSchema).default([]),
+  activatesLinks: z.array(activatesLinkSchema).default([]),
+  activatesMermaid: z.string().default(''),
 });
 
 export type SystemValueItem = z.infer<typeof systemValueItemSchema>;

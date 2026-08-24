@@ -2,6 +2,7 @@ import type { IndexProblem, ProjectMetadata } from '@eddy/behavior-contracts';
 import { ResultAsync, type Result } from 'neverthrow';
 import { linkDiagramsToScenario, type RelevanceDiagram } from '../domain/relevance.js';
 import { matchTestsToScenarios, type MatchableScenario } from '../domain/matching.js';
+import { resolveActivatesEdges } from '../domain/activates.js';
 import { partitionResults, toErrorBody, type BehaviorError } from '../errors.js';
 import {
   parseAllMermaid,
@@ -166,6 +167,7 @@ export function indexBehaviorSpecs(
           dialect: gurki === undefined ? 'gherkin' : 'gurki',
           systemOutputs: gurki?.systemOutputs ?? [],
           systemOutcomes: gurki?.systemOutcomes ?? [],
+          activatesLinks: [],
         };
         if (document.background !== undefined) indexedFeature.background = document.background;
 
@@ -220,6 +222,23 @@ export function indexBehaviorSpecs(
           });
 
         index.features.set(document.featureId, indexedFeature);
+      }
+
+      const allActivates = resolveActivatesEdges(
+        [...index.scenarios.values()].map(function toActivatesScenario(scenario) {
+          return {
+            id: scenario.id,
+            name: scenario.name,
+            featureId: scenario.featureId,
+            steps: scenario.steps,
+          };
+        })
+      );
+
+      for (const feature of index.features.values()) {
+        feature.activatesLinks = allActivates.filter(function inFeature(edge) {
+          return feature.scenarioIds.includes(edge.fromScenarioId);
+        });
       }
 
       const matches = matchTestsToScenarios(matchableScenarios, tests.values);

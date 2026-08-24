@@ -12,6 +12,7 @@ export const lintRuleSchema = z.enum([
   'too-many-steps',
   'untagged-feature',
   'empty-scenario',
+  'unresolved-activates',
 ]);
 
 /** A single lint finding. */

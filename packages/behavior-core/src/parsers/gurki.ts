@@ -56,6 +56,7 @@ function toGherkinStep(scenarioId: string, step: GurkiStep, index: number): Gher
     keyword,
     text: step.text,
     line: step.line,
+    kind: step.kind,
   };
 }
 

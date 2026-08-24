@@ -12,6 +12,7 @@ import {
   countFeatureStatuses,
   type CoverageFeature,
 } from '../domain/coverage.js';
+import { activatesFrom, activatesMermaid } from '../domain/activates.js';
 import { aggregateScenarioStatus } from '../domain/status.js';
 import {
   resultsFor,
@@ -70,6 +71,8 @@ export function toScenarioSummary(
   index: BehaviorIndex,
   scenario: IndexedScenario
 ): ScenarioSummary {
+  const feature = index.features.get(scenario.featureId);
+
   return {
     id: scenario.id,
     name: scenario.name,
@@ -80,6 +83,7 @@ export function toScenarioSummary(
     diagramLinks: scenario.diagramLinks,
     status: statusOf(index, scenario.id),
     line: scenario.line,
+    activates: activatesFrom(feature?.activatesLinks ?? [], scenario.id),
   };
 }
 
@@ -98,6 +102,9 @@ export function toScenarioDetail(index: BehaviorIndex, scenario: IndexedScenario
 /** Projects a feature onto its summary shape. */
 export function toFeatureSummary(index: BehaviorIndex, feature: IndexedFeature): FeatureSummary {
   const coverage = calculateFeatureCoverage(toCoverageFeature(index, feature));
+  const resolvedActivates = feature.activatesLinks.filter(function isResolved(edge) {
+    return edge.resolved;
+  }).length;
 
   return {
     id: feature.id,
@@ -109,6 +116,11 @@ export function toFeatureSummary(index: BehaviorIndex, feature: IndexedFeature):
     testCoverage: coverage.coverage,
     status: coverage.status,
     lastUpdated: index.indexedAt,
+    dialect: feature.dialect,
+    outputCount: feature.systemOutputs.length,
+    outcomeCount: feature.systemOutcomes.length,
+    activatesCount: feature.activatesLinks.length,
+    activatesResolvedCount: resolvedActivates,
   };
 }
 
@@ -123,9 +135,10 @@ export function toFeatureDetail(index: BehaviorIndex, feature: IndexedFeature): 
     diagramLinks: feature.diagramLinks,
     rules: feature.rules,
     gherkinSource: feature.source,
-    dialect: feature.dialect,
     systemOutputs: feature.systemOutputs,
     systemOutcomes: feature.systemOutcomes,
+    activatesLinks: feature.activatesLinks,
+    activatesMermaid: activatesMermaid(feature.activatesLinks),
   };
 
   return feature.background === undefined ? detail : { ...detail, background: feature.background };

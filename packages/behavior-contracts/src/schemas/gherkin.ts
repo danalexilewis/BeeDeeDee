@@ -22,13 +22,15 @@ export const gherkinArgumentSchema = z.discriminatedUnion('type', [
   }),
 ]);
 
-/** A single Given/When/Then step. */
+/** A single Given/When/Then (or Gurki Output/Outcome/Activates) step. */
 export const gherkinStepSchema = z.object({
   id: z.string(),
   keyword: z.string(),
   text: z.string(),
   argument: gherkinArgumentSchema.optional(),
   line: lineNumberSchema,
+  /** Resolved Gurki step kind; classic Gherkin may omit this. */
+  kind: z.enum(['given', 'when', 'then', 'output', 'outcome', 'activates']).optional(),
 });
 
 /** Background block shared by every scenario in a feature. */

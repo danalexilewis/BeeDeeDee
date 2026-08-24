@@ -5,9 +5,14 @@ import type {
   TestLink,
   TestResult,
 } from '@eddy/behavior-contracts';
-import type { DiagramLink, GherkinBackground, GherkinRule } from '@eddy/behavior-contracts';
+import type {
+  DiagramLink,
+  GherkinBackground,
+  GherkinRule,
+  SystemValueItem,
+} from '@eddy/behavior-contracts';
+import type { ActivatesEdge } from '../domain/activates.js';
 import type { ParsedScenario } from '../parsers/gherkin.js';
-import type { SystemValueItem } from '../parsers/gurki.js';
 
 /** Spec dialect stored on an indexed feature. */
 export type SpecDialect = 'gherkin' | 'gurki';
@@ -28,6 +33,7 @@ export type IndexedFeature = {
   dialect: SpecDialect;
   systemOutputs: SystemValueItem[];
   systemOutcomes: SystemValueItem[];
+  activatesLinks: ActivatesEdge[];
 };
 
 /** A scenario as held in the index, with its parent feature denormalised on. */

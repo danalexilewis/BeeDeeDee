@@ -58,6 +58,34 @@
                           "lastUpdated": {
                             "type": "string",
                             "format": "date-time"
+                          },
+                          "dialect": {
+                            "default": "gherkin",
+                            "type": "string",
+                            "enum": [
+                              "gherkin",
+                              "gurki"
+                            ]
+                          },
+                          "outputCount": {
+                            "default": 0,
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "outcomeCount": {
+                            "default": 0,
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "activatesCount": {
+                            "default": 0,
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "activatesResolvedCount": {
+                            "default": 0,
+                            "type": "integer",
+                            "minimum": 0
                           }
                         },
                         "required": [
@@ -310,6 +338,34 @@
                       "lastUpdated": {
                         "type": "string",
                         "format": "date-time"
+                      },
+                      "dialect": {
+                        "default": "gherkin",
+                        "type": "string",
+                        "enum": [
+                          "gherkin",
+                          "gurki"
+                        ]
+                      },
+                      "outputCount": {
+                        "default": 0,
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "outcomeCount": {
+                        "default": 0,
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "activatesCount": {
+                        "default": 0,
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "activatesResolvedCount": {
+                        "default": 0,
+                        "type": "integer",
+                        "minimum": 0
                       }
                     },
                     "required": [
@@ -477,6 +533,34 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "dialect": {
+                      "default": "gherkin",
+                      "type": "string",
+                      "enum": [
+                        "gherkin",
+                        "gurki"
+                      ]
+                    },
+                    "outputCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "outcomeCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "activatesCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "activatesResolvedCount": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0
+                    },
                     "scenarios": {
                       "type": "array",
                       "items": {
@@ -591,6 +675,17 @@
                                   "type": "integer",
                                   "minimum": 0,
                                   "exclusiveMinimum": 0
+                                },
+                                "kind": {
+                                  "type": "string",
+                                  "enum": [
+                                    "given",
+                                    "when",
+                                    "then",
+                                    "output",
+                                    "outcome",
+                                    "activates"
+                                  ]
                                 }
                               },
                               "required": [
@@ -804,6 +899,48 @@
                             "type": "integer",
                             "minimum": 0,
                             "exclusiveMinimum": 0
+                          },
+                          "activates": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "fromScenarioId": {
+                                  "type": "string"
+                                },
+                                "fromScenarioName": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                },
+                                "toScenarioId": {
+                                  "type": "string"
+                                },
+                                "toScenarioName": {
+                                  "type": "string"
+                                },
+                                "toFeatureId": {
+                                  "type": "string"
+                                },
+                                "resolved": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "fromScenarioId",
+                                "fromScenarioName",
+                                "text",
+                                "line",
+                                "resolved"
+                              ]
+                            }
                           }
                         },
                         "required": [
@@ -977,6 +1114,17 @@
                                 "type": "integer",
                                 "minimum": 0,
                                 "exclusiveMinimum": 0
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "given",
+                                  "when",
+                                  "then",
+                                  "output",
+                                  "outcome",
+                                  "activates"
+                                ]
                               }
                             },
                             "required": [
@@ -1040,14 +1188,6 @@
                     "gherkinSource": {
                       "type": "string"
                     },
-                    "dialect": {
-                      "default": "gherkin",
-                      "type": "string",
-                      "enum": [
-                        "gherkin",
-                        "gurki"
-                      ]
-                    },
                     "systemOutputs": {
                       "default": [],
                       "type": "array",
@@ -1091,6 +1231,52 @@
                           "text"
                         ]
                       }
+                    },
+                    "activatesLinks": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "fromScenarioId": {
+                            "type": "string"
+                          },
+                          "fromScenarioName": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "toScenarioId": {
+                            "type": "string"
+                          },
+                          "toScenarioName": {
+                            "type": "string"
+                          },
+                          "toFeatureId": {
+                            "type": "string"
+                          },
+                          "resolved": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "fromScenarioId",
+                          "fromScenarioName",
+                          "text",
+                          "line",
+                          "resolved"
+                        ]
+                      }
+                    },
+                    "activatesMermaid": {
+                      "default": "",
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1372,6 +1558,17 @@
                             "type": "integer",
                             "minimum": 0,
                             "exclusiveMinimum": 0
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "given",
+                              "when",
+                              "then",
+                              "output",
+                              "outcome",
+                              "activates"
+                            ]
                           }
                         },
                         "required": [
@@ -1585,6 +1782,48 @@
                       "type": "integer",
                       "minimum": 0,
                       "exclusiveMinimum": 0
+                    },
+                    "activates": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "fromScenarioId": {
+                            "type": "string"
+                          },
+                          "fromScenarioName": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "line": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": 0
+                          },
+                          "toScenarioId": {
+                            "type": "string"
+                          },
+                          "toScenarioName": {
+                            "type": "string"
+                          },
+                          "toFeatureId": {
+                            "type": "string"
+                          },
+                          "resolved": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "fromScenarioId",
+                          "fromScenarioName",
+                          "text",
+                          "line",
+                          "resolved"
+                        ]
+                      }
                     },
                     "featureId": {
                       "type": "string"
@@ -1887,6 +2126,17 @@
                                 "type": "integer",
                                 "minimum": 0,
                                 "exclusiveMinimum": 0
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "given",
+                                  "when",
+                                  "then",
+                                  "output",
+                                  "outcome",
+                                  "activates"
+                                ]
                               }
                             },
                             "required": [
@@ -2101,6 +2351,48 @@
                           "minimum": 0,
                           "exclusiveMinimum": 0
                         },
+                        "activates": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "fromScenarioId": {
+                                "type": "string"
+                              },
+                              "fromScenarioName": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "line": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "exclusiveMinimum": 0
+                              },
+                              "toScenarioId": {
+                                "type": "string"
+                              },
+                              "toScenarioName": {
+                                "type": "string"
+                              },
+                              "toFeatureId": {
+                                "type": "string"
+                              },
+                              "resolved": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "fromScenarioId",
+                              "fromScenarioName",
+                              "text",
+                              "line",
+                              "resolved"
+                            ]
+                          }
+                        },
                         "featureId": {
                           "type": "string"
                         },
@@ -2249,6 +2541,17 @@
                                   "type": "integer",
                                   "minimum": 0,
                                   "exclusiveMinimum": 0
+                                },
+                                "kind": {
+                                  "type": "string",
+                                  "enum": [
+                                    "given",
+                                    "when",
+                                    "then",
+                                    "output",
+                                    "outcome",
+                                    "activates"
+                                  ]
                                 }
                               },
                               "required": [
@@ -2462,6 +2765,48 @@
                             "type": "integer",
                             "minimum": 0,
                             "exclusiveMinimum": 0
+                          },
+                          "activates": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "fromScenarioId": {
+                                  "type": "string"
+                                },
+                                "fromScenarioName": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "line": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "exclusiveMinimum": 0
+                                },
+                                "toScenarioId": {
+                                  "type": "string"
+                                },
+                                "toScenarioName": {
+                                  "type": "string"
+                                },
+                                "toFeatureId": {
+                                  "type": "string"
+                                },
+                                "resolved": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "fromScenarioId",
+                                "fromScenarioName",
+                                "text",
+                                "line",
+                                "resolved"
+                              ]
+                            }
                           }
                         },
                         "required": [
@@ -4134,7 +4479,8 @@
                           "step-without-given",
                           "too-many-steps",
                           "untagged-feature",
-                          "empty-scenario"
+                          "empty-scenario",
+                          "unresolved-activates"
                         ]
                       },
                       "severity": {
