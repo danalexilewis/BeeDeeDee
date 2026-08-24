@@ -16,13 +16,19 @@ We do **not** need to support Cucumber Messages as an ingest format, or host a
 Cucumber (or Spexor-style) runner. Reverse-spec tools and the Cucumber living-docs
 stack are useful for **how they separate concerns** — not as integration targets.
 
+Gurki ([gurki.nz](https://gurki.nz)) is in a different category: it is the
+**modelling dialect** BeeDeeDee is moving to (see
+[gurki-migration-plan.md](./gurki-migration-plan.md)), not a neighbouring product
+to borrow from. Classic Gherkin remains a transitional path.
+
 ```text
   reverse-spec tools                 BeeDeeDee (core)                living-docs / Cucumber
   (pattern: emit files)              --------------------            (pattern: observe ≠ run)
   --------------------               always-on index                 Messages / formatters
-  write .feature / .mmd         →    Mermaid + editor links          Serenity / Studio / HTML
-  under repo paths                   MCP agent picture               = post-run or SaaS cousins
+  write .feature / .spec.md     →    Mermaid + editor links          Serenity / Studio / HTML
+  / .mmd under repo paths            MCP agent picture               = post-run or SaaS cousins
                                      ingest via existing reports     ≠ our wire format
+                                     Gurki value reports + Activates
 ```
 
 ## Pillars already in this repo
@@ -46,20 +52,38 @@ and [decisions.md](./decisions.md).
 
 ---
 
+## Gurki (modelling dialect, not a neighbour)
+
+Gurki is a tiny Gherkin-shaped language that is **not** a Cucumber dialect:
+`System`, `Output`, `Outcome`, `Activates`, plus derived system value reports
+(and optional ledger nets). BeeDeeDee indexes Gurki `*.spec.md` beside classic
+`.feature` files; Policy Bias is a separate browsable canvas built from Gurki
+corpora, not part of this workbench.
+
+| Piece                          | Role here                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------ |
+| **Gurki language + workbench** | Parse/lint/value-report via the `gurki` package; BeeDeeDee owns index, UI, MCP |
+| **Policy Bias**                | Pattern proof of “specs → aggregate canvas”; different product                 |
+
+Keep the niche: Gurki changes **what** is on disk and how value aggregates; it
+does not turn BeeDeeDee into a runner, a SaaS BA suite, or a Messages consumer.
+
+---
+
 ## Patterns worth borrowing (no new surface)
 
 These are design habits already mostly true here. Use them as a veto when tempted
 to add dialects, formats, or product modes.
 
-| Pattern                                      | Seen in                                                                       | Keep doing in BeeDeeDee                                                      |
-| -------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| **Observe ≠ execute**                        | Cucumber Messages vs runners; HTML formatter consumes, does not run           | Ingest reports only; never grow a runner                                     |
-| **Specs on disk are truth; results overlay** | Spexor (git specs, SQLite history); Pickles/LivingDocGen (features + results) | Index from files; status merges into memory; no DB-as-source-of-truth        |
-| **Stable behaviour identity**                | Pickle as the unit of execution; slug/id discipline in catalogs               | Stable scenario names / ids; don’t rename casually (breaks links + MCP URIs) |
-| **UI/API does not know the runner**          | Formatters sit behind the Messages bus                                        | SPA and MCP read the index/contract; report parsers stay at the edge         |
-| **Upstream writes files, does not call us**  | Reversa, Spectacle, Pathfinder, Spekkio                                       | Feeders drop `.feature` / `.mmd` under `specPaths`; watcher re-indexes       |
-| **Characterization ≠ intended**              | Spekkio triage folders                                                        | Human/skill review before treating reverse-spec output as canon              |
-| **Local + agent loop, not BA SaaS**          | Contrast with Cucumber Studio                                                 | MCP + deep links; leave collaboration products alone                         |
+| Pattern                                      | Seen in                                                                       | Keep doing in BeeDeeDee                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Observe ≠ execute**                        | Cucumber Messages vs runners; HTML formatter consumes, does not run           | Ingest reports only; never grow a runner                                            |
+| **Specs on disk are truth; results overlay** | Spexor (git specs, SQLite history); Pickles/LivingDocGen (features + results) | Index from files; status merges into memory; no DB-as-source-of-truth               |
+| **Stable behaviour identity**                | Pickle as the unit of execution; slug/id discipline in catalogs               | Stable scenario names / ids; don’t rename casually (breaks links + MCP URIs)        |
+| **UI/API does not know the runner**          | Formatters sit behind the Messages bus                                        | SPA and MCP read the index/contract; report parsers stay at the edge                |
+| **Upstream writes files, does not call us**  | Reversa, Spectacle, Pathfinder, Spekkio                                       | Feeders drop `.feature` / `.spec.md` / `.mmd` under `specPaths`; watcher re-indexes |
+| **Characterization ≠ intended**              | Spekkio triage folders                                                        | Human/skill review before treating reverse-spec output as canon                     |
+| **Local + agent loop, not BA SaaS**          | Contrast with Cucumber Studio                                                 | MCP + deep links; leave collaboration products alone                                |
 
 ### Upstream tools (feeders only)
 
@@ -91,7 +115,7 @@ target for this product.
 1. **Veto new ideas** that blur the niche (runner, SaaS BA, invent-specs-in-serve,
    extra report dialects “for completeness”).
 2. **Keep the core loop tight:** `init` → `index`/`serve` → ingest existing
-   formats → MCP / deep links / Mermaid.
+   formats → MCP / deep links / Mermaid (Gurki as primary modelling dialect).
 3. **Treat reverse-spec and Cucumber ecosystem material as pattern sources**,
    not a backlog of integrations.
 
@@ -104,3 +128,4 @@ target for this product.
 - Matching Serenity’s illustrated narrative depth.
 - Inventing specs from the application inside the workbench runtime.
 - Feeder-specific plugins or Pathfinder/Reversa adapters.
+- Gurki simulation (out of scope in Gurki v0.1 and here).

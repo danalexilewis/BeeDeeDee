@@ -44,7 +44,7 @@ function stripRoot(filePath: string, root: string): string {
  * `specs/features/auth/login.feature` under `specs/features` becomes `auth.login`.
  */
 export function featureIdFromPath(featuresRoot: string, filePath: string): string {
-  const relative = stripRoot(filePath, featuresRoot).replace(/\.feature$/i, '');
+  const relative = stripRoot(filePath, featuresRoot).replace(/\.(feature|spec\.md)$/i, '');
   return relative
     .split('/')
     .filter(function isNotEmpty(segment) {

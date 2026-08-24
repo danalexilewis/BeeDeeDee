@@ -5,10 +5,17 @@ test.describe('catalog', () => {
     await page.goto('/');
 
     const cards = page.getByTestId('feature-card');
-    await expect(cards).toHaveCount(5);
+    await expect(cards).toHaveCount(6);
 
     // Scoped to cards, since feature titles also appear in their file paths.
-    for (const title of ['Login', 'Password reset', 'Invoicing', 'Refunds', 'Exports']) {
+    for (const title of [
+      'Login',
+      'Password reset',
+      'Invoicing',
+      'Refunds',
+      'Exports',
+      'Event medics',
+    ]) {
       await expect(cards.filter({ hasText: title })).toHaveCount(1);
     }
   });
@@ -16,7 +23,8 @@ test.describe('catalog', () => {
   test('reports project totals in the header', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByTestId('index-state')).toContainText('5 features');
+    await expect(page.getByTestId('index-state')).toContainText('6 features');
+    await expect(page.getByTestId('index-state')).toContainText('18 scenarios');
     await expect(page.getByTestId('overall-coverage')).toBeVisible();
   });
 

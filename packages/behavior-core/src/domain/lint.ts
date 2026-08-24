@@ -6,7 +6,7 @@ export type LintableScenario = {
   name: string;
   line: number;
   tags: readonly string[];
-  steps: ReadonlyArray<{ keyword: string; text: string; line: number }>;
+  steps: ReadonlyArray<{ keyword: string; text: string; line: number; kind?: string }>;
 };
 
 /** The lint-relevant slice of a feature. */
@@ -181,6 +181,36 @@ function tooManySteps(feature: LintableFeature): LintResult[] {
     });
 }
 
+/** Gurki Activates should name another scenario in the same feature when possible. */
+function unresolvedActivates(feature: LintableFeature): LintResult[] {
+  const titles = new Set(
+    feature.scenarios.map(function toName(scenario) {
+      return normalizeName(scenario.name);
+    })
+  );
+
+  return feature.scenarios.flatMap(function checkScenario(scenario) {
+    return scenario.steps.flatMap(function checkStep(step) {
+      const isActivates = step.kind === 'activates' || keywordOf(step) === 'activates';
+      if (!isActivates) return [];
+
+      const target = step.text.trim();
+      if (target.length === 0) return [];
+      if (titles.has(normalizeName(target))) return [];
+
+      return [
+        {
+          path: feature.path,
+          rule: 'unresolved-activates',
+          severity: 'warning' as const,
+          message: `Activates target "${target}" was not found among scenarios in this feature`,
+          line: step.line,
+        },
+      ];
+    });
+  });
+}
+
 const RULES = [
   missingFeatureDescription,
   untaggedFeature,
@@ -190,6 +220,7 @@ const RULES = [
   inconsistentStepKeyword,
   stepWithoutGiven,
   tooManySteps,
+  unresolvedActivates,
 ] as const;
 
 /**

@@ -47,7 +47,14 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
           <p className="truncate font-medium">{feature.title}</p>
           <p className="text-muted-foreground truncate text-xs">{feature.path}</p>
         </div>
-        <StatusBadge status={feature.status} />
+        <div className="flex shrink-0 items-center gap-2">
+          {feature.dialect === 'gurki' ? (
+            <span className="border-border text-muted-foreground rounded border px-1.5 py-0.5 text-xs">
+              Gurki
+            </span>
+          ) : null}
+          <StatusBadge status={feature.status} />
+        </div>
       </div>
 
       <div className="mt-2 flex items-center gap-3">
@@ -55,6 +62,12 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
         <span className="text-muted-foreground text-xs">
           {feature.scenarioCount} scenario{feature.scenarioCount === 1 ? '' : 's'}
         </span>
+        {feature.dialect === 'gurki' ? (
+          <span className="text-muted-foreground text-xs">
+            {feature.outputCount} out · {feature.activatesResolvedCount}/{feature.activatesCount}{' '}
+            unlocks
+          </span>
+        ) : null}
         <div className="flex gap-1">
           {feature.tags.slice(0, 3).map(function toTag(tag) {
             return (
