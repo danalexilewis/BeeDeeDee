@@ -55,10 +55,12 @@ behavior serve    # open the workbench
 By default the workbench looks for:
 
 ```
-specs/features/**/*.feature     Gherkin specifications
-specs/diagrams/**/*.mmd         Mermaid diagrams
-tests/e2e/**/*.spec.ts          end-to-end tests
-tests/components/**/*.spec.ts   component tests
+specs/features/**/*.feature              Gherkin specifications
+specs/features/**/*.spec.md              Gurki systems
+specs/diagrams/**/*.mmd                  Mermaid diagrams
+specs/mappings/**/*.architecture.json    Architecture canvases (flow + domain)
+tests/e2e/**/*.spec.ts                   end-to-end tests
+tests/components/**/*.spec.ts            component tests
 ```
 
 Override any of these in `.behaviorrc`. Every field is optional — the file exists
@@ -67,7 +69,11 @@ to change defaults, not restate them.
 ```json
 {
   "name": "My Project",
-  "specPaths": { "features": "docs/specs", "diagrams": "docs/diagrams" },
+  "specPaths": {
+    "features": "docs/specs",
+    "diagrams": "docs/diagrams",
+    "mappings": "docs/architecture"
+  },
   "testPaths": { "e2e": "e2e", "components": "src", "unit": "src" },
   "editorConfig": { "supportedEditors": ["cursor", "vscode"], "openCommand": "cursor" },
   "server": { "port": 4000, "host": "127.0.0.1" }

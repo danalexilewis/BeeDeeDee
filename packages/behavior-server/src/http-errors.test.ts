@@ -1,5 +1,6 @@
 import { behaviorErrorTagSchema, errorSchema } from '@eddy/behavior-contracts';
 import {
+  architectureMapNotFound,
   diagramNotFound,
   editorNotSupported,
   featureNotFound,
@@ -26,6 +27,7 @@ const EVERY_ERROR: BehaviorError[] = [
   scenarioNotFound('s'),
   featureNotFound('f'),
   diagramNotFound('d'),
+  architectureMapNotFound('m'),
   editorNotSupported('emacs'),
   pathEscapesProject('../etc/passwd'),
   unsupportedReportFormat('junit-xml'),
@@ -46,6 +48,7 @@ describe('statusFor', () => {
     ['ScenarioNotFound', 404],
     ['FeatureNotFound', 404],
     ['DiagramNotFound', 404],
+    ['ArchitectureMapNotFound', 404],
     ['FileNotFound', 404],
   ] as const)('maps %s to %i', (tag, expected) => {
     const error = EVERY_ERROR.find(candidate => candidate.tag === tag)!;

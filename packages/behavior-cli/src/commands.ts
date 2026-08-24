@@ -85,6 +85,7 @@ export async function runInit(deps: CommandDeps, force: boolean): Promise<number
   deps.output.write('Next steps:');
   deps.output.write(`  put feature files in ${config.project.specPaths.features}`);
   deps.output.write(`  put diagrams in ${config.project.specPaths.diagrams}`);
+  deps.output.write(`  put architecture maps in ${config.project.specPaths.mappings}`);
   deps.output.write('  run `behavior index` to check what is found');
   return 0;
 }

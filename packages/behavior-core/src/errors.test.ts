@@ -3,6 +3,7 @@ import { err, ok } from 'neverthrow';
 import { describe, expect, it } from 'vitest';
 import {
   assertTagsMatchContract,
+  architectureMapNotFound,
   describeError,
   diagramNotFound,
   editorNotSupported,
@@ -32,6 +33,7 @@ const EVERY_ERROR: BehaviorError[] = [
   scenarioNotFound('login/happy'),
   featureNotFound('login'),
   diagramNotFound('auth-flow'),
+  architectureMapNotFound('product-overview'),
   editorNotSupported('emacs'),
   pathEscapesProject('../../etc/passwd'),
   unsupportedReportFormat('junit-xml'),

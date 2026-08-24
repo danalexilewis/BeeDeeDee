@@ -2,7 +2,8 @@
   "name": "Demo Project",
   "specPaths": {
     "features": "specs/features",
-    "diagrams": "specs/diagrams"
+    "diagrams": "specs/diagrams",
+    "mappings": "specs/mappings"
   },
   "testPaths": {
     "e2e": "tests/e2e",

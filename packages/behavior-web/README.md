@@ -10,6 +10,7 @@ Vite + React SPA for the Behavior Workbench.
 - **Tailwind 4** with CSS custom properties for theming
 - **react-resizable-panels** for the three-panel feature view
 - **@tanstack/react-virtual** for the catalog
+- **@xyflow/react** for architecture map canvases
 - **mermaid** for diagram rendering
 
 ## No client state library

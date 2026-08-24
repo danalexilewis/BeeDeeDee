@@ -1,0 +1,280 @@
+{
+  "schemaVersion": "0.1",
+  "title": "Demo product architecture",
+  "description": "User journeys above the divider; normalised domain model below. Lineage edges show where collected data lands.",
+  "dividerY": 420,
+  "userFlows": {
+    "nodes": [
+      {
+        "id": "auth-hub",
+        "label": "Authentication",
+        "kind": "hub",
+        "position": { "x": 40, "y": 40 },
+        "description": "Identity entry points. Collapse to hide password-reset detail.",
+        "collapsedByDefault": false,
+        "dataCollected": [],
+        "requiredToProceed": []
+      },
+      {
+        "id": "login",
+        "label": "Login",
+        "kind": "stage",
+        "parentId": "auth-hub",
+        "featureId": "authentication.login",
+        "position": { "x": 280, "y": 20 },
+        "description": "User signs in with email and password.",
+        "dataCollected": [
+          {
+            "id": "email",
+            "name": "Email",
+            "required": true,
+            "description": "Account identifier used for session and invoice contact."
+          },
+          {
+            "id": "password",
+            "name": "Password",
+            "required": true,
+            "description": "Verified then discarded; never stored in the domain model."
+          }
+        ],
+        "requiredToProceed": ["email", "password"]
+      },
+      {
+        "id": "password-reset",
+        "label": "Password reset",
+        "kind": "leaf",
+        "parentId": "auth-hub",
+        "featureId": "authentication.password-reset",
+        "position": { "x": 280, "y": 160 },
+        "description": "Recovery path; zoom in to reveal from the Authentication hub.",
+        "zoomRevealAt": 1.15,
+        "dataCollected": [
+          {
+            "id": "reset-email",
+            "name": "Email",
+            "required": true,
+            "description": "Must match an existing account before a reset token is issued."
+          }
+        ],
+        "requiredToProceed": ["reset-email"]
+      },
+      {
+        "id": "billing-hub",
+        "label": "Billing",
+        "kind": "hub",
+        "position": { "x": 560, "y": 40 },
+        "description": "Commercial flows after authentication.",
+        "collapsedByDefault": false,
+        "dataCollected": [],
+        "requiredToProceed": []
+      },
+      {
+        "id": "invoicing",
+        "label": "Invoicing",
+        "kind": "stage",
+        "parentId": "billing-hub",
+        "featureId": "billing.invoicing",
+        "position": { "x": 800, "y": 20 },
+        "description": "Create and send an invoice for a billing period.",
+        "dataCollected": [
+          {
+            "id": "invoice-amount",
+            "name": "Amount",
+            "required": true,
+            "description": "Charge total in the account currency."
+          },
+          {
+            "id": "invoice-period",
+            "name": "Billing period",
+            "required": true,
+            "description": "Inclusive start/end dates for the invoice."
+          }
+        ],
+        "requiredToProceed": ["invoice-amount", "invoice-period"]
+      },
+      {
+        "id": "refunds",
+        "label": "Refunds",
+        "kind": "leaf",
+        "parentId": "billing-hub",
+        "featureId": "billing.refunds",
+        "position": { "x": 800, "y": 160 },
+        "description": "Optional corrective path; appears when zoomed in.",
+        "zoomRevealAt": 1.15,
+        "dataCollected": [
+          {
+            "id": "refund-amount",
+            "name": "Refund amount",
+            "required": true,
+            "description": "Must not exceed the original invoice balance."
+          },
+          {
+            "id": "refund-reason",
+            "name": "Reason",
+            "required": false,
+            "description": "Free-text justification retained for audit."
+          }
+        ],
+        "requiredToProceed": ["refund-amount"]
+      },
+      {
+        "id": "exports",
+        "label": "Reporting exports",
+        "kind": "stage",
+        "featureId": "reporting.exports",
+        "position": { "x": 1080, "y": 80 },
+        "description": "Export billed activity for the authenticated account.",
+        "dataCollected": [
+          {
+            "id": "export-format",
+            "name": "Format",
+            "required": true,
+            "description": "CSV or PDF."
+          }
+        ],
+        "requiredToProceed": ["export-format"]
+      }
+    ],
+    "edges": [
+      { "id": "flow-auth-login", "source": "auth-hub", "target": "login", "label": "" },
+      { "id": "flow-auth-reset", "source": "auth-hub", "target": "password-reset", "label": "recovery" },
+      { "id": "flow-login-billing", "source": "login", "target": "billing-hub", "label": "authenticated" },
+      { "id": "flow-billing-invoice", "source": "billing-hub", "target": "invoicing", "label": "" },
+      { "id": "flow-billing-refund", "source": "billing-hub", "target": "refunds", "label": "optional" },
+      { "id": "flow-invoice-export", "source": "invoicing", "target": "exports", "label": "settled" }
+    ]
+  },
+  "domainModel": {
+    "nodes": [
+      {
+        "id": "user",
+        "label": "User",
+        "kind": "entity",
+        "position": { "x": 120, "y": 500 },
+        "description": "Authenticated account holder."
+      },
+      {
+        "id": "user.email",
+        "label": "email",
+        "kind": "field",
+        "parentId": "user",
+        "position": { "x": 40, "y": 600 },
+        "description": "Primary contact and login identifier.",
+        "dataType": "email"
+      },
+      {
+        "id": "invoice",
+        "label": "Invoice",
+        "kind": "entity",
+        "position": { "x": 520, "y": 500 },
+        "description": "Billable document for a period."
+      },
+      {
+        "id": "invoice.amount",
+        "label": "amount",
+        "kind": "field",
+        "parentId": "invoice",
+        "position": { "x": 400, "y": 600 },
+        "description": "Total charge.",
+        "dataType": "money"
+      },
+      {
+        "id": "invoice.period",
+        "label": "period",
+        "kind": "field",
+        "parentId": "invoice",
+        "position": { "x": 560, "y": 600 },
+        "description": "Billing window.",
+        "dataType": "date-range"
+      },
+      {
+        "id": "invoice.customerEmail",
+        "label": "customerEmail",
+        "kind": "field",
+        "parentId": "invoice",
+        "position": { "x": 720, "y": 600 },
+        "description": "Denormalised contact copied from User.email at invoice creation.",
+        "dataType": "email"
+      },
+      {
+        "id": "refund",
+        "label": "Refund",
+        "kind": "entity",
+        "position": { "x": 920, "y": 500 },
+        "description": "Partial or full reversal of an invoice."
+      },
+      {
+        "id": "refund.amount",
+        "label": "amount",
+        "kind": "field",
+        "parentId": "refund",
+        "position": { "x": 840, "y": 600 },
+        "description": "Credited amount.",
+        "dataType": "money"
+      },
+      {
+        "id": "refund.reason",
+        "label": "reason",
+        "kind": "field",
+        "parentId": "refund",
+        "position": { "x": 1000, "y": 600 },
+        "description": "Optional audit note.",
+        "dataType": "text"
+      }
+    ],
+    "edges": [
+      { "id": "rel-user-invoice", "source": "user", "target": "invoice", "label": "owns" },
+      { "id": "rel-invoice-refund", "source": "invoice", "target": "refund", "label": "may reverse" }
+    ]
+  },
+  "lineage": [
+    {
+      "id": "lin-email-user",
+      "source": "login",
+      "target": "user.email",
+      "dataId": "email",
+      "label": "email → User.email",
+      "description": "Login email becomes the canonical User.email."
+    },
+    {
+      "id": "lin-email-invoice",
+      "source": "login",
+      "target": "invoice.customerEmail",
+      "dataId": "email",
+      "label": "email → Invoice.customerEmail",
+      "description": "Copied onto invoices created in this session."
+    },
+    {
+      "id": "lin-amount",
+      "source": "invoicing",
+      "target": "invoice.amount",
+      "dataId": "invoice-amount",
+      "label": "amount",
+      "description": "Invoice total captured at the invoicing stage."
+    },
+    {
+      "id": "lin-period",
+      "source": "invoicing",
+      "target": "invoice.period",
+      "dataId": "invoice-period",
+      "label": "period",
+      "description": "Billing window captured at the invoicing stage."
+    },
+    {
+      "id": "lin-refund-amount",
+      "source": "refunds",
+      "target": "refund.amount",
+      "dataId": "refund-amount",
+      "label": "refund amount",
+      "description": "Refund amount lands on the Refund entity."
+    },
+    {
+      "id": "lin-refund-reason",
+      "source": "refunds",
+      "target": "refund.reason",
+      "dataId": "refund-reason",
+      "label": "reason",
+      "description": "Optional reason retained for audit."
+    }
+  ]
+}

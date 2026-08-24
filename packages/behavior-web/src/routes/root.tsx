@@ -117,6 +117,13 @@ function RootLayout() {
             Catalog
           </Link>
           <Link
+            to="/maps"
+            activeProps={{ className: 'text-foreground' }}
+            className="text-muted-foreground hover:text-foreground text-sm"
+          >
+            Architecture
+          </Link>
+          <Link
             to="/problems"
             activeProps={{ className: 'text-foreground' }}
             className="text-muted-foreground hover:text-foreground text-sm"

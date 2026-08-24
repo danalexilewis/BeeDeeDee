@@ -17,6 +17,7 @@ export function statusFor(error: BehaviorError): ErrorStatus {
     case 'ScenarioNotFound':
     case 'FeatureNotFound':
     case 'DiagramNotFound':
+    case 'ArchitectureMapNotFound':
     case 'FileNotFound':
       return 404;
 

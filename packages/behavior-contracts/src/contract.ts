@@ -1,6 +1,10 @@
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 import { agentContextSchema } from './schemas/agent.js';
+import {
+  architectureMapSchema,
+  architectureMapSummarySchema,
+} from './schemas/architecture-map.js';
 import { catalogDataSchema, featureFilterSchema } from './schemas/catalog.js';
 import { diagramContentSchema } from './schemas/diagram.js';
 import { editorLinkSchema } from './schemas/editor.js';
@@ -88,6 +92,27 @@ export const behaviorContract = c.router(
       summary: 'Diagram source and metadata',
       responses: {
         200: diagramContentSchema,
+        404: errorSchema,
+        503: errorSchema,
+      },
+    },
+
+    listArchitectureMaps: {
+      method: 'GET',
+      path: '/architecture-maps',
+      summary: 'Architecture maps indexed from specPaths.mappings',
+      responses: {
+        200: z.array(architectureMapSummarySchema),
+        503: errorSchema,
+      },
+    },
+
+    getArchitectureMap: {
+      method: 'GET',
+      path: '/architecture-maps/:mapId',
+      summary: 'One architecture map for the split flow / domain canvas',
+      responses: {
+        200: architectureMapSchema,
         404: errorSchema,
         503: errorSchema,
       },

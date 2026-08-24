@@ -1,4 +1,6 @@
 import type {
+  ArchitectureMap,
+  ArchitectureMapSummary,
   CatalogData,
   FeatureDetail,
   FeatureSummary,
@@ -172,5 +174,27 @@ export function toCatalogData(index: BehaviorIndex): CatalogData {
     overallCoverage: metrics.scenarioCoverage,
     statusCounts,
     tags,
+  };
+}
+
+/** List-row projection for an architecture map. */
+export function toArchitectureMapSummary(map: ArchitectureMap): ArchitectureMapSummary {
+  const linkedFeatureIds = [
+    ...new Set(
+      map.userFlows.nodes.flatMap(function toFeatureId(node) {
+        return node.featureId === undefined ? [] : [node.featureId];
+      })
+    ),
+  ].sort();
+
+  return {
+    id: map.id,
+    title: map.title,
+    description: map.description,
+    path: map.path,
+    flowNodeCount: map.userFlows.nodes.length,
+    domainNodeCount: map.domainModel.nodes.length,
+    lineageCount: map.lineage.length,
+    linkedFeatureIds,
   };
 }

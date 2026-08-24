@@ -18,6 +18,7 @@ export type BehaviorError =
   | { tag: 'ScenarioNotFound'; scenarioId: string }
   | { tag: 'FeatureNotFound'; featureId: string }
   | { tag: 'DiagramNotFound'; diagramId: string }
+  | { tag: 'ArchitectureMapNotFound'; mapId: string }
   | { tag: 'EditorNotSupported'; editor: string }
   | { tag: 'PathEscapesProject'; path: string }
   | { tag: 'UnsupportedReportFormat'; format: string }
@@ -79,6 +80,10 @@ export function diagramNotFound(diagramId: string): BehaviorError {
   return { tag: 'DiagramNotFound', diagramId };
 }
 
+export function architectureMapNotFound(mapId: string): BehaviorError {
+  return { tag: 'ArchitectureMapNotFound', mapId };
+}
+
 export function editorNotSupported(editor: string): BehaviorError {
   return { tag: 'EditorNotSupported', editor };
 }
@@ -120,6 +125,8 @@ export function describeError(error: BehaviorError): string {
       return `Feature not found: ${error.featureId}`;
     case 'DiagramNotFound':
       return `Diagram not found: ${error.diagramId}`;
+    case 'ArchitectureMapNotFound':
+      return `Architecture map not found: ${error.mapId}`;
     case 'EditorNotSupported':
       return `Editor not supported: ${error.editor}`;
     case 'PathEscapesProject':
@@ -151,6 +158,8 @@ function errorDetails(error: BehaviorError): Record<string, unknown> | undefined
       return { featureId: error.featureId };
     case 'DiagramNotFound':
       return { diagramId: error.diagramId };
+    case 'ArchitectureMapNotFound':
+      return { mapId: error.mapId };
     case 'EditorNotSupported':
       return { editor: error.editor };
     case 'UnsupportedReportFormat':

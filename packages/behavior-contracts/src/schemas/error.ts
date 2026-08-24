@@ -14,6 +14,7 @@ export const behaviorErrorTagSchema = z.enum([
   'ScenarioNotFound',
   'FeatureNotFound',
   'DiagramNotFound',
+  'ArchitectureMapNotFound',
   'EditorNotSupported',
   'PathEscapesProject',
   'UnsupportedReportFormat',

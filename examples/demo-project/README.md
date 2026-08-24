@@ -24,5 +24,10 @@ Three diagrams cover different Mermaid types — two flowcharts and a sequence
 diagram — and two test files link to some but not all scenarios, so coverage sits
 somewhere interesting rather than at 0% or 100%.
 
+There is also one architecture map
+(`specs/mappings/product-overview.architecture.json`) that drives the
+Architecture canvas: user flows above a divider, domain model below, and lineage
+edges between them.
+
 The untagged `exports.feature` is intentional. Without it the problems view would
 have nothing to show and its tests would assert an empty state forever.

@@ -5,7 +5,8 @@ import { editorConfigSchema } from './editor.js';
 export const specPathsSchema = z.object({
   features: z.string().default('specs/features'),
   diagrams: z.string().default('specs/diagrams'),
-  mappings: z.string().optional(),
+  /** Architecture map JSON files (`*.architecture.json`). */
+  mappings: z.string().default('specs/mappings'),
 });
 
 /** Directories the indexer scans for tests. */

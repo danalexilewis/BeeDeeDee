@@ -167,3 +167,25 @@ separately from Gurki `Outcome` text.
 skills drops to zero — then consider removing the classic parser path.
 
 Plan: [gurki-migration-plan.md](./gurki-migration-plan.md).
+
+## 13. Architecture maps use React Flow on a split plane
+
+**Decision.** System architecture overview is an authored
+`*.architecture.json` under `specPaths.mappings` (default `specs/mappings`),
+rendered with `@xyflow/react` — not Mermaid and not an inferred graph from
+Gherkin alone.
+
+The canvas is split by `dividerY`: user-flow nodes above, domain-model nodes
+below, with dashed lineage edges crossing the plane to show which stage-collected
+datum lands in which domain field. Hubs collapse their children; leaf stages can
+set `zoomRevealAt` so detail appears only when zoomed in. Selecting a node opens
+a detail panel (data collected, required-to-proceed gates, drill-in to a linked
+feature).
+
+Mermaid remains for scenario-linked diagrams. Activates unlock graphs stay on
+the feature view. Architecture maps are the place for cross-system data / user
+flow and normalisation lineage.
+
+**Revisit if** maps need collaborative editing or auto-layout from Activates —
+then consider write APIs and layout algorithms; the read model stays JSON on
+disk.

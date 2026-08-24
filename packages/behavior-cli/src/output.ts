@@ -49,6 +49,7 @@ export function formatIndexStatus(status: IndexStatus): string[] {
     `features:   ${status.featureCount}`,
     `scenarios:  ${status.scenarioCount}`,
     `diagrams:   ${status.diagramCount}`,
+    `maps:       ${status.architectureMapCount}`,
     `test files: ${status.testFileCount}`,
   ];
 

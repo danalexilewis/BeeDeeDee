@@ -40,6 +40,7 @@ export default defineConfig({
       '@tanstack/react-router',
       '@tanstack/react-virtual',
       'react-resizable-panels',
+      '@xyflow/react',
     ],
   },
   test: {

@@ -5,6 +5,7 @@ import { matchTestsToScenarios, type MatchableScenario } from '../domain/matchin
 import { resolveActivatesEdges } from '../domain/activates.js';
 import { partitionResults, toErrorBody, type BehaviorError } from '../errors.js';
 import {
+  parseAllArchitectureMaps,
   parseAllMermaid,
   parseAllSpecDocuments,
   parseAllTestFiles,
@@ -24,6 +25,7 @@ import {
 
 const FEATURE_EXTENSIONS = ['.feature', '.spec.md'] as const;
 const DIAGRAM_EXTENSIONS = ['.mmd', '.mermaid'] as const;
+const ARCHITECTURE_MAP_EXTENSIONS = ['.architecture.json'] as const;
 const TEST_EXTENSIONS = ['.spec.ts', '.spec.tsx', '.test.ts', '.test.tsx', '.spec.js', '.test.js'];
 
 export type IndexDeps = {
@@ -102,22 +104,28 @@ export function indexBehaviorSpecs(
   return ResultAsync.combine([
     fileSystem.listFiles(project.specPaths.features, FEATURE_EXTENSIONS),
     fileSystem.listFiles(project.specPaths.diagrams, DIAGRAM_EXTENSIONS),
+    fileSystem.listFiles(project.specPaths.mappings, ARCHITECTURE_MAP_EXTENSIONS),
     listAcross(fileSystem, testDirectories, TEST_EXTENSIONS),
   ])
-    .andThen(function readEverything([featurePaths, diagramPaths, testPaths]) {
+    .andThen(function readEverything([featurePaths, diagramPaths, mapPaths, testPaths]) {
       return ResultAsync.combine([
         readAll(fileSystem, featurePaths),
         readAll(fileSystem, diagramPaths),
+        readAll(fileSystem, mapPaths),
         readAll(fileSystem, testPaths),
       ]).map(function withCounts(batches) {
         return { batches, testFileCount: testPaths.length };
       });
     })
     .map(function build({ batches, testFileCount }) {
-      const [featureFiles, diagramFiles, testFiles] = batches;
+      const [featureFiles, diagramFiles, mapFiles, testFiles] = batches;
 
       const features = parseAllSpecDocuments(featureFiles.values, project.specPaths.features);
       const diagrams = parseAllMermaid(diagramFiles.values, project.specPaths.diagrams);
+      const architectureMaps = parseAllArchitectureMaps(
+        mapFiles.values,
+        project.specPaths.mappings
+      );
       const tests = parseAllTestFiles(testFiles.values);
 
       const index = emptyIndex(project, clock.nowIso());
@@ -125,14 +133,20 @@ export function indexBehaviorSpecs(
       index.problems = toProblems([
         ...featureFiles.errors,
         ...diagramFiles.errors,
+        ...mapFiles.errors,
         ...testFiles.errors,
         ...features.errors,
         ...diagrams.errors,
+        ...architectureMaps.errors,
         ...tests.errors,
       ]);
 
       for (const diagram of diagrams.values) {
         index.diagrams.set(diagram.id, diagram);
+      }
+
+      for (const map of architectureMaps.values) {
+        index.architectureMaps.set(map.id, map);
       }
 
       const relevanceDiagrams: RelevanceDiagram[] = diagrams.values.map(
@@ -251,6 +265,7 @@ export function indexBehaviorSpecs(
         features: index.features.size,
         scenarios: index.scenarios.size,
         diagrams: index.diagrams.size,
+        architectureMaps: index.architectureMaps.size,
         testFiles: index.testFileCount,
         problems: index.problems.length,
         durationMs: index.durationMs,

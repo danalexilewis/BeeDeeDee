@@ -2,6 +2,7 @@ import { behaviorContract, type ErrorBody } from '@eddy/behavior-contracts';
 import {
   generateAgentContext,
   generateEditorLinks,
+  getArchitectureMap,
   getCatalog,
   getDiagram,
   getFeature,
@@ -9,6 +10,7 @@ import {
   getTestStatus,
   ingestTestResults,
   lintSpecs,
+  listArchitectureMaps,
   listFeatures,
   validateGherkin,
   type BehaviorError,
@@ -82,6 +84,11 @@ export function createBehaviorRouter(deps: RouterDeps) {
 
     getDiagram: async ({ params }) =>
       respond(getDiagram(queryDeps, params.diagramId), 200, LOOKUP_ERRORS),
+
+    listArchitectureMaps: async () => respond(listArchitectureMaps(queryDeps), 200, READ_ERRORS),
+
+    getArchitectureMap: async ({ params }) =>
+      respond(getArchitectureMap(queryDeps, params.mapId), 200, LOOKUP_ERRORS),
 
     ingestTestResults: async ({ body }) => {
       const result = ingestTestResults({ indexStore, clock }, body);

@@ -74,7 +74,7 @@ hyphen, so a dot can only ever be a separator we introduced. A test asserts
 
 ## The contract is the only HTTP surface
 
-[`behaviorContract`](../packages/behavior-contracts/src/contract.ts) declares 13
+[`behaviorContract`](../packages/behavior-contracts/src/contract.ts) declares the
 routes under `/api` with `strictStatusCodes`. The server implements it, the SPA
 consumes it, and both derive their types from it.
 

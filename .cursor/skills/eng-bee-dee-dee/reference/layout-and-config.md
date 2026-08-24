@@ -7,10 +7,11 @@ Copied BeeDeeDee conventions for projects that may not have BeeDeeDee installed.
 Relative to the project root:
 
 ```
-specs/features/**/*.feature     Gherkin specifications
-specs/diagrams/**/*.mmd         Mermaid diagrams
-tests/e2e/**/*.spec.ts          end-to-end tests
-tests/components/**/*.spec.ts   component tests
+specs/features/**/*.feature              Gherkin / Gurki specifications
+specs/diagrams/**/*.mmd                  Mermaid diagrams
+specs/mappings/**/*.architecture.json    Architecture canvases (optional authored maps)
+tests/e2e/**/*.spec.ts                   end-to-end tests
+tests/components/**/*.spec.ts            component tests
 ```
 
 Optional third test path when configured: `testPaths.unit`.

@@ -1,5 +1,7 @@
 import type {
   AgentContext,
+  ArchitectureMap,
+  ArchitectureMapSummary,
   CatalogData,
   DiagramContent,
   EditorLink,
@@ -29,6 +31,8 @@ export const queryKeys = {
   scenario: (scenarioId: string) => ['scenario', scenarioId] as const,
   agentContext: (scenarioId: string) => ['agent-context', scenarioId] as const,
   diagram: (diagramId: string) => ['diagram', diagramId] as const,
+  architectureMaps: ['architecture-maps'] as const,
+  architectureMap: (mapId: string) => ['architecture-map', mapId] as const,
   testStatus: (scenarioId: string) => ['test-status', scenarioId] as const,
   indexStatus: ['index-status'] as const,
   lint: ['lint'] as const,
@@ -85,6 +89,24 @@ export function diagramQuery(diagramId: string) {
     queryKey: queryKeys.diagram(diagramId),
     queryFn: async function fetchDiagram(): Promise<DiagramContent> {
       return unwrap(await api.getDiagram({ params: { diagramId } }));
+    },
+  });
+}
+
+export function architectureMapsQuery() {
+  return queryOptions({
+    queryKey: queryKeys.architectureMaps,
+    queryFn: async function fetchArchitectureMaps(): Promise<ArchitectureMapSummary[]> {
+      return unwrap(await api.listArchitectureMaps());
+    },
+  });
+}
+
+export function architectureMapQuery(mapId: string) {
+  return queryOptions({
+    queryKey: queryKeys.architectureMap(mapId),
+    queryFn: async function fetchArchitectureMap(): Promise<ArchitectureMap> {
+      return unwrap(await api.getArchitectureMap({ params: { mapId } }));
     },
   });
 }
