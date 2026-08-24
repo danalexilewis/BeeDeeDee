@@ -150,3 +150,20 @@ progress without being any.
 
 **Revisit if** users want per-example test status, which would need example rows
 addressable by id.
+
+## 12. Gurki is the primary modelling dialect
+
+**Decision.** New BeeDeeDee modelling targets [Gurki](https://gurki.nz)
+(`System` / `Output` / `Outcome` / `Activates`). Classic Cucumber Gherkin
+(`.feature`, including Background / Rule / Scenario Outline) remains supported
+as a transitional dialect behind `dialect: auto | gurki | gherkin`.
+
+Gurki is not a Cucumber dialect: `@cucumber/gherkin` cannot treat the new step
+kinds as first-class. Parsing for Gurki files goes through the `gurki` package
+(git dependency until npm publish). The workbench still aggregates test status
+separately from Gurki `Outcome` text.
+
+**Revisit when** Gurki 1.0 ships, or when classic `.feature` usage in demos and
+skills drops to zero — then consider removing the classic parser path.
+
+Plan: [gurki-migration-plan.md](./gurki-migration-plan.md).

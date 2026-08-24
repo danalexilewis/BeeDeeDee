@@ -45,17 +45,36 @@ agents that invent or recover specs from code. BeeDeeDee currently assumes specs
 exist; those tools could feed it, or BeeDeeDee could later grow a “propose Gherkin
 from journeys” loop (MCP already has `propose_gherkin` as a draft path).
 
+## System modelling (Gurki)
+
+A third cluster sits beside living docs and reverse-spec: **system value
+modelling** in a Gherkin-shaped language that is *not* a Cucumber dialect.
+
+| Tool | What it does | Overlap with BeeDeeDee |
+| --- | --- | --- |
+| **[Gurki](https://gurki.nz)** ([repo](https://github.com/danalexilewis/gurki)) | Tiny Gherkin flavour: `System`, `Output`, `Outcome`, `Activates`; derived system value reports and optional ledger nets | Intended primary dialect for BeeDeeDee — see [gurki-migration-plan.md](./gurki-migration-plan.md) |
+| **[Policy Bias](https://policybias.com)** | Browsable card wall / game built from Gurki `*.spec.md` corpora | Proof of “specs → aggregate canvas”; product is separate from the workbench |
+
+Gurki answers what exists, what happens, what is produced, what changes, and what
+becomes possible next. Cucumber living docs answer whether automated scenarios
+passed. BeeDeeDee’s bet after the Gurki move is to index the former and still
+ingest the latter where tests exist.
+
 ## Useful seams if we borrow rather than rebuild
 
-1. **Ingest Cucumber Messages** — become a first-class consumer of the Cucumber
+1. **Adopt Gurki as the modelling dialect** — parse/lint/value-report via the
+   `gurki` package; keep BeeDeeDee as index + UI + MCP (plan above).
+2. **Ingest Cucumber Messages** — first-class consumer of the Cucumber
    platform’s wire format instead of only Playwright/Vitest/Jest JSON.
-2. **Reuse `@cucumber/gherkin` / Messages types** where parsing already overlaps.
-3. **Treat reverse-spec tools as upstream** — Pathfinder/Reversa/Greenfield produce
+3. **Reuse `@cucumber/gherkin` / Messages types** for the classic transitional
+   path only.
+4. **Treat reverse-spec tools as upstream** — Pathfinder/Reversa/Greenfield produce
    artefacts; BeeDeeDee indexes and governs them.
-4. **Stay local + MCP** — SaaS living-doc products (Studio, Azure LivingDoc) own
+5. **Stay local + MCP** — SaaS living-doc products (Studio, Azure LivingDoc) own
    collaboration; BeeDeeDee owns the developer/agent loop on disk.
 
 ## Explicit non-goals (for now)
 
 Matching Serenity’s illustrated narrative docs, or becoming a full Cucumber
 runner. The workbench is the map and control plane, not the execution engine.
+Simulation remains out of scope (same as Gurki v0.1).
