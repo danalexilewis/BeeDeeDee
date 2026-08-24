@@ -34,7 +34,7 @@ export const behaviorConfigSchema = z.object({
   editorConfig: z
     .object({
       supportedEditors: z
-        .array(z.enum(['vscode', 'cursor', 'kiro', 'intellij']))
+        .array(z.enum(['vscode', 'cursor', 'intellij']))
         .min(1)
         .optional(),
       openCommand: z.string().min(1).optional(),

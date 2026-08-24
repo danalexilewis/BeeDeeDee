@@ -4,20 +4,18 @@ import type { EditorConfig, EditorLink, EditorType } from '@eddy/behavior-contra
  * Deep link templates per editor.
  *
  * `{path}` is substituted with an absolute path and `{line}` with a one-based
- * line number. VS Code and Cursor take a `file` authority; Kiro addresses specs
- * by fragment, and IntelliJ exposes an HTTP endpoint on its built-in server.
+ * line number. VS Code and Cursor take a `file` authority; IntelliJ exposes an
+ * HTTP endpoint on its built-in server.
  */
 const LINK_TEMPLATES: Record<EditorType, string> = {
   vscode: 'vscode://file/{path}:{line}',
   cursor: 'cursor://file/{path}:{line}',
-  kiro: 'kiro://file/{path}#L{line}',
   intellij: 'http://localhost:63342/api/file/{path}:{line}',
 };
 
 const EDITOR_LABELS: Record<EditorType, string> = {
   vscode: 'VS Code',
   cursor: 'Cursor',
-  kiro: 'Kiro',
   intellij: 'IntelliJ',
 };
 

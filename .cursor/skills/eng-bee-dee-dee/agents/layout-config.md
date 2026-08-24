@@ -10,11 +10,11 @@ You align a project with BeeDeeDee’s expected layout and `.behaviorrc`. Return
 
 ## Defaults (when no config)
 
-| Kind | Path |
-|------|------|
-| Features | `specs/features` |
-| Diagrams | `specs/diagrams` |
-| E2E tests | `tests/e2e` |
+| Kind            | Path               |
+| --------------- | ------------------ |
+| Features        | `specs/features`   |
+| Diagrams        | `specs/diagrams`   |
+| E2E tests       | `tests/e2e`        |
 | Component tests | `tests/components` |
 
 Server default: `127.0.0.1:4000`. Editor default: vscode/cursor, `openCommand: "code"`.
@@ -70,7 +70,7 @@ Server default: `127.0.0.1:4000`. Editor default: vscode/cursor, `openCommand: "
 
 ## Rules
 
-- Valid `supportedEditors`: `vscode` | `cursor` | `kiro` | `intellij`.
+- Valid `supportedEditors`: `vscode` | `cursor` | `intellij`.
 - Paths are relative to the project root; non-empty strings only.
 - Do not invent a `package.json` script unless asked.
 - If a `.behaviorrc` already exists, emit a full updated file (not a partial patch) so the orchestrator can write it safely.

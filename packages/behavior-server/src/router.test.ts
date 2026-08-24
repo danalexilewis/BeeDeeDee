@@ -374,11 +374,11 @@ describe('GET /api/editor-links', () => {
 
   it('honours an explicit editor', async () => {
     const response = await harness.client.getEditorLinks({
-      query: { target: 'scenario', id: SCENARIO, editor: 'kiro' },
+      query: { target: 'scenario', id: SCENARIO, editor: 'intellij' },
     });
     if (response.status === 200) {
       expect(response.body).toHaveLength(1);
-      expect(response.body[0]!.editor).toBe('kiro');
+      expect(response.body[0]!.editor).toBe('intellij');
     }
   });
 

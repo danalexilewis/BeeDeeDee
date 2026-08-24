@@ -9,11 +9,11 @@ const TARGET = {
 };
 
 describe('isSupportedEditor', () => {
-  it.each(['vscode', 'cursor', 'kiro', 'intellij'])('accepts %o', editor => {
+  it.each(['vscode', 'cursor', 'intellij'])('accepts %o', editor => {
     expect(isSupportedEditor(editor)).toBe(true);
   });
 
-  it.each(['emacs', 'vim', ''])('rejects %o', editor => {
+  it.each(['emacs', 'vim', 'kiro', ''])('rejects %o', editor => {
     expect(isSupportedEditor(editor)).toBe(false);
   });
 });
@@ -22,7 +22,6 @@ describe('buildEditorLink', () => {
   it.each([
     ['vscode', 'vscode://file//repo/specs/features/login.feature:12'],
     ['cursor', 'cursor://file//repo/specs/features/login.feature:12'],
-    ['kiro', 'kiro://file//repo/specs/features/login.feature#L12'],
     ['intellij', 'http://localhost:63342/api/file//repo/specs/features/login.feature:12'],
   ] as const)('builds a %o link', (editor, expected) => {
     expect(buildEditorLink(editor, TARGET).url).toBe(expected);

@@ -33,10 +33,10 @@ Supported report families: Playwright JSON, Vitest, Jest, and BeeDeeDee `native`
 
 ## Other commands
 
-| Command | Purpose |
-|---------|---------|
+| Command          | Purpose                                 |
+| ---------------- | --------------------------------------- |
 | `validate-links` | Editor deep links resolve to real files |
-| `export` | Catalog as JSON, CSV, or Markdown |
+| `export`         | Catalog as JSON, CSV, or Markdown       |
 
 ## What “analysing a project” means
 
