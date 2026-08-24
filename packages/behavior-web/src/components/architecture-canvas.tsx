@@ -9,7 +9,6 @@ import {
   useNodesState,
   useReactFlow,
   type Edge,
-  type Node,
   type OnSelectionChangeParams,
 } from '@xyflow/react';
 import { useNavigate } from '@tanstack/react-router';
@@ -18,11 +17,12 @@ import {
   ArchitectureDetailPanel,
   type SelectedArchitectureTarget,
 } from '@/components/architecture-detail';
+import { architectureNodeTypes } from '@/components/architecture-nodes';
 import {
-  architectureNodeTypes,
-  type ArchitectureCanvasNodeData,
-  type FlowNodeData,
-} from '@/components/architecture-nodes';
+  buildArchitectureGraph,
+  initialCollapsed,
+  type ArchitectureCanvasNode,
+} from '@/lib/architecture-graph';
 import { cn } from '@/lib/cn';
 import '@xyflow/react/dist/style.css';
 
@@ -30,136 +30,6 @@ export type ArchitectureCanvasProps = {
   map: ArchitectureMap;
   className?: string;
 };
-
-type CanvasNode = Node<ArchitectureCanvasNodeData, 'flowStage' | 'domainModel'>;
-
-/** True when every ancestor hub of `nodeId` is expanded. */
-function ancestorsExpanded(
-  nodeId: string,
-  byId: Map<string, ArchitectureMap['userFlows']['nodes'][number]>,
-  collapsed: ReadonlySet<string>
-): boolean {
-  let current = byId.get(nodeId)?.parentId;
-  while (current !== undefined) {
-    if (collapsed.has(current)) return false;
-    current = byId.get(current)?.parentId;
-  }
-  return true;
-}
-
-/** Builds React Flow nodes/edges honouring collapse and zoom-reveal. */
-function buildGraph(
-  map: ArchitectureMap,
-  collapsed: ReadonlySet<string>,
-  zoom: number,
-  onToggleCollapse: (nodeId: string) => void
-): { nodes: CanvasNode[]; edges: Edge[] } {
-  const flowById = new Map(
-    map.userFlows.nodes.map(function toEntry(node) {
-      return [node.id, node] as const;
-    })
-  );
-
-  const visibleFlowIds = new Set<string>();
-
-  for (const node of map.userFlows.nodes) {
-    if (!ancestorsExpanded(node.id, flowById, collapsed)) continue;
-    if (node.kind === 'leaf' && zoom < node.zoomRevealAt) continue;
-    visibleFlowIds.add(node.id);
-  }
-
-  const flowNodes: CanvasNode[] = map.userFlows.nodes
-    .filter(function isVisible(node) {
-      return visibleFlowIds.has(node.id);
-    })
-    .map(function toNode(node) {
-      const data: FlowNodeData = {
-        plane: 'flow',
-        node,
-        collapsed: collapsed.has(node.id),
-        selected: false,
-        onToggleCollapse,
-      };
-      return {
-        id: node.id,
-        type: 'flowStage',
-        position: node.position,
-        data,
-        zIndex: 2,
-      };
-    });
-
-  const domainNodes: CanvasNode[] = map.domainModel.nodes.map(function toNode(node) {
-    return {
-      id: node.id,
-      type: 'domainModel',
-      position: node.position,
-      data: { plane: 'domain', node, selected: false },
-      zIndex: 2,
-    };
-  });
-
-  const flowEdges: Edge[] = map.userFlows.edges
-    .filter(function bothVisible(edge) {
-      return visibleFlowIds.has(edge.source) && visibleFlowIds.has(edge.target);
-    })
-    .map(function toEdge(edge) {
-      return {
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        label: edge.label.length > 0 ? edge.label : undefined,
-        type: 'smoothstep',
-        style: { stroke: 'var(--primary)' },
-      };
-    });
-
-  const domainEdges: Edge[] = map.domainModel.edges.map(function toEdge(edge) {
-    return {
-      id: edge.id,
-      source: edge.source,
-      target: edge.target,
-      label: edge.label.length > 0 ? edge.label : undefined,
-      type: 'smoothstep',
-      style: { stroke: 'var(--passing)' },
-    };
-  });
-
-  const lineageEdges: Edge[] = map.lineage
-    .filter(function sourceVisible(edge) {
-      return visibleFlowIds.has(edge.source);
-    })
-    .map(function toEdge(edge) {
-      return {
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        label: edge.label.length > 0 ? edge.label : undefined,
-        type: 'straight',
-        animated: true,
-        style: { stroke: 'var(--untested)', strokeDasharray: '6 4' },
-        data: { kind: 'lineage' },
-      };
-    });
-
-  return {
-    nodes: [...flowNodes, ...domainNodes],
-    edges: [...flowEdges, ...domainEdges, ...lineageEdges],
-  };
-}
-
-/** Initial collapsed hubs from `collapsedByDefault`. */
-function initialCollapsed(map: ArchitectureMap): Set<string> {
-  return new Set(
-    map.userFlows.nodes
-      .filter(function isCollapsedHub(node) {
-        return node.kind === 'hub' && node.collapsedByDefault;
-      })
-      .map(function toId(node) {
-        return node.id;
-      })
-  );
-}
 
 function ArchitectureCanvasInner({ map, className }: ArchitectureCanvasProps) {
   const { getZoom } = useReactFlow();
@@ -177,12 +47,12 @@ function ArchitectureCanvasInner({ map, className }: ArchitectureCanvasProps) {
     });
   }
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<CanvasNode>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<ArchitectureCanvasNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   useEffect(
     function rebuild() {
-      const graph = buildGraph(map, collapsed, zoom, onToggleCollapse);
+      const graph = buildArchitectureGraph(map, collapsed, zoom, onToggleCollapse);
       setNodes(graph.nodes);
       setEdges(graph.edges);
     },
@@ -214,7 +84,7 @@ function ArchitectureCanvasInner({ map, className }: ArchitectureCanvasProps) {
       }
     }
 
-    const first = selectedNodes[0] as CanvasNode | undefined;
+    const first = selectedNodes[0] as ArchitectureCanvasNode | undefined;
     if (first === undefined) {
       setSelected(undefined);
       return;

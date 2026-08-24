@@ -97,4 +97,18 @@ describe('parseArchitectureMapContent', () => {
     if (result.isOk()) return;
     expect(result.error.tag).toBe('SchemaValidation');
   });
+
+  it('rejects a path that cannot derive a map id', () => {
+    const result = parseArchitectureMapContent({
+      path: 'specs/mappings/!!!.architecture.json',
+      content: VALID_MAP,
+      mappingsRoot: 'specs/mappings',
+    });
+
+    expect(result.isErr()).toBe(true);
+    if (result.isOk()) return;
+    expect(result.error.tag).toBe('SchemaValidation');
+    if (result.error.tag !== 'SchemaValidation') return;
+    expect(result.error.issues[0]?.message).toMatch(/could not derive a map id/i);
+  });
 });

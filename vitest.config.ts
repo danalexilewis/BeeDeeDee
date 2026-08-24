@@ -68,6 +68,7 @@ export default defineConfig({
       exclude: [
         'packages/*/src/**/*.test.ts',
         'packages/*/src/**/*.prop.test.ts',
+        'packages/*/src/**/*.test.tsx',
         'packages/*/src/index.ts',
         // Test doubles, fixtures, and harnesses are test infrastructure rather
         // than shipped logic, so counting them would dilute the figure they help
@@ -78,6 +79,11 @@ export default defineConfig({
         // v8 coverage does not follow into a child process.
         'packages/behavior-cli/src/cli.ts',
         'packages/test-support/**',
+        // React Flow mount glue; visibility rules live in architecture-graph.ts
+        // and are covered there. Mounting the full canvas for branch coverage is
+        // brittle in headless Chromium.
+        'packages/behavior-web/src/components/architecture-canvas.tsx',
+        'packages/behavior-web/src/components/architecture-nodes.tsx',
       ],
       thresholds: {
         lines: 80,
