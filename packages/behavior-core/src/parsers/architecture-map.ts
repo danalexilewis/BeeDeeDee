@@ -1,7 +1,4 @@
-import {
-  architectureMapDocumentSchema,
-  type ArchitectureMap,
-} from '@eddy/behavior-contracts';
+import { architectureMapDocumentSchema, type ArchitectureMap } from '@eddy/behavior-contracts';
 import { err, ok, type Result } from 'neverthrow';
 import { architectureMapIdFromPath } from '../domain/ids.js';
 import { schemaValidation, type BehaviorError, type SchemaIssue } from '../errors.js';
@@ -14,7 +11,9 @@ export type ParseArchitectureMapInput = {
 };
 
 /** Flattens Zod issues for SchemaValidation. */
-function toIssues(error: { issues: ReadonlyArray<{ path: PropertyKey[]; message: string }> }): SchemaIssue[] {
+function toIssues(error: {
+  issues: ReadonlyArray<{ path: PropertyKey[]; message: string }>;
+}): SchemaIssue[] {
   return error.issues.map(function toIssue(issue) {
     return { path: issue.path.map(String).join('.'), message: issue.message };
   });

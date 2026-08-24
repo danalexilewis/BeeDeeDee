@@ -137,11 +137,31 @@
     ],
     "edges": [
       { "id": "flow-auth-login", "source": "auth-hub", "target": "login", "label": "" },
-      { "id": "flow-auth-reset", "source": "auth-hub", "target": "password-reset", "label": "recovery" },
-      { "id": "flow-login-billing", "source": "login", "target": "billing-hub", "label": "authenticated" },
+      {
+        "id": "flow-auth-reset",
+        "source": "auth-hub",
+        "target": "password-reset",
+        "label": "recovery"
+      },
+      {
+        "id": "flow-login-billing",
+        "source": "login",
+        "target": "billing-hub",
+        "label": "authenticated"
+      },
       { "id": "flow-billing-invoice", "source": "billing-hub", "target": "invoicing", "label": "" },
-      { "id": "flow-billing-refund", "source": "billing-hub", "target": "refunds", "label": "optional" },
-      { "id": "flow-invoice-export", "source": "invoicing", "target": "exports", "label": "settled" }
+      {
+        "id": "flow-billing-refund",
+        "source": "billing-hub",
+        "target": "refunds",
+        "label": "optional"
+      },
+      {
+        "id": "flow-invoice-export",
+        "source": "invoicing",
+        "target": "exports",
+        "label": "settled"
+      }
     ]
   },
   "domainModel": {
@@ -224,7 +244,12 @@
     ],
     "edges": [
       { "id": "rel-user-invoice", "source": "user", "target": "invoice", "label": "owns" },
-      { "id": "rel-invoice-refund", "source": "invoice", "target": "refund", "label": "may reverse" }
+      {
+        "id": "rel-invoice-refund",
+        "source": "invoice",
+        "target": "refund",
+        "label": "may reverse"
+      }
     ]
   },
   "lineage": [

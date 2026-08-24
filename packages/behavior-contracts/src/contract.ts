@@ -1,10 +1,7 @@
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 import { agentContextSchema } from './schemas/agent.js';
-import {
-  architectureMapSchema,
-  architectureMapSummarySchema,
-} from './schemas/architecture-map.js';
+import { architectureMapSchema, architectureMapSummarySchema } from './schemas/architecture-map.js';
 import { catalogDataSchema, featureFilterSchema } from './schemas/catalog.js';
 import { diagramContentSchema } from './schemas/diagram.js';
 import { editorLinkSchema } from './schemas/editor.js';

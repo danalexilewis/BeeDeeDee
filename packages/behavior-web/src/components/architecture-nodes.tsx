@@ -1,7 +1,4 @@
-import type {
-  ArchitectureDomainNode,
-  ArchitectureFlowNode,
-} from '@eddy/behavior-contracts';
+import type { ArchitectureDomainNode, ArchitectureFlowNode } from '@eddy/behavior-contracts';
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
 import { ChevronDown, ChevronRight, Database, GitBranch } from 'lucide-react';
 import { cn } from '@/lib/cn';

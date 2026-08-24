@@ -197,7 +197,10 @@ function ArchitectureCanvasInner({ map, className }: ArchitectureCanvasProps) {
     [map.id]
   );
 
-  function onSelectionChange({ nodes: selectedNodes, edges: selectedEdges }: OnSelectionChangeParams): void {
+  function onSelectionChange({
+    nodes: selectedNodes,
+    edges: selectedEdges,
+  }: OnSelectionChangeParams): void {
     const lineageEdge = selectedEdges.find(function isLineage(edge) {
       return edge.data?.['kind'] === 'lineage';
     });

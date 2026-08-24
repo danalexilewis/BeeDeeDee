@@ -71,7 +71,10 @@ function FeatureCard({ feature }: { feature: FeatureSummary }) {
         <div className="flex gap-1">
           {feature.tags.slice(0, 3).map(function toTag(tag) {
             return (
-              <span key={tag} className="rounded-[var(--radius)] border border-[var(--ink)] bg-[var(--paper-muted)] px-1.5 py-0.5 font-mono text-xs">
+              <span
+                key={tag}
+                className="rounded-[var(--radius)] border border-[var(--ink)] bg-[var(--paper-muted)] px-1.5 py-0.5 font-mono text-xs"
+              >
                 {tag}
               </span>
             );

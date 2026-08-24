@@ -88,7 +88,8 @@ describe('parseArchitectureMapContent', () => {
   it('rejects an unknown schema version', () => {
     const result = parseArchitectureMapContent({
       path: 'specs/mappings/old.architecture.json',
-      content: '{"schemaVersion":"9.9","title":"x","userFlows":{"nodes":[],"edges":[]},"domainModel":{"nodes":[],"edges":[]}}',
+      content:
+        '{"schemaVersion":"9.9","title":"x","userFlows":{"nodes":[],"edges":[]},"domainModel":{"nodes":[],"edges":[]}}',
       mappingsRoot: 'specs/mappings',
     });
 

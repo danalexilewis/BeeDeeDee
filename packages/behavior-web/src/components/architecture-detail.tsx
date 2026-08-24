@@ -147,10 +147,13 @@ export function ArchitectureDetailPanel({
                   return candidate.id === edge.source;
                 });
                 return (
-                  <li key={edge.id} className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm">
+                  <li
+                    key={edge.id}
+                    className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm"
+                  >
                     <p className="font-medium">{source?.label ?? edge.source}</p>
                     <p className="text-muted-foreground text-xs">
-                      {edge.label.length > 0 ? edge.label : edge.dataId ?? edge.id}
+                      {edge.label.length > 0 ? edge.label : (edge.dataId ?? edge.id)}
                     </p>
                   </li>
                 );
@@ -209,7 +212,10 @@ export function ArchitectureDetailPanel({
           <ul className="space-y-2" data-testid="data-collected">
             {node.dataCollected.map(function toItem(item) {
               return (
-                <li key={item.id} className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm">
+                <li
+                  key={item.id}
+                  className="rounded-[var(--radius)] border-2 border-[var(--ink)] p-2 text-sm"
+                >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium">{item.name}</span>
                     {item.required || required.has(item.id) ? (

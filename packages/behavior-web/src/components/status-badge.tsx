@@ -3,8 +3,10 @@ import { cn } from '@/lib/cn';
 
 /** Visual treatment per status — hard ink chips in the Policy Bias style. */
 const STATUS_CLASSES: Record<FeatureStatus, string> = {
-  passing: 'bg-[color-mix(in_srgb,var(--passing)_12%,var(--paper))] text-passing border-[var(--ink)]',
-  failing: 'bg-[color-mix(in_srgb,var(--failing)_12%,var(--paper))] text-failing border-[var(--ink)]',
+  passing:
+    'bg-[color-mix(in_srgb,var(--passing)_12%,var(--paper))] text-passing border-[var(--ink)]',
+  failing:
+    'bg-[color-mix(in_srgb,var(--failing)_12%,var(--paper))] text-failing border-[var(--ink)]',
   untested:
     'bg-[color-mix(in_srgb,var(--untested)_12%,var(--paper))] text-untested border-[var(--ink)]',
 };
