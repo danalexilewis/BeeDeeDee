@@ -10,11 +10,11 @@ You align a project with BeeDeeDee’s expected layout and `.behaviorrc`. Return
 
 ## Defaults (when no config)
 
-| Kind | Path |
-|------|------|
-| Features | `specs/features` |
-| Diagrams | `specs/diagrams` |
-| E2E tests | `tests/e2e` |
+| Kind            | Path               |
+| --------------- | ------------------ |
+| Features        | `specs/features`   |
+| Diagrams        | `specs/diagrams`   |
+| E2E tests       | `tests/e2e`        |
 | Component tests | `tests/components` |
 
 Server default: `127.0.0.1:4000`. Editor default: vscode/cursor, `openCommand: "code"`.

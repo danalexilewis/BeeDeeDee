@@ -4,16 +4,16 @@ Rules mirror BeeDeeDee’s `lintFeatures` behaviour. Author so these stay clean.
 
 ## Severity guide
 
-| Rule | Severity | Meaning |
-|------|----------|---------|
-| `missing-scenario-name` | error | Scenario has no name |
-| `empty-scenario` | error | Scenario has no steps |
-| `duplicate-scenario-name` | warning | Same name twice in one feature (normalized) |
-| `inconsistent-step-keyword` | warning | Opens with And/But/`*` |
-| `too-many-steps` | warning | More than **10** steps |
-| `missing-feature-description` | info | No description under `Feature:` |
-| `untagged-feature` | info | Feature has no tags |
-| `step-without-given` | info | No Given in the scenario |
+| Rule                          | Severity | Meaning                                     |
+| ----------------------------- | -------- | ------------------------------------------- |
+| `missing-scenario-name`       | error    | Scenario has no name                        |
+| `empty-scenario`              | error    | Scenario has no steps                       |
+| `duplicate-scenario-name`     | warning  | Same name twice in one feature (normalized) |
+| `inconsistent-step-keyword`   | warning  | Opens with And/But/`*`                      |
+| `too-many-steps`              | warning  | More than **10** steps                      |
+| `missing-feature-description` | info     | No description under `Feature:`             |
+| `untagged-feature`            | info     | Feature has no tags                         |
+| `step-without-given`          | info     | No Given in the scenario                    |
 
 Errors block CI-style `behavior lint` failure modes; warnings/info should still be fixed when authoring.
 

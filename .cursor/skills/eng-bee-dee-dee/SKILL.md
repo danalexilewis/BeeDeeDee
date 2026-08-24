@@ -45,14 +45,14 @@ Progress:
 
 Map the ask to one or more lanes:
 
-| Lane | Playbook | Use when |
-|------|----------|----------|
-| Gherkin | [agents/gherkin.md](agents/gherkin.md) | New/updated `.feature` files, Rules, Outlines, tags |
-| E2E conversion | [agents/e2e-conversion.md](agents/e2e-conversion.md) | Playwright/Cypress/Vitest browser tests → scenarios |
-| Markdown conversion | [agents/markdown-conversion.md](agents/markdown-conversion.md) | README/PRD/notes → features |
-| BA discovery | [agents/ba-discovery.md](agents/ba-discovery.md) | Stakeholder language → draft Feature/Scenario backlog |
-| Mermaid | [agents/mermaid.md](agents/mermaid.md) | Flow/sequence diagrams for a topic |
-| Layout/config | [agents/layout-config.md](agents/layout-config.md) | `.behaviorrc`, folder layout, path remaps |
+| Lane                | Playbook                                                       | Use when                                              |
+| ------------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
+| Gherkin             | [agents/gherkin.md](agents/gherkin.md)                         | New/updated `.feature` files, Rules, Outlines, tags   |
+| E2E conversion      | [agents/e2e-conversion.md](agents/e2e-conversion.md)           | Playwright/Cypress/Vitest browser tests → scenarios   |
+| Markdown conversion | [agents/markdown-conversion.md](agents/markdown-conversion.md) | README/PRD/notes → features                           |
+| BA discovery        | [agents/ba-discovery.md](agents/ba-discovery.md)               | Stakeholder language → draft Feature/Scenario backlog |
+| Mermaid             | [agents/mermaid.md](agents/mermaid.md)                         | Flow/sequence diagrams for a topic                    |
+| Layout/config       | [agents/layout-config.md](agents/layout-config.md)             | `.behaviorrc`, folder layout, path remaps             |
 
 ### 3. Spawn cheap subagents
 
